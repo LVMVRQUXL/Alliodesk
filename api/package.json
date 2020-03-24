@@ -1,0 +1,12 @@
+{
+  "name": "alliodesk-api",
+  "version": "1.0.0",
+  "description": "API d'Alliodesk, le projet annuel de la filière 3AL à l'ESGI",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
