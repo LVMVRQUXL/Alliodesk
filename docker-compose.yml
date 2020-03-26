@@ -1,7 +1,7 @@
 version: "3"
 services:
-  # Database (Postgres)
-  alliodesk-db:
+  # Database
+  database:
     image: postgres:12.2-alpine
     container_name: alliodesk-db
     environment:
@@ -12,3 +12,11 @@ services:
       - ./database/datas:/var/lib/postgresql
     ports:
       - 5432:5432
+  # API
+  api:
+    build: ./api
+    container_name: alliodesk-api
+    ports:
+      - 3456:3456
+    depends_on:
+      - database
