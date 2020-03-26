@@ -20,3 +20,11 @@ services:
       - 3456:3456
     depends_on:
       - database
+  # Frontend (Angular)
+  frontend:
+    build: ./frontend
+    container_name: alliodesk-frontend
+    ports:
+      - 8765:80
+    depends_on:
+      - api
