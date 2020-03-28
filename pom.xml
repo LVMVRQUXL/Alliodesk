@@ -11,13 +11,6 @@
     <modules>
         <module>client</module>
     </modules>
-    <properties>
-        <java.version>1.11</java.version>
-        <maven.compiler.source>1.11</maven.compiler.source>
-        <maven.compiler.target>1.11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.plugin>${java.version}</maven.compiler.plugin>
-        <junit.platform.version>1.6.1</junit.platform.version>
-    </properties>
+
 
 </project>
