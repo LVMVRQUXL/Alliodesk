@@ -103,7 +103,8 @@ un nouveau service).
 
 - [Git](https://git-scm.com/) ;
 - [Github](https://github.com/) ;
-- [Github Actions](https://github.com/features/actions).
+- [Github Actions](https://github.com/features/actions) ;
+- [Trello](https://trello.com/fr).
 
 
 ## Utilisation de Git
@@ -123,9 +124,12 @@ le pattern suivant :
 <type>(<scope>): [<trello-card-id>] <gitmoji> <short-description>
 ```
 
-Pour plus d'information sur les différents `<type>` et `<scope>`,
+Pour plus d'information sur les différents `<type>`,
 vous pouvez visiter l'article suivant : 
 [Karma's article about Git Commit Msg](http://karma-runner.github.io/4.0/dev/git-commit-msg.html).
+
+Les différents `<scope>` et `<trello-card-id>` sont définis à la création de la carte
+correspondante dans le tableau *Trello* de notre équipe.
 
 Pour plus d'information sur les différents `<gitmoji>`,
 vous pouvez visiter le site suivant : 
@@ -136,6 +140,6 @@ vous pouvez visiter le site suivant :
 
 Concernant le nom d'une branche du type `feature` ou `hotfix` avec Git, nous avons
 choisi de respecter le pattern suivant :
-- `feature/trello-card-id` ;
-- `hotfix/trello-card-id`.
+- `feature/<trello-card-id>` ;
+- `hotfix/<trello-card-id>`.
 
