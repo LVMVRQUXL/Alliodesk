@@ -16,6 +16,7 @@
     - [Workflow](#workflow)
     - [Message des commits](#message-des-commits)
     - [Nom d'une feature ou d'un hotfix](#nom-dune-feature-ou-dun-hotfix)
+- [Auteurs](#auteurs)
 
 
 ## Description fonctionnel
@@ -142,7 +143,15 @@ vous pouvez visiter le site suivant :
 ### Nom d'une feature ou d'un hotfix
 
 Concernant le nom d'une branche du type `feature` ou `hotfix` avec Git, nous avons
-choisi de respecter le pattern suivant :
+choisi de respecter les patterns suivants :
 - `feature/<trello-card-id>` ;
 - `hotfix/<trello-card-id>`.
+
+
+## Auteurs
+
+Ce projet a été imaginé et développé par :
+- KANTE Cheick ;
+- HUANG Hervé ;
+- LAMARQUE Loïc.
 
