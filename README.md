@@ -52,6 +52,22 @@ les communiquez grâce au formulaire inclus dans l'application.
 
 ## Plugins
 
+Dans ce projet, nous considérons l’ensemble des services offerts par *Alliodesk* comme 
+des plugins : les utilisateurs auront la possibilité de les supprimer ou les ajouter 
+selon leur utilisation. Ainsi, ce programme contiendra par défaut 3 services activés : 
+*todolist*, *planning*, tableau *kanban*. 
+Notre équipe se chargera aussi de développer de nouveaux services disponibles à l’ajout, 
+tels qu’un calendrier ou un bloc-notes, par exemple.
+
+De plus, les utilisateurs pourront aussi créer et développer de nouveaux services en 
+respectant certaines contraintes et en suivant les directives qui seront énoncées sur 
+le site web recensant la totalité des services. 
+Une fois créée, le service sera soumis à une vérification brève de la part de notre 
+équipe (on pourrait ainsi développer un programme validant ou non le service développé), 
+puis il sera ajouté dans la liste des services recensés sur le site dédié ainsi que 
+dans l’application sous la forme de proposition (lorsqu’un utilisateur souhaite ajouter 
+un nouveau service).
+
 
 ## Liste des technologies
 ### API RESTful
