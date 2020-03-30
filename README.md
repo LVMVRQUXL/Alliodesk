@@ -13,6 +13,9 @@
     - [Frontend](#frontend)
     - [Autres outils](#autres-outils)
 - [Utilisation de Git](#utilisation-de-git)
+    - [Workflow](#workflow)
+    - [Message des commits](#message-des-commits)
+    - [Nom d'une feature ou d'un hotfix](#nom-dune-feature-ou-dun-hotfix)
 
 
 ## Description fonctionnel
@@ -136,7 +139,7 @@ vous pouvez visiter le site suivant :
 [Gitmoji website](https://gitmoji.carloscuesta.me/).
 
 
-### Nom d'une branche (feature/hotfix)
+### Nom d'une feature ou d'un hotfix
 
 Concernant le nom d'une branche du type `feature` ou `hotfix` avec Git, nous avons
 choisi de respecter le pattern suivant :
