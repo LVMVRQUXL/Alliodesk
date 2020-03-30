@@ -73,37 +73,37 @@ un nouveau service).
 
 ### API RESTful
 
-- [Node.js 12.16.1](https://nodejs.org/en/)
-- [Sequelize 5.21.5](https://www.npmjs.com/package/sequelize/v/5.21.5)
-- [Express 4.17.1](https://www.npmjs.com/package/express/v/4.17.1)
-- [Dotenv 8.2.0](https://www.npmjs.com/package/dotenv/v/8.2.0)
-- [Body-parser 1.19.0](https://www.npmjs.com/package/body-parser/v/1.19.0)
-- [Mocha 7.1.1](https://www.npmjs.com/package/mocha/v/7.1.1)
+- [Node.js 12.16.1](https://nodejs.org/en/) ;
+- [Sequelize 5.21.5](https://www.npmjs.com/package/sequelize/v/5.21.5) ;
+- [Express 4.17.1](https://www.npmjs.com/package/express/v/4.17.1) ;
+- [Dotenv 8.2.0](https://www.npmjs.com/package/dotenv/v/8.2.0) ;
+- [Body-parser 1.19.0](https://www.npmjs.com/package/body-parser/v/1.19.0) ;
+- [Mocha 7.1.1](https://www.npmjs.com/package/mocha/v/7.1.1).
 
 
 ### Database
 
-- [PostgreSQL 12.2-alpine](https://hub.docker.com/_/postgres)
+- [PostgreSQL 12.2-alpine](https://hub.docker.com/_/postgres).
 
 
 ### Client
 
-- [OpenJDK 11](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot)
-- [JavaFX 14](https://openjfx.io/)
-- [JUnit 5](https://junit.org/junit5/)
-- [Maven](https://maven.apache.org/)
+- [OpenJDK 11](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot) ;
+- [JavaFX 14](https://openjfx.io/) ;
+- [JUnit 5](https://junit.org/junit5/) ;
+- [Maven](https://maven.apache.org/).
 
 
 ### Frontend
 
-- [Angular CLI 9.0.7](https://www.npmjs.com/package/@angular/cli/v/9.0.7)
+- [Angular CLI 9.0.7](https://www.npmjs.com/package/@angular/cli/v/9.0.7).
 
 
 ### Autres outils
 
-- [Git](https://git-scm.com/)
-- [Github](https://github.com/)
-- [Github Actions](https://github.com/features/actions)
+- [Git](https://git-scm.com/) ;
+- [Github](https://github.com/) ;
+- [Github Actions](https://github.com/features/actions).
 
 
 ## Utilisation de Git
@@ -125,11 +125,11 @@ le pattern suivant :
 
 Pour plus d'information sur les différents `<type>` et `<scope>`,
 vous pouvez visiter l'article suivant : 
-[Karma's article about Git Commit Msg](http://karma-runner.github.io/4.0/dev/git-commit-msg.html)
+[Karma's article about Git Commit Msg](http://karma-runner.github.io/4.0/dev/git-commit-msg.html).
 
 Pour plus d'information sur les différents `<gitmoji>`,
 vous pouvez visiter le site suivant : 
-[Gitmoji website](https://gitmoji.carloscuesta.me/) for more informations.
+[Gitmoji website](https://gitmoji.carloscuesta.me/).
 
 
 ### Nom d'une branche (feature/hotfix)
