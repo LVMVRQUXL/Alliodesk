@@ -5,6 +5,6 @@ COPY . .
 RUN mvn clean package
 
 ### STAGE 2: RUN ###
-FROM maven:3.6.3-jdk-11-slim
+FROM openjdk:11-jre-slim
 COPY --from=build ./usr/target/client.jar ./usr
 CMD ["java", "-cp", "usr/client.jar","Main"]
