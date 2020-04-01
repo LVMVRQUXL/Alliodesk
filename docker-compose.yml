@@ -33,6 +33,6 @@ services:
     build: ./client
     container_name: alliodesk-client
     ports:
-    - 8430:8360
+      - 8430:8360
     depends_on:
       - api
