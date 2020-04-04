@@ -5,8 +5,8 @@ on:
       - 'feature/**'
       - 'release/**'
       - 'hotfix/**'
-    #paths:
-    #  - 'frontend/**'
+    paths:
+      - 'frontend/**'
   pull_request:
     branches:
       - develop
