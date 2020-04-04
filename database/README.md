@@ -1,4 +1,4 @@
-# Database module
+# Database
 
 ## Pré-requis
 
