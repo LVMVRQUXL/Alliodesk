@@ -23,7 +23,10 @@ services:
   # Frontend (Angular)
   frontend:
     build: ./frontend
+    image: alliodesk-frontend:$FRONTEND_VERSION
     container_name: alliodesk-frontend
+    environment:
+      - FRONTEND_VERSION=${FRONTEND_VERSION}
     ports:
       - 8765:80
     depends_on:
