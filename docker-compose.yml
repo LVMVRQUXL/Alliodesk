@@ -31,7 +31,10 @@ services:
   # Client (java)
   client:
     build: ./client
+    image: alliodesk-client:$CLIENT_VERSION
     container_name: alliodesk-client
+    environment:
+      - CLIENT_VERSION=${CLIENT_VERSION}
     ports:
       - 8430:8360
     depends_on:
