@@ -15,7 +15,10 @@ services:
   # API
   api:
     build: ./api
+    image: alliodesk-api:$API_VERSION
     container_name: alliodesk-api
+    environment:
+      - API_VERSION=${API_VERSION}
     ports:
       - 3456:3456
     depends_on:
