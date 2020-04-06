@@ -1,0 +1,31 @@
+name: CI API - Unit Tests
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'release/**'
+      - 'hotfix/**'
+    paths:
+      - 'api/**'
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - 'api/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.16.1
+      - name: Install all dependencies
+        run: |
+          cd ./api
+          npm clean-install
+      - name: Run unit tests
+        run: |
+          cd ./api
+          npm run test

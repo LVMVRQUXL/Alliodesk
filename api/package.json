@@ -4,7 +4,8 @@
   "description": "API d'Alliodesk, le projet annuel de la filière 3AL à l'ESGI",
   "main": "./src/index.js",
   "scripts": {
-    "start": "node ./src/index.js"
+    "start": "node ./src/index.js",
+    "test": "mocha"
   },
   "keywords": [],
   "author": "LAMARQUE Loïc, KANTE Cheick, HUANG Hervé",
