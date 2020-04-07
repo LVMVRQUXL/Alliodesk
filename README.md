@@ -76,7 +76,7 @@ un nouveau service).
 ## Contribuer
 
 Cette section correspond à toutes les informations importantes à prendre en
-compte liées à la contribution de ce projet.
+compte pour contribuer à ce projet.
 
 
 ### Pré-requis
