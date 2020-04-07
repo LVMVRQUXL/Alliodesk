@@ -2,14 +2,14 @@ version: "3"
 services:
   # Database
   database:
-    image: postgres:12.2-alpine
+    build: ./database
+    image: alliodesk-db:$DATABASE_VERSION
     container_name: alliodesk-db
     environment:
+      - DATABASE_VERSION=${DATABASE_VERSION}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-    volumes:
-      - ./database/datas:/var/lib/postgresql
     ports:
       - 5432:5432
   # API
