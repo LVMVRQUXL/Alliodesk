@@ -116,8 +116,8 @@ un nouveau service).
 Cette section correspond à toutes les informations importantes à prendre en
 compte liées à la contribution de ce projet.
 
-### Pré-requis
 
+### Pré-requis
 
 Après avoir cloné le dépôt, vous devez créer les fichiers d'environnements nécessaires 
 au bon fonctionnement des scripts pour être capable de lancer le projet localement.
@@ -144,7 +144,23 @@ Par exemple, si le fichier `./api/VERSION` contient `10.5.3`, alors le fichier
 `./.env` doit contenir la variable `API_VERSION=10.5.3`.
 
 
+### Lancement en environnement de développement
+
+Après avoir respecté les différents pré-requis signalés précédemment, vous serez en mesure
+de lancer le projet en environnement de développement grâce à la commande suivante :
+```bash
+docker-compose up --build
+```
+
+Il est conseillé d'utiliser cette commande avec l'option `--build`, car elle vous permettra
+de recréer une image *Docker* des services énumérés dans le fichier `docker-compose.yml`,
+et donc d'écraser l'ancienne image de celles-ci (si elles existaient déjà bien sûr).
+
+
 ### Utilisation de Git
+
+Cette section concerne les différentes informations liées au versioning du projet
+avec Git.
 
 
 #### Workflow
