@@ -6,16 +6,16 @@
 - [Description fonctionnel](#description-fonctionnel)
     - [A retenir](#a-retenir)
 - [Plugins](#plugins)
+- [Contribuer](#contribuer)
+    - [Pré-requis](#pré-requis)
+    - [Lancement en environnement de développement](#lancement-en-environnement-de-développement)
+    - [Utilisation de Git](#utilisation-de-git)
 - [Liste des technologies](#liste-des-technologies)
     - [API RESTful](#api-restful)
     - [Database](#database)
     - [Client](#client)
     - [Frontend](#frontend)
     - [Autres outils](#autres-outils)
-- [Contribuer](#contribuer)
-    - [Pré-requis](#pré-requis)
-    - [Lancement en environnement de développement](#lancement-en-environnement-de-développement)
-    - [Utilisation de Git](#utilisation-de-git)
 - [Auteurs](#auteurs)
 
 
@@ -71,45 +71,6 @@ Une fois créée, le service sera soumis à une vérification brève de la part 
 puis il sera ajouté dans la liste des services recensés sur le site dédié ainsi que 
 dans l’application sous la forme de proposition (lorsqu’un utilisateur souhaite ajouter 
 un nouveau service).
-
-
-## Liste des technologies
-
-
-### API RESTful
-
-- [Node.js 12.16.1](https://nodejs.org/en/) ;
-- [Sequelize 5.21.5](https://www.npmjs.com/package/sequelize/v/5.21.5) ;
-- [Express 4.17.1](https://www.npmjs.com/package/express/v/4.17.1) ;
-- [Dotenv 8.2.0](https://www.npmjs.com/package/dotenv/v/8.2.0) ;
-- [Body-parser 1.19.0](https://www.npmjs.com/package/body-parser/v/1.19.0) ;
-- [Mocha 7.1.1](https://www.npmjs.com/package/mocha/v/7.1.1).
-
-
-### Database
-
-- [PostgreSQL 12.2-alpine](https://hub.docker.com/_/postgres).
-
-
-### Client
-
-- [OpenJDK 11](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot) ;
-- [JavaFX 14](https://openjfx.io/) ;
-- [JUnit 5](https://junit.org/junit5/) ;
-- [Maven](https://maven.apache.org/).
-
-
-### Frontend
-
-- [Angular CLI 9.0.7](https://www.npmjs.com/package/@angular/cli/v/9.0.7).
-
-
-### Autres outils
-
-- [Git](https://git-scm.com/) ;
-- [Github](https://github.com/) ;
-- [Github Actions](https://github.com/features/actions) ;
-- [Trello](https://trello.com/fr).
 
 
 ## Contribuer
@@ -197,6 +158,45 @@ Concernant le nom d'une branche du type `feature` ou `hotfix` avec Git, nous avo
 choisi de respecter les patterns suivants :
 - `feature/<trello-card-id>` ;
 - `hotfix/<trello-card-id>`.
+
+
+## Liste des technologies
+
+
+### API RESTful
+
+- [Node.js 12.16.1](https://nodejs.org/en/) ;
+- [Sequelize 5.21.5](https://www.npmjs.com/package/sequelize/v/5.21.5) ;
+- [Express 4.17.1](https://www.npmjs.com/package/express/v/4.17.1) ;
+- [Dotenv 8.2.0](https://www.npmjs.com/package/dotenv/v/8.2.0) ;
+- [Body-parser 1.19.0](https://www.npmjs.com/package/body-parser/v/1.19.0) ;
+- [Mocha 7.1.1](https://www.npmjs.com/package/mocha/v/7.1.1).
+
+
+### Database
+
+- [PostgreSQL 12.2-alpine](https://hub.docker.com/_/postgres).
+
+
+### Client
+
+- [OpenJDK 11](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot) ;
+- [JavaFX 14](https://openjfx.io/) ;
+- [JUnit 5](https://junit.org/junit5/) ;
+- [Maven](https://maven.apache.org/).
+
+
+### Frontend
+
+- [Angular CLI 9.0.7](https://www.npmjs.com/package/@angular/cli/v/9.0.7).
+
+
+### Autres outils
+
+- [Git](https://git-scm.com/) ;
+- [Github](https://github.com/) ;
+- [Github Actions](https://github.com/features/actions) ;
+- [Trello](https://trello.com/fr).
 
 
 ## Auteurs
