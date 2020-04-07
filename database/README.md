@@ -15,5 +15,5 @@ Pour lancer l'image du module **database** à partir de la racine du projet ***A
 vous pouvez utiliser les commandes suivantes :
 ```bash
 docker build -t "alliodesk-db:latest" ./database
-docker run -p "5432:5432" -v "/database/datas:/var/lib/postgresql" --env-file="./database/env_file" alliodesk-db:latest
+docker run -p "5432:5432" --env-file="./database/env_file" alliodesk-db:latest
 ```
