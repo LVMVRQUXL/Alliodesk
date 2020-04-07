@@ -13,7 +13,7 @@
     - [Frontend](#frontend)
     - [Autres outils](#autres-outils)
 - [Contribuer](#contribuer)
-    - [Pré-requis](#pre-requis)
+    - [Pré-requis](#pré-requis)
     - [Utilisation de Git](#utilisation-de-git)
 - [Auteurs](#auteurs)
 
