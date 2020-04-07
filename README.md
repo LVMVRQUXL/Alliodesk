@@ -14,6 +14,7 @@
     - [Autres outils](#autres-outils)
 - [Contribuer](#contribuer)
     - [Pré-requis](#pré-requis)
+    - [Lancement en environnement de développement](#lancement-en-environnement-de-développement)
     - [Utilisation de Git](#utilisation-de-git)
 - [Auteurs](#auteurs)
 
