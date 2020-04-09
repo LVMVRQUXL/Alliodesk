@@ -20,6 +20,8 @@ jobs:
   deploy-github:
     runs-on: ubuntu-latest
     env:
+      API_HOST: localhost
+      API_PORT: 3456
       API_VERSION_FILE: ./api/package.json
     steps:
       - uses: actions/checkout@v2
@@ -28,6 +30,8 @@ jobs:
       - name: Build a docker image of API
         run: |
           version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $API_VERSION_FILE`
+
+          echo "API_PORT=$API_PORT\nAPI_HOST=$API_HOST\n" >> ./api/.env
 
           echo "Building docker image of $API_IMAGE_NAME version $version..."
           docker build -t "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$API_IMAGE_NAME:$version" ./api
