@@ -1,4 +1,4 @@
-name: CD API - Deploy
+name: CD Frontend - Deploy
 on:
   push:
     branches:
