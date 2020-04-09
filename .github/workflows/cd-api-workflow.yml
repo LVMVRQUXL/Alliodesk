@@ -9,7 +9,6 @@ on:
 env:
   API_IMAGE_NAME: alliodesk-api
   API_IMAGE_VERSION_LATEST: latest
-  HEROKU_APP_NAME_BACK: ${{ secrets.HEROKU_APP_NAME_BACK }}
   HUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   HUB_PROJECT: ${{ secrets.HUB_PROJECT }}
   HUB_REGISTRY: ${{ secrets.HUB_REGISTRY }}
@@ -53,6 +52,7 @@ jobs:
     needs: deploy-github
     env:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      HEROKU_APP_NAME_BACK: ${{ secrets.HEROKU_APP_NAME_BACK }}
       HEROKU_PROCESS_TYPE: web
       HEROKU_REGISTRY: ${{ secrets.HEROKU_REGISTRY }}
     steps:
