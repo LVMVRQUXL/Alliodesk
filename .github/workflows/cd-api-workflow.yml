@@ -10,6 +10,7 @@ on:
 env:
   API_IMAGE_NAME: alliodesk-api
   API_IMAGE_VERSION_LATEST: latest
+  HEROKU_APP_NAME_BACK: ${{ secrets.HEROKU_APP_NAME_BACK }}
   HUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   HUB_PROJECT: ${{ secrets.HUB_PROJECT }}
   HUB_REGISTRY: ${{ secrets.HUB_REGISTRY }}
@@ -20,7 +21,7 @@ jobs:
   deploy-github:
     runs-on: ubuntu-latest
     env:
-      API_HOST: localhost
+      API_HOST: $HEROKU_APP_NAME_BACK.herokuapp.com
       API_PORT: 3456
       API_VERSION_FILE: ./api/package.json
     steps:
@@ -31,7 +32,8 @@ jobs:
         run: |
           version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $API_VERSION_FILE`
 
-          echo "API_PORT=$API_PORT\nAPI_HOST=$API_HOST\n" >> ./api/.env
+          echo "API_PORT=$API_PORT" >> ./api/.env
+          echo "API_HOST=$API_HOST" >> ./api/.env
 
           echo "Building docker image of $API_IMAGE_NAME version $version..."
           docker build -t "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$API_IMAGE_NAME:$version" ./api
@@ -57,7 +59,6 @@ jobs:
     needs: deploy-github
     env:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      HEROKU_APP_NAME_BACK: ${{ secrets.HEROKU_APP_NAME_BACK }}
       HEROKU_PROCESS_TYPE: web
       HEROKU_REGISTRY: ${{ secrets.HEROKU_REGISTRY }}
     steps:
