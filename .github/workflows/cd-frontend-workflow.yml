@@ -19,21 +19,21 @@ jobs:
   deploy-github:
     runs-on: ubuntu-latest
     env:
-      FRONTEND_VERSION_FILE: ./frontend/package.json
+      FRONTEND_MODULE_PATH: ./frontend
     steps:
       - uses: actions/checkout@v2
       - name: Login to Github Packages
         run: docker login -u $HUB_USERNAME -p $HUB_PASSWORD $HUB_REGISTRY
       - name: Build a docker image of API
         run: |
-          version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $FRONTEND_VERSION_FILE`
+          version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $FRONTEND_MODULE_PATH/package.json`
 
           echo "Building docker image of $FRONTEND_IMAGE_NAME version $version..."
-          docker build -t "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$FRONTEND_IMAGE_NAME:$version" ./frontend
+          docker build -t "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$FRONTEND_IMAGE_NAME:$version" $FRONTEND_MODULE_PATH
           echo "SUCCESS\n"
       - name: Push to Github Packages
         run: |
-          version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $FRONTEND_VERSION_FILE`
+          version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $FRONTEND_MODULE_PATH/package.json`
 
           echo "Pushing docker image of $FRONTEND_IMAGE_NAME version $version..."
           docker push "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$FRONTEND_IMAGE_NAME:$version"
