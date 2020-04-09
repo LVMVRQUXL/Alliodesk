@@ -196,6 +196,7 @@ choisi de respecter les patterns suivants :
 - [Git](https://git-scm.com/) ;
 - [Github](https://github.com/) ;
 - [Github Actions](https://github.com/features/actions) ;
+- [Docker](https://www.docker.com/) ;
 - [Trello](https://trello.com/fr).
 
 
