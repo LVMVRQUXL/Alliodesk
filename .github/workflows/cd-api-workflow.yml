@@ -3,8 +3,9 @@ on:
   push:
     branches:
       - 'master'
-    paths:
-      - 'api/**'
+      - 'feature/**' # TODO: remove this line after testings...
+    #paths:
+    #  - 'api/**'
 
 env:
   API_IMAGE_NAME: alliodesk-api
