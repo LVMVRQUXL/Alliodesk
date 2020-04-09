@@ -21,7 +21,7 @@ jobs:
   deploy-github:
     runs-on: ubuntu-latest
     env:
-      API_HOST: $HEROKU_APP_NAME_BACK.herokuapp.com
+      API_HOST: ${{ secrets.HEROKU_APP_NAME_BACK }}.herokuapp.com
       API_PORT: 3456
       API_VERSION_FILE: ./api/package.json
     steps:
