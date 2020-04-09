@@ -19,21 +19,21 @@ jobs:
   deploy-github:
     runs-on: ubuntu-latest
     env:
-      API_VERSION_FILE: ./api/package.json
+      API_MODULE_PATH: ./api
     steps:
       - uses: actions/checkout@v2
       - name: Login to Github Packages
         run: docker login -u $HUB_USERNAME -p $HUB_PASSWORD $HUB_REGISTRY
       - name: Build a docker image of API
         run: |
-          version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $API_VERSION_FILE`
+          version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $API_MODULE_PATH/package.json`
 
           echo "Building docker image of $API_IMAGE_NAME version $version..."
-          docker build -t "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$API_IMAGE_NAME:$version" ./api
+          docker build -t "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$API_IMAGE_NAME:$version" $API_MODULE_PATH
           echo "SUCCESS\n"
       - name: Push to Github Packages
         run: |
-          version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $API_VERSION_FILE`
+          version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $API_MODULE_PATH/package.json`
 
           echo "Pushing docker image of $API_IMAGE_NAME version $version..."
           docker push "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$API_IMAGE_NAME:$version"
