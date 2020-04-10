@@ -28,4 +28,4 @@ jobs:
       - name: Build client
         run: |
            cd ./client
-           mvn -B package --file pom.xml
+           mvn clean package
