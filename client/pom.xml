@@ -10,7 +10,7 @@
     
     <properties>
         <java.version>11</java.version>
-        <java.mainClass>Main</java.mainClass>
+        <java.mainClass>fr.esgi.alliodesk.client.Main</java.mainClass>
 
         <javafx.version>${java.version}</javafx.version>
 
