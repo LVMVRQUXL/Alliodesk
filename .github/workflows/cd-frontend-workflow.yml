@@ -1,13 +1,10 @@
-# TODO: test this CD!
-
 name: CD Frontend - Deploy
 on:
   push:
     branches:
       - 'master'
-      - 'feature/**' # TODO: remove this line after testings
-    #paths:
-    #  - 'frontend/**'
+    paths:
+      - 'frontend/**'
 
 env:
   FRONTEND_IMAGE_NAME: alliodesk-frontend
