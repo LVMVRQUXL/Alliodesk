@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 class HelloTest {
     @Test
     void addittion() {
-        assertEquals(5,5+1);
+        assertEquals(5,4+1);
     }
 
     @Test
