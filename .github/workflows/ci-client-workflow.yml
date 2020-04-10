@@ -5,8 +5,9 @@ on:
       - 'feature/**'
       - 'release/**'
       - 'hotfix/**'
-    paths:
-      - 'client/**'
+    # TODO: remove comments!
+    #paths:
+    #  - 'client/**'
   pull_request:
     branches:
       - develop
