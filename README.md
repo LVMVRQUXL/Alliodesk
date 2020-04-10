@@ -91,7 +91,6 @@ Concernant le module **"parent"** (donc l'ensemble des modules du projet), vous 
 créer un fichier `.env` contenant les variables suivantes :
 - `API_VERSION` : correspond à la version du module **api** ;
 - `CLIENT_VERSION` : correspond à la version du module **client** ;
-- `DATABASE_VERSION` : correspond à la version du module **database** ;
 - `POSTGRES_USER` : correspond au profil utilisateur *PostgreSQL* à utiliser (nécessaire 
 pour le module **database**) ;
 - `POSTGRES_PASSWORD` : correspond au mot de passe de ce profil utilisateur (nécessaire 
