@@ -7,4 +7,4 @@ RUN mvn clean package
 ### STAGE 2: RUN ###
 FROM openjdk:11-jre-slim
 COPY --from=build ./usr/target/client.jar ./usr
-CMD ["java", "-cp", "usr/client.jar","Main"]
+CMD ["java", "-cp", "usr/client.jar","fr.esgi.alliodesk.client.Main"]
