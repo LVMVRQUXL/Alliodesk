@@ -22,7 +22,7 @@ services:
       - 3456:3000
     depends_on:
       - database
-  # Frontend (Angular)
+  # Frontend
   frontend:
     build: ./frontend
     image: alliodesk-frontend:latest
@@ -33,7 +33,7 @@ services:
       - 8765:80
     depends_on:
       - api
-  # Client (java)
+  # Client
   client:
     build: ./client
     image: alliodesk-client:latest
