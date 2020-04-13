@@ -6,16 +6,16 @@
 - [Description fonctionnel](#description-fonctionnel)
     - [A retenir](#a-retenir)
 - [Plugins](#plugins)
+- [Contribuer](#contribuer)
+    - [Pré-requis](#pré-requis)
+    - [Lancement en environnement de développement](#lancement-en-environnement-de-développement)
+    - [Utilisation de Git](#utilisation-de-git)
 - [Liste des technologies](#liste-des-technologies)
     - [API RESTful](#api-restful)
     - [Database](#database)
     - [Client](#client)
     - [Frontend](#frontend)
     - [Autres outils](#autres-outils)
-- [Utilisation de Git](#utilisation-de-git)
-    - [Workflow](#workflow)
-    - [Message des commits](#message-des-commits)
-    - [Nom d'une feature ou d'un hotfix](#nom-dune-feature-ou-dun-hotfix)
 - [Auteurs](#auteurs)
 
 
@@ -73,7 +73,94 @@ dans l’application sous la forme de proposition (lorsqu’un utilisateur souha
 un nouveau service).
 
 
+## Contribuer
+
+Cette section correspond à toutes les informations importantes à prendre en
+compte pour contribuer à ce projet.
+
+
+### Pré-requis
+
+Après avoir cloné le dépôt, vous devez créer les fichiers d'environnements nécessaires 
+au bon fonctionnement des scripts pour être capable de lancer le projet localement.
+Référez-vous à la documentation présente dans les différents modules concernés, soient
+**api** et **database**, pour vous informer sur les fichiers d'environnement à créer
+et leur contenu.
+
+Concernant le module **"parent"** (donc l'ensemble des modules du projet), vous devez
+créer un fichier `.env` contenant les variables suivantes :
+- `API_VERSION` : correspond à la version du module **api** ;
+- `CLIENT_VERSION` : correspond à la version du module **client** ;
+- `POSTGRES_USER` : correspond au profil utilisateur *PostgreSQL* à utiliser (nécessaire 
+pour le module **database**) ;
+- `POSTGRES_PASSWORD` : correspond au mot de passe de ce profil utilisateur (nécessaire 
+pour le module **database**) ;
+- `POSTGRES_DB` : correspond au nom de la base de données qui sera créée (nécessaire 
+pour le module **database**) ;
+- `FRONTEND_VERSION` : correspond à la version du module **frontend**.
+
+Généralement, les variables nommées suivant le pattern `*_VERSION` ont pour valeur le
+contenu des fichiers `VERSION` présents à l'intérieur des modules correspondants.
+Par exemple, si le fichier `./api/VERSION` contient `10.5.3`, alors le fichier
+`./.env` doit contenir la variable `API_VERSION=10.5.3`.
+
+
+### Lancement en environnement de développement
+
+Après avoir respecté les différents pré-requis signalés précédemment, vous serez en mesure
+de lancer le projet en environnement de développement grâce à la commande suivante :
+```bash
+docker-compose up --build
+```
+
+Il est conseillé d'utiliser cette commande avec l'option `--build`, car elle vous permettra
+de recréer une image *Docker* des services énumérés dans le fichier `docker-compose.yml`,
+et donc d'écraser l'ancienne image de celles-ci (si elles existaient déjà bien sûr).
+
+
+### Utilisation de Git
+
+Cette section concerne les différentes informations liées au versioning du projet
+avec Git.
+
+
+#### Workflow
+
+Le workflow choisi par notre équipe est le 
+[Git flow](https://nvie.com/posts/a-successful-git-branching-model/).
+
+
+#### Message des commits
+
+Concernant le message des commits avec Git, nous avons choisi de respecter
+le pattern suivant :
+
+```bash
+<type>(<scope>): [<trello-card-id>] <gitmoji> <short-description>
+```
+
+Pour plus d'information sur les différents `<type>`,
+vous pouvez visiter l'article suivant : 
+[Karma's article about Git Commit Msg](http://karma-runner.github.io/4.0/dev/git-commit-msg.html).
+
+Les différents `<scope>` et `<trello-card-id>` sont définis à la création de la carte
+correspondante dans le tableau *Trello* de notre équipe.
+
+Pour plus d'information sur les différents `<gitmoji>`,
+vous pouvez visiter le site suivant : 
+[Gitmoji website](https://gitmoji.carloscuesta.me/).
+
+
+#### Nom d'une feature ou d'un hotfix
+
+Concernant le nom d'une branche du type `feature` ou `hotfix` avec Git, nous avons
+choisi de respecter les patterns suivants :
+- `feature/<trello-card-id>` ;
+- `hotfix/<trello-card-id>`.
+
+
 ## Liste des technologies
+
 
 ### API RESTful
 
@@ -108,44 +195,8 @@ un nouveau service).
 - [Git](https://git-scm.com/) ;
 - [Github](https://github.com/) ;
 - [Github Actions](https://github.com/features/actions) ;
+- [Docker](https://www.docker.com/) ;
 - [Trello](https://trello.com/fr).
-
-
-## Utilisation de Git
-
-### Workflow
-
-Le workflow choisi par notre équipe est le 
-[Git flow](https://nvie.com/posts/a-successful-git-branching-model/).
-
-
-### Message des commits
-
-Concernant le message des commits avec Git, nous avons choisi de respecter
-le pattern suivant :
-
-```bash
-<type>(<scope>): [<trello-card-id>] <gitmoji> <short-description>
-```
-
-Pour plus d'information sur les différents `<type>`,
-vous pouvez visiter l'article suivant : 
-[Karma's article about Git Commit Msg](http://karma-runner.github.io/4.0/dev/git-commit-msg.html).
-
-Les différents `<scope>` et `<trello-card-id>` sont définis à la création de la carte
-correspondante dans le tableau *Trello* de notre équipe.
-
-Pour plus d'information sur les différents `<gitmoji>`,
-vous pouvez visiter le site suivant : 
-[Gitmoji website](https://gitmoji.carloscuesta.me/).
-
-
-### Nom d'une feature ou d'un hotfix
-
-Concernant le nom d'une branche du type `feature` ou `hotfix` avec Git, nous avons
-choisi de respecter les patterns suivants :
-- `feature/<trello-card-id>` ;
-- `hotfix/<trello-card-id>`.
 
 
 ## Auteurs
