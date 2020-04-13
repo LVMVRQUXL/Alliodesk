@@ -29,6 +29,7 @@ services:
     container_name: alliodesk-frontend
     environment:
       - FRONTEND_VERSION=${FRONTEND_VERSION}
+      - PORT=80
     ports:
       - 8765:80
     depends_on:
