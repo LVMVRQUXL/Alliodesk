@@ -1,15 +1,9 @@
 name: CI API - Unit Tests
 on:
-  push:
-    branches:
-      - 'feature/**'
-      - 'release/**'
-      - 'hotfix/**'
-    paths:
-      - 'api/**'
   pull_request:
     branches:
-      - develop
+      - 'master'
+      - 'develop'
     paths:
       - 'api/**'
 
