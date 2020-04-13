@@ -83,26 +83,15 @@ compte pour contribuer à ce projet.
 
 Après avoir cloné le dépôt, vous devez créer les fichiers d'environnements nécessaires 
 au bon fonctionnement des scripts pour être capable de lancer le projet localement.
-Référez-vous à la documentation présente dans les différents modules concernés, soient
-**api** et **database**, pour vous informer sur les fichiers d'environnement à créer
-et leur contenu.
 
 Concernant le module **"parent"** (donc l'ensemble des modules du projet), vous devez
 créer un fichier `.env` contenant les variables suivantes :
-- `API_VERSION` : correspond à la version du module **api** ;
-- `CLIENT_VERSION` : correspond à la version du module **client** ;
 - `POSTGRES_USER` : correspond au profil utilisateur *PostgreSQL* à utiliser (nécessaire 
 pour le module **database**) ;
 - `POSTGRES_PASSWORD` : correspond au mot de passe de ce profil utilisateur (nécessaire 
 pour le module **database**) ;
 - `POSTGRES_DB` : correspond au nom de la base de données qui sera créée (nécessaire 
-pour le module **database**) ;
-- `FRONTEND_VERSION` : correspond à la version du module **frontend**.
-
-Généralement, les variables nommées suivant le pattern `*_VERSION` ont pour valeur le
-contenu des fichiers `VERSION` présents à l'intérieur des modules correspondants.
-Par exemple, si le fichier `./api/VERSION` contient `10.5.3`, alors le fichier
-`./.env` doit contenir la variable `API_VERSION=10.5.3`.
+pour le module **database**).
 
 
 ### Lancement en environnement de développement
