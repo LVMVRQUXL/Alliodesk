@@ -1,15 +1,9 @@
 name: CI Frontend - Build
 on:
-  push:
-    branches:
-      - 'feature/**'
-      - 'release/**'
-      - 'hotfix/**'
-    paths:
-      - 'frontend/**'
   pull_request:
     branches:
-      - develop
+      - 'master'
+      - 'develop'
     paths:
       - 'frontend/**'
 
