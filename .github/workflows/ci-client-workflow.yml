@@ -1,15 +1,10 @@
 name: CI Client - Unit Test & Build
 on:
   push:
-    branches:
-      - 'feature/**'
-      - 'release/**'
-      - 'hotfix/**'
-    paths:
-      - 'client/**'
   pull_request:
     branches:
-      - develop
+      - 'master'
+      - 'develop'
     paths:
       - 'client/**'
 
