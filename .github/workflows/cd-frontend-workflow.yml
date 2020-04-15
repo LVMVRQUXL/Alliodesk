@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build a docker image of API
+      - name: Build a docker image of Frontend
         run: |
           version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $FRONTEND_MODULE_PATH/package.json`
 
