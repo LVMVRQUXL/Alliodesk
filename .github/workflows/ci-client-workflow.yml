@@ -1,6 +1,5 @@
 name: CI Client - Unit Test & Build
 on:
-  push:
   pull_request:
     branches:
       - 'master'
