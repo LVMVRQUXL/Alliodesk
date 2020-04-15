@@ -98,7 +98,7 @@ jobs:
           version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $FRONTEND_MODULE_PATH/package.json`
 
           echo "Creating tag for Frontend version $version..."
-          git tag -a "api-$version" -m "Release Frontend version $version"
+          git tag -a "frontend-$version" -m "Release Frontend version $version"
           echo "SUCCESS\n"
       - name: Push tag to Github
         run: git push --tags origin
