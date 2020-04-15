@@ -8,19 +8,19 @@ on:
     #  - 'client/**'
 
 env:
-  CLIENT_IMAGE_NAME: alliodesk-client
-  CLIENT_IMAGE_VERSION_LATEST: latest
-  HUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-  HUB_PROJECT: ${{ secrets.HUB_PROJECT }}
-  HUB_REGISTRY: ${{ secrets.HUB_REGISTRY }}
-  HUB_USERNAME: ${{ secrets.HUB_USERNAME }}
+  CLIENT_MODULE_PATH: ./client
 
 jobs:
   # DEPLOY TO GITHUB PACKAGES
   deploy-github:
     runs-on: ubuntu-latest
     env:
-      CLIENT_MODULE_PATH: ./client
+      CLIENT_IMAGE_NAME: alliodesk-client
+      CLIENT_IMAGE_VERSION_LATEST: latest
+      HUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      HUB_PROJECT: ${{ secrets.HUB_PROJECT }}
+      HUB_REGISTRY: ${{ secrets.HUB_REGISTRY }}
+      HUB_USERNAME: ${{ secrets.HUB_USERNAME }}
     steps:
       - uses: actions/checkout@v2
       - name: Login to Github Packages
