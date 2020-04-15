@@ -3,9 +3,8 @@ on:
   push:
     branches:
       - 'master'
-      - 'feature/**' # TODO: remove this line after testings!
-    #paths:
-    #  - 'client/**'
+    paths:
+      - 'client/**'
 
 env:
   CLIENT_MODULE_PATH: ./client
