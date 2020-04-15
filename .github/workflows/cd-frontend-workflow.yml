@@ -67,7 +67,7 @@ jobs:
         run: docker logout $HUB_REGISTRY
       - name: Login to Heroku Registry
         run: docker login -u _ -p $HEROKU_API_KEY $HEROKU_REGISTRY
-      - name: Tag pulled image of API
+      - name: Tag pulled image of Frontend
         run: |
           echo "Building docker image of $HEROKU_PROCESS_TYPE..."
           docker tag "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$FRONTEND_IMAGE_NAME:$FRONTEND_IMAGE_VERSION_LATEST" \
