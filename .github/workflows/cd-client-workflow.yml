@@ -3,8 +3,9 @@ on:
   push:
     branches:
       - 'master'
-    paths:
-      - 'client/**'
+      - 'feature/**' # TODO: remove this line after testings!
+    #paths:
+    #  - 'client/**'
 
 env:
   CLIENT_IMAGE_NAME: alliodesk-client
