@@ -21,8 +21,8 @@ jobs:
         run: |
           version=`cat ./VERSION`
 
-          echo "Creating tag for Client version $version..."
-          git tag -a "client-$version" -m "Release Client version $version"
+          echo "Creating global tag version $version..."
+          git tag -a "global-$version" -m "Release global version $version"
           echo "SUCCESS\n"
       - name: Push tag to Github
         run: git push --tags origin
