@@ -9,6 +9,7 @@ on:
 env:
   FRONTEND_IMAGE_NAME: alliodesk-frontend
   FRONTEND_IMAGE_VERSION_LATEST: latest
+  FRONTEND_MODULE_PATH: ./frontend
   HUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   HUB_PROJECT: ${{ secrets.HUB_PROJECT }}
   HUB_REGISTRY: ${{ secrets.HUB_REGISTRY }}
@@ -18,11 +19,9 @@ jobs:
   # DEPLOY TO GITHUB PACKAGES
   deploy-github:
     runs-on: ubuntu-latest
-    env:
-      FRONTEND_MODULE_PATH: ./frontend
     steps:
       - uses: actions/checkout@v2
-      - name: Build a docker image of API
+      - name: Build a docker image of Frontend
         run: |
           version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $FRONTEND_MODULE_PATH/package.json`
 
@@ -68,7 +67,7 @@ jobs:
         run: docker logout $HUB_REGISTRY
       - name: Login to Heroku Registry
         run: docker login -u _ -p $HEROKU_API_KEY $HEROKU_REGISTRY
-      - name: Tag pulled image of API
+      - name: Tag pulled image of Frontend
         run: |
           echo "Building docker image of $HEROKU_PROCESS_TYPE..."
           docker tag "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$FRONTEND_IMAGE_NAME:$FRONTEND_IMAGE_VERSION_LATEST" \
@@ -81,3 +80,25 @@ jobs:
           echo "SUCCESS\n"
       - name: Logout from Heroku Registry
         run: docker logout $HEROKU_REGISTRY
+  # TAG THE RELEASE ON GITHUB
+  tag-release:
+    runs-on: ubuntu-latest
+    needs: deploy-heroku
+    env:
+      GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+      GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set identity
+        run: |
+          git config user.email "$GIT_USER_EMAIL"
+          git config user.name "$GIT_USER_NAME"
+      - name: Create tag
+        run: |
+          version=`sed -nE 's/^\s*"version": "(.*?)",$/\1/p' $FRONTEND_MODULE_PATH/package.json`
+
+          echo "Creating tag for Frontend version $version..."
+          git tag -a "frontend-$version" -m "Release Frontend version $version"
+          echo "SUCCESS\n"
+      - name: Push tag to Github
+        run: git push --tags origin
