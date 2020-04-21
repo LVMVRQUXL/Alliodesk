@@ -6,6 +6,7 @@
 - [Description fonctionnel](#description-fonctionnel)
     - [A retenir](#a-retenir)
 - [Plugins](#plugins)
+- [Organisation du projet](#organisation-du-projet)
 - [Contribuer](#contribuer)
     - [Pré-requis](#pré-requis)
     - [Lancement en environnement de développement](#lancement-en-environnement-de-développement)
@@ -73,6 +74,23 @@ dans l’application sous la forme de proposition (lorsqu’un utilisateur souha
 un nouveau service).
 
 
+## Organisation du projet
+
+Ce projet est divisé en trois modules :
+- le module **api** contient uniquement les fichiers relatifs au développement de
+l'API RESTful ;
+- le module **client** contient uniquement les fichiers relatifs au développement de
+l'application ***Alliodesk*** et son interface utilisateur ; 
+- le module **frontend** contient uniquement les fichiers relatifs au développement du
+site web, qui est à la fois le marketplace réunissant tous les services disponibles et
+la plateforme administrateur permettant à l'équipe ***Alliodesk*** de gérer l'ensemble
+des demandes utilisateurs (ex : erreurs remontés par les utilisateurs, soumission de
+service...).
+
+**ATTENTION :** les modules **client** et **frontend** ne peuvent pas fonctionner
+convenablement sans le module **api** ! Son existence est donc nécessaire à ces deux modules.
+
+
 ## Contribuer
 
 Cette section correspond à toutes les informations importantes à prendre en
@@ -83,26 +101,15 @@ compte pour contribuer à ce projet.
 
 Après avoir cloné le dépôt, vous devez créer les fichiers d'environnements nécessaires 
 au bon fonctionnement des scripts pour être capable de lancer le projet localement.
-Référez-vous à la documentation présente dans les différents modules concernés, soient
-**api** et **database**, pour vous informer sur les fichiers d'environnement à créer
-et leur contenu.
 
 Concernant le module **"parent"** (donc l'ensemble des modules du projet), vous devez
 créer un fichier `.env` contenant les variables suivantes :
-- `API_VERSION` : correspond à la version du module **api** ;
-- `CLIENT_VERSION` : correspond à la version du module **client** ;
 - `POSTGRES_USER` : correspond au profil utilisateur *PostgreSQL* à utiliser (nécessaire 
 pour le module **database**) ;
 - `POSTGRES_PASSWORD` : correspond au mot de passe de ce profil utilisateur (nécessaire 
 pour le module **database**) ;
 - `POSTGRES_DB` : correspond au nom de la base de données qui sera créée (nécessaire 
-pour le module **database**) ;
-- `FRONTEND_VERSION` : correspond à la version du module **frontend**.
-
-Généralement, les variables nommées suivant le pattern `*_VERSION` ont pour valeur le
-contenu des fichiers `VERSION` présents à l'intérieur des modules correspondants.
-Par exemple, si le fichier `./api/VERSION` contient `10.5.3`, alors le fichier
-`./.env` doit contenir la variable `API_VERSION=10.5.3`.
+pour le module **database**).
 
 
 ### Lancement en environnement de développement
@@ -172,15 +179,10 @@ choisi de respecter les patterns suivants :
 - [Mocha 7.1.1](https://www.npmjs.com/package/mocha/v/7.1.1).
 
 
-### Database
-
-- [PostgreSQL 12.2-alpine](https://hub.docker.com/_/postgres).
-
-
 ### Client
 
 - [OpenJDK 11](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot) ;
-- [JavaFX 14](https://openjfx.io/) ;
+- [JavaFX 11](https://openjfx.io/) ;
 - [JUnit 5](https://junit.org/junit5/) ;
 - [Maven](https://maven.apache.org/).
 
@@ -192,6 +194,7 @@ choisi de respecter les patterns suivants :
 
 ### Autres outils
 
+- [PostgreSQL 12.2-alpine](https://hub.docker.com/_/postgres) ;
 - [Git](https://git-scm.com/) ;
 - [Github](https://github.com/) ;
 - [Github Actions](https://github.com/features/actions) ;
