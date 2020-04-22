@@ -1,0 +1,44 @@
+version: "3"
+services:
+  # Database
+  database:
+    image: postgres:12.2-alpine
+    container_name: alliodesk-db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  # API
+  api:
+    build: ./api
+    image: alliodesk-api:latest
+    container_name: alliodesk-api
+    ports:
+      - 3456:3000
+    depends_on:
+      - database
+  # Frontend
+  frontend:
+    build: ./frontend
+    image: alliodesk-frontend:latest
+    container_name: alliodesk-frontend
+    environment:
+      - PORT=80
+    ports:
+      - 8765:80
+    depends_on:
+      - api
+  # Client
+  client:
+    build: ./client
+    image: alliodesk-client:latest
+    container_name: alliodesk-client
+    ports:
+      - 8430:8360
+    depends_on:
+      - api

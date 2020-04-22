@@ -1,0 +1,22 @@
+{
+  "name": "alliodesk-api",
+  "version": "0.1.0",
+  "description": "API d'Alliodesk, le projet annuel de la filière 3AL à l'ESGI",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "LAMARQUE Loïc, KANTE Cheick, HUANG Hervé",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "sequelize": "^5.21.5"
+  },
+  "devDependencies": {
+    "mocha": "^7.1.1"
+  }
+}

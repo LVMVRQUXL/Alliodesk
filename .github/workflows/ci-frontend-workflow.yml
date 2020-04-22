@@ -1,0 +1,22 @@
+name: CI Frontend - Build
+on:
+  pull_request:
+    branches:
+      - 'master'
+      - 'develop'
+    paths:
+      - 'frontend/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install all dependencies
+        run: |
+          cd ./frontend
+          npm clean-install
+      - name: Build frontend
+        run: |
+          cd ./frontend
+          npm run build

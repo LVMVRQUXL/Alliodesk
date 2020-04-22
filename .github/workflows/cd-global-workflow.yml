@@ -1,0 +1,28 @@
+name: CD Global - Tag release
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  # TAG THE RELEASE ON GITHUB
+  tag-release:
+    runs-on: ubuntu-latest
+    env:
+      GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+      GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set identity
+        run: |
+          git config user.email "$GIT_USER_EMAIL"
+          git config user.name "$GIT_USER_NAME"
+      - name: Create tag
+        run: |
+          version=`cat ./VERSION`
+
+          echo "Creating global tag version $version..."
+          git tag -a "global-$version" -m "Release global version $version"
+          echo "SUCCESS\n"
+      - name: Push tag to Github
+        run: git push --tags origin

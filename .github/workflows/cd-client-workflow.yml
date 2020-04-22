@@ -1,0 +1,70 @@
+name: CD Client - Deploy
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'client/**'
+
+env:
+  CLIENT_MODULE_PATH: ./client
+
+jobs:
+  # DEPLOY TO GITHUB PACKAGES
+  deploy-github:
+    runs-on: ubuntu-latest
+    env:
+      CLIENT_IMAGE_NAME: alliodesk-client
+      CLIENT_IMAGE_VERSION_LATEST: latest
+      HUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      HUB_PROJECT: ${{ secrets.HUB_PROJECT }}
+      HUB_REGISTRY: ${{ secrets.HUB_REGISTRY }}
+      HUB_USERNAME: ${{ secrets.HUB_USERNAME }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Github Packages
+        run: docker login -u $HUB_USERNAME -p $HUB_PASSWORD $HUB_REGISTRY
+      - name: Build a docker image of Client
+        run: |
+          version=`cat $CLIENT_MODULE_PATH/VERSION`
+
+          echo "Building docker image of $CLIENT_IMAGE_NAME version $version..."
+          docker build -t "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$CLIENT_IMAGE_NAME:$version" $CLIENT_MODULE_PATH
+          echo "SUCCESS\n"
+      - name: Push to Github Packages
+        run: |
+          version=`cat $CLIENT_MODULE_PATH/VERSION`
+
+          echo "Pushing docker image of $CLIENT_IMAGE_NAME version $version..."
+          docker push "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$CLIENT_IMAGE_NAME:$version"
+          echo "SUCCESS\n"
+
+          echo "Pushing docker image of $CLIENT_IMAGE_NAME version $CLIENT_IMAGE_VERSION_LATEST..."
+          docker tag "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$CLIENT_IMAGE_NAME:$version" \
+                  "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$CLIENT_IMAGE_NAME:$CLIENT_IMAGE_VERSION_LATEST"
+          docker push "$HUB_REGISTRY/$HUB_USERNAME/$HUB_PROJECT/$CLIENT_IMAGE_NAME:$CLIENT_IMAGE_VERSION_LATEST"
+          echo "SUCCESS\n"
+      - name: Logout from Github Packages
+        run: docker logout $HUB_REGISTRY
+  # TAG THE RELEASE ON GITHUB
+  tag-release:
+    runs-on: ubuntu-latest
+    needs: deploy-github
+    env:
+      GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+      GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set identity
+        run: |
+          git config user.email "$GIT_USER_EMAIL"
+          git config user.name "$GIT_USER_NAME"
+      - name: Create tag
+        run: |
+          version=`cat $CLIENT_MODULE_PATH/VERSION`
+
+          echo "Creating tag for Client version $version..."
+          git tag -a "client-$version" -m "Release Client version $version"
+          echo "SUCCESS\n"
+      - name: Push tag to Github
+        run: git push --tags origin
