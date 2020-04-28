@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    return sequelize.define('User_status', {
+    const User_status = sequelize.define('User_status', {
         id: {
             type: DataTypes.BIGINT,
             primaryKey: true,
@@ -16,5 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         underscored: true,
         timestamps: true
     });
+
+    User_status.associate = (models) => {
+        User_status.hasMany(models.User);
+    };
+
+    return User_status;
 
 };

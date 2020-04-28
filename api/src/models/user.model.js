@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    return sequelize.define('User', {
+    const User = sequelize.define('User', {
         id: {
             type: DataTypes.BIGINT,
             primaryKey: true,
@@ -32,5 +32,23 @@ module.exports = (sequelize, DataTypes) => {
         underscored: true,
         timestamps: true
     });
+
+    User.associate = (models) => {
+        User.belongsTo(models.User_status, {
+            foreignKey: {
+                name: 'user_status_id',
+                allowNull: false
+            }
+        });
+
+        User.hasMany(models.Error);
+        User.hasMany(models.Service);
+        User.hasMany(models.Feedback);
+        User.hasMany(models.Workspace);
+
+        User.belongsToMany(models.Service, { through: 'User_has_Service' });
+    };
+
+    return User;
 
 };

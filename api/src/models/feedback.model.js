@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    return sequelize.define('Feedback', {
+    const Feedback = sequelize.define('Feedback', {
         id: {
             type: DataTypes.BIGINT,
             primaryKey: true,
@@ -24,5 +24,22 @@ module.exports = (sequelize, DataTypes) => {
         underscored: true,
         timestamps: true
     });
+
+    Feedback.associate = (models) => {
+        Feedback.belongsTo(models.User, {
+            foreignKey: {
+                name: 'user_id',
+                allowNull: false
+            }
+        });
+        Feedback.belongsTo(models.Service, {
+            foreignKey: {
+                name: 'service_id',
+                allowNull: false
+            }
+        });
+    };
+
+    return Feedback;
 
 };

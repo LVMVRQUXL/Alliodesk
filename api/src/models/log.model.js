@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    return sequelize.define('Log', {
+    const Log = sequelize.define('Log', {
         id: {
             type: DataTypes.BIGINT,
             primaryKey: true,
@@ -16,5 +16,16 @@ module.exports = (sequelize, DataTypes) => {
         underscored: true,
         timestamps: true
     });
+
+    Log.associate = (models) => {
+        Log.belongsTo(models.Service, {
+            foreignKey: {
+                name: 'service_id',
+                allowNull: true
+            }
+        });
+    };
+
+    return Log;
 
 };

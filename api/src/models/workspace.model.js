@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    return sequelize.define('Workspace', {
+    const Workspace = sequelize.define('Workspace', {
         id: {
             type: DataTypes.BIGINT,
             primaryKey: true,
@@ -20,5 +20,18 @@ module.exports = (sequelize, DataTypes) => {
         underscored: true,
         timestamps: true
     });
+
+    Workspace.associate = (models) => {
+        Workspace.belongsTo(models.User, {
+            foreignKey: {
+                name: 'user_id',
+                allowNull: false
+            }
+        });
+
+        Workspace.belongsToMany(models.Service, { through: 'Workspace_contains_Service' });
+    };
+
+    return Workspace;
 
 };
