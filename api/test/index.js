@@ -1,7 +1,2 @@
-const assert = require('assert');
-const { describe, it } = require('mocha');
-
-describe('Simple example of test',
-    () => describe('#1+1 === 2', () => {
-        it('should return true', () => assert.equal(1+1 === 2, true));
-    }));
+// TODO: implement unit tests of controllers with Mockery!
+// https://www.npmjs.com/package/mockery/v/2.1.0

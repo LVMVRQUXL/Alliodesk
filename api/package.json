@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "scripts": {
     "start": "node ./src/index.js",
-    "test": "mocha"
+    "test": "mocha --exit"
   },
   "keywords": [],
   "author": "LAMARQUE Loïc, KANTE Cheick, HUANG Hervé",
@@ -13,6 +13,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
+    "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "pg": "^8.0.3",
     "sequelize": "^5.21.5"
