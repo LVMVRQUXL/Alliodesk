@@ -3,20 +3,8 @@ require('dotenv').config();
 
 const express = require('express');
 
-const sequelize = require('./models').sequelize;
 const routes = require('./routes');
-
-// CONFIG
-const bootstrap = async () => {
-
-    try {
-        await sequelize.authenticate();
-        await sequelize.sync({ force: true });
-    } catch (error) {
-        console.error('An error has occured:', error);
-    }
-
-};
+const bootstrap = require('./boot_sequelize');
 
 // SERVE
 bootstrap().then(() => {

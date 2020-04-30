@@ -14,6 +14,7 @@ let sequelize = new Sequelize(process.env.POSTGRES_DB, process.env.POSTGRES_USER
     define: {
         timestamps: false
     },
+    logging: false
 });
 fs
     .readdirSync(__dirname)
