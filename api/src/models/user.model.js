@@ -12,10 +12,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         email: {
             type: DataTypes.STRING,
+            unique: true,
             allowNull: false
         },
         login: {
             type: DataTypes.STRING,
+            unique: true,
             allowNull: false
         },
         password: {
@@ -24,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         token_session: {
             type: DataTypes.STRING,
+            unique: true,
             allowNull: true
         }
     }, {

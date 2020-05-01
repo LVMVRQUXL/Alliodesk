@@ -7,8 +7,14 @@ const HttpCodeUtil = require('../utils').HttpCodeUtil;
 module.exports = (app) => {
 
     // GET  /users  ===> Get all users
-    app.get('/users', (req, res, next) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); // TODO: not implemented!
+    app.get('/users', UserStatusMiddleware.checkStatusForUsers(),
+        async (req, res, next) => {
+            try {
+                const users = await UserController.findAllUsers();
+                if (users) { res.status(HttpCodeUtil.OK).json(users); }
+            } catch (e) {
+                console.error(e);
+            } finally { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
     });
 
     // POST /users  ===> Create one user

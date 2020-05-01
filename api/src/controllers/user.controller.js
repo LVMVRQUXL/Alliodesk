@@ -34,15 +34,30 @@ class UserController {
         }
     }
 
+    /**
+     * Find all users
+     *
+     * @returns {Promise<UserDTO[] | null>}
+     */
+    async findAllUsers() { // TODO: add unit tests!
+        const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
+        const users = await User.findAll({
+            where: {
+                user_status_id: userStatus.id
+            }
+        });
+        return users.map(user => new UserDTO(user.id, user.name, user.email, user.login));
+    }
+
 }
 
 class UserDTO {
 
-    constructor(id, name, email, login, password) {
+    constructor(id, name, email, login) {
         this.id = id;
         this.name = name;
+        this.email = email;
         this.login = login;
-        this.password = password;
     }
 
 }
