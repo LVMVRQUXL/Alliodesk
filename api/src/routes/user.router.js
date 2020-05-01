@@ -32,12 +32,21 @@ module.exports = (app) => {
         });
 
     // GET  /users/:id  ===> Get one user from id
-    app.get('/users/:id', (req, res, next) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); // TODO: not implemented!
+    app.get('/users/:id', async (req, res, next) => {
+        try {
+            const userId = parseInt(req.params.id);
+            if (!isNaN(userId)) {
+                const user = await UserController.findOneUserFromId(userId);
+                if (user) { res.status(HttpCodeUtil.OK).json(user); }
+                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
+            }
+        } catch (e) {
+            console.error(e);
+        } finally { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
     });
 
     // DELETE   /users/:id  ===> Delete one user from id
-    app.delete('/users/:id', bodyParser.json(), (req, res, next) => {
+    app.delete('/users/:id', (req, res, next) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); // TODO: not implemented!
     });
 

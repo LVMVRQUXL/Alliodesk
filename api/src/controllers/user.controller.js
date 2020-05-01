@@ -37,7 +37,7 @@ class UserController {
     /**
      * Find all users
      *
-     * @returns {Promise<UserDTO[] | null>}
+     * @returns {Promise<UserDTO[]>}
      */
     async findAllUsers() { // TODO: add unit tests!
         const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
@@ -47,6 +47,22 @@ class UserController {
             }
         });
         return users.map(user => new UserDTO(user.id, user.name, user.email, user.login));
+    }
+
+    /**
+     * Find one user from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<UserDTO | null>}
+     */
+    async findOneUserFromId(id) { // TODO: add unit tests!
+        const user = await User.findOne({
+            where: {
+                id: id
+            }
+        });
+        return !user ? null : new UserDTO(user.id, user.name, user.email, user.login);
     }
 
 }
