@@ -11,7 +11,8 @@ module.exports = (app) => {
         async (req, res, next) => {
             try {
                 const users = await UserController.findAllUsers();
-                if (users) { res.status(HttpCodeUtil.OK).json(users); }
+                if (users.length > 0) { res.status(HttpCodeUtil.OK).json(users); }
+                else { res.status(HttpCodeUtil.NO_CONTENT).end(); }
             } catch (e) {
                 console.error(e);
             } finally { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
