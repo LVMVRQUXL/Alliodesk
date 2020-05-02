@@ -9,7 +9,7 @@ module.exports = () => {
     describe('UserStatusController tests', () => {
         beforeEach('Booting sequelize...', () => bootSequelize());
 
-        describe('findUserStatusFromName(status)', () => {
+        describe('#findUserStatusFromName(status)', () => {
 
             it('should return a User_status with valid status', async () => {
                 // SETUP

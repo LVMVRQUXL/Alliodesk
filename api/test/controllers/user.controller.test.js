@@ -18,8 +18,7 @@ module.exports = () => {
 
         beforeEach('Booting sequelize...', () => bootSequelize());
 
-        describe('createUser(name, email, login, password)', () => {
-
+        describe('#createUser(name, email, login, password)', () => {
             it('should return true with valid inputs', async () => {
                 // SETUP
                 const emailValidatorMock = {
@@ -50,7 +49,7 @@ module.exports = () => {
             });
         });
 
-        describe('findAllUsers()', () => {
+        describe('#findAllUsers()', () => {
             it('should return a list of users', async () => {
                 // SETUP
                 await UserStatusController.createStatusForUsers();
@@ -78,7 +77,7 @@ module.exports = () => {
             });
         });
 
-        describe('findOneUserFromId(id)', () => {
+        describe('#findOneUserFromId(id)', () => {
             it('should return one existing user', async () => {
                 // SETUP
                 await UserStatusController.createStatusForUsers();
@@ -107,7 +106,7 @@ module.exports = () => {
             });
         });
 
-        describe('removeUserFromId(id)', () => {
+        describe('#removeUserFromId(id)', () => {
             it('should return true with valid id', async () => {
                 // SETUP
                 await UserStatusController.createStatusForUsers();
@@ -132,7 +131,7 @@ module.exports = () => {
             });
         });
 
-        describe('updateUserFromId(id, name, email, password)', () => {
+        describe('#updateUserFromId(id, name, email, password)', () => {
             it('should return true with valid inputs', async () => {
                 // SETUP
                 const userNameUpdated = "updated!";
