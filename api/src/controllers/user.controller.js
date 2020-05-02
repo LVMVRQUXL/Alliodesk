@@ -74,17 +74,16 @@ class UserController {
      *
      * @returns {Promise<boolean>}
      */
-    async removeUserFromId(id) { // TODO: add unit tests!
+    async removeUserFromId(id) {
         try {
             const user = await this.findOneUserFromId(id);
-            if (user) {
-                await User.destroy({
-                    where: {
-                        id: id
-                    }
-                });
-                return true;
-            }
+            if (!user) { return false; }
+            await User.destroy({
+                where: {
+                    id: id
+                }
+            });
+            return true;
         } catch (e) {
             console.log(e);
             return false;

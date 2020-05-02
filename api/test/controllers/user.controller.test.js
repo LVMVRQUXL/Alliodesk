@@ -8,15 +8,17 @@ const {UserController, UserStatusController} = require('../../src/controllers');
 module.exports = () => {
 
     describe('UserController tests', () => {
+        const userId = 1;
+        const userName = 'test';
+        const userEmail = 'test@gmail.com';
+        const userLogin = 'test1234';
+        const userPassword = '1234test';
+
         before('Enabling mockery...', () => mockery.enable());
 
         beforeEach('Booting sequelize...', () => bootSequelize());
 
         describe('createUser(name, email, login, password)', () => {
-            const userName = 'test';
-            const userEmail = 'test@gmail.com';
-            const userLogin = 'test1234';
-            const userPassword = '1234test';
 
             it('should return true with valid inputs', async () => {
                 // SETUP
@@ -51,10 +53,6 @@ module.exports = () => {
         describe('findAllUsers()', () => {
             it('should return a list of users', async () => {
                 // SETUP
-                const userName = 'test';
-                const userEmail = 'test@gmail.com';
-                const userLogin = 'test1234';
-                const userPassword = '1234test';
                 await UserStatusController.createStatusForUsers();
                 await UserController.createUser(userName, userEmail, userLogin, userPassword);
 
@@ -81,14 +79,8 @@ module.exports = () => {
         });
 
         describe('findOneUserFromId(id)', () => {
-            const userId = 1;
-
             it('should return one existing user', async () => {
                 // SETUP
-                const userName = 'test';
-                const userEmail = 'test@gmail.com';
-                const userLogin = 'test1234';
-                const userPassword = '1234test';
                 await UserStatusController.createStatusForUsers();
                 await UserController.createUser(userName, userEmail, userLogin, userPassword);
 
@@ -112,6 +104,31 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(user, null);
+            });
+        });
+
+        describe('removeUserFromId(id)', () => {
+            it('should return true with valid id', async () => {
+                // SETUP
+                await UserStatusController.createStatusForUsers();
+                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+
+                // CALL
+                const result = await UserController.removeUserFromId(userId);
+
+                // VERIFY
+                assert.equal(result, true);
+            });
+
+            it('should return false with invalid id', async () => {
+                // SETUP
+                await UserStatusController.createStatusForUsers();
+
+                // CALL
+                const result = await UserController.removeUserFromId(userId);
+
+                // VERIFY
+                assert.equal(result, false);
             });
         });
 
