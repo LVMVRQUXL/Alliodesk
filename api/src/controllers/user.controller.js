@@ -101,12 +101,13 @@ class UserController {
      *
      * @returns {Promise<boolean>}
      */
-    async updateUserFromId(id, name, email, password) { // TODO: refactor!
+    async updateUserFromId(id, name, email, password) {
         try {
             if ((email !== "" && !emailValidator.validate(email))
                 || (name === "" && email === "" && password === "")) {
                 return false;
             }
+
             const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
             const user = await User.findOne({
                 where: {
@@ -115,26 +116,20 @@ class UserController {
                 }
             });
             if (!user) { return false; }
+
+            const valuesArray = [];
             if (name && name !== "" && name !== user.name) {
-                await User.update({ name: name }, {
-                    where: {
-                        id: id
-                    }
-                });
+                valuesArray[valuesArray.length] = { name: name };
             }
             if (email && email !== "" && email !== user.email) {
-                await User.update({ email: email }, {
-                    where: {
-                        id: id
-                    }
-                });
+                valuesArray[valuesArray.length] = { email: email };
             }
             if (password && password !== "" && SecurityUtil.hash(password) !== user.password) {
-                await User.update({ password: SecurityUtil.hash(password) }, {
-                    where: {
-                        id: id
-                    }
-                });
+                valuesArray[valuesArray.length] = { password: SecurityUtil.hash(password) };
+            }
+            for (const value of valuesArray) {
+                const result = await _updateUserFromId(id, value);
+                if (!result) { return false; }
             }
             return true;
         } catch (e) {
@@ -145,8 +140,28 @@ class UserController {
 
 }
 
-const _updateUser = async (id, values) => {
-
+/**
+ * Update one user from id
+ *
+ * @param id {number}
+ * @param values {object}
+ *
+ * @returns {Promise<boolean>}
+ *
+ * @private
+ */
+const _updateUserFromId = async (id, values) => {
+    try {
+        await User.update(values, {
+            where: {
+                id: id
+            }
+        });
+        return true;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
 };
 
 class UserDTO {
