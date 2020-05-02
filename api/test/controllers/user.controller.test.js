@@ -48,6 +48,38 @@ module.exports = () => {
             });
         });
 
+        describe('findAllUsers() tests', () => {
+            it('should return a list of users', async () => {
+                // SETUP
+                const userName = 'test';
+                const userEmail = 'test@gmail.com';
+                const userLogin = 'test1234';
+                const userPassword = '1234test';
+                await UserStatusController.createStatusForUsers();
+                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+
+                // CALL
+                const users = await UserController.findAllUsers();
+
+                // VERIFY
+                assert.equal(users.length, 1);
+                assert.equal(users[0].name, userName);
+                assert.equal(users[0].email, userEmail);
+                assert.equal(users[0].login, userLogin);
+            });
+
+            it('should return an empty list of users', async () => {
+                // SETUP
+                await UserStatusController.createStatusForUsers();
+
+                // CALL
+                const users = await UserController.findAllUsers();
+
+                // VERIFY
+                assert.equal(users.length, 0);
+            });
+        });
+
         afterEach('Removing all registries from mockery...', () => mockery.deregisterAll());
 
         after('Disabling mockery...', () => mockery.disable());

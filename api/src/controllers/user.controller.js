@@ -39,7 +39,7 @@ class UserController {
      *
      * @returns {Promise<UserDTO[]>}
      */
-    async findAllUsers() { // TODO: add unit tests!
+    async findAllUsers() {
         const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
         const users = await User.findAll({
             where: {
@@ -101,7 +101,7 @@ class UserController {
      *
      * @returns {Promise<boolean>}
      */
-    async updateUserFromId(id, name, email, password) { // TODO: add unit tests!
+    async updateUserFromId(id, name, email, password) { // TODO: add unit tests and refactor!
         try {
             const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
             const user = await User.findOne({
