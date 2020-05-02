@@ -23,8 +23,16 @@ module.exports = (app) => {
     });
 
     // DELETE   /users/:id  ===> Delete one user from id
-    app.delete('/users/:id', (req, res, next) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); // TODO: not implemented!
+    app.delete('/users/:id', async (req, res, next) => {
+        try {
+            const userId = parseInt(req.params.id);
+            if (!isNaN(userId)) {
+                const result = await UserController.removeUserFromId(userId);
+                if (result) { res.status(HttpCodeUtil.OK).end(); }
+                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
+            }
+        } catch (e) { console.error(e); }
+        finally { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
     });
 
     // UPDATE   /users/:id  ===> Update one user from id

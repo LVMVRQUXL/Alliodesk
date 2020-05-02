@@ -67,6 +67,30 @@ class UserController {
         return !user ? null : new UserDTO(user.id, user.name, user.email, user.login);
     }
 
+    /**
+     * Remove one user from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async removeUserFromId(id) { // TODO: add unit tests!
+        try {
+            const user = await this.findOneUserFromId(id);
+            if (user) {
+                await User.destroy({
+                    where: {
+                        id: id
+                    }
+                });
+                return true;
+            }
+        } catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
+
 }
 
 class UserDTO {
