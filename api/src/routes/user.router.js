@@ -35,9 +35,20 @@ module.exports = (app) => {
         finally { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
     });
 
-    // UPDATE   /users/:id  ===> Update one user from id
-    app.set('/users/:id', bodyParser.json(), (req, res, next) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); // TODO: not implemented!
+    // PUT  /users/:id  ===> Update one user from id
+    app.put('/users/:id', bodyParser.json(), async (req, res, next) => {
+        try {
+            const userId = parseInt(req.params.id);
+            const userName = req.body.name;
+            const userEmail = req.body.email;
+            const userPassword = req.body.password;
+            if (!isNaN(userId) && (userName || userEmail || userPassword)) {
+                const result = await UserController.updateUserFromId(userId, userName, userEmail, userPassword);
+                if (result) { res.status(HttpCodeUtil.OK).end(); }
+                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
+            }
+        } catch (e) { console.error(e); }
+        finally { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
     });
 
     // GET  /users  ===> Get all users
@@ -54,7 +65,7 @@ module.exports = (app) => {
     // POST /users  ===> Create one user
     app.post('/users', bodyParser.json(), async (req, res, next) => {
         try {
-            if (req.body.name || req.body.email || req.body.login || req.body.password) {
+            if (req.body.name && req.body.email && req.body.login && req.body.password) {
                 const result = await UserController.createUser(req.body.name, req.body.email,
                     req.body.login, req.body.password);
                 if (result) { res.status(HttpCodeUtil.CREATED).end(); }
