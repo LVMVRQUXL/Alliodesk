@@ -132,6 +132,86 @@ module.exports = () => {
             });
         });
 
+        describe('updateUserFromId(id, name, email, password)', () => {
+            it('should return true with valid inputs', async () => {
+                // SETUP
+                const userNameUpdated = "updated!";
+                const userEmailUpdated = "updated@test.fr";
+                const userPasswordUpdated = "updatedpwd";
+                await UserStatusController.createStatusForUsers();
+                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+
+                // CALL
+                const result = await UserController.updateUserFromId(
+                    userId, userNameUpdated, userEmailUpdated, userPasswordUpdated
+                );
+
+                // VERIFY
+                assert.equal(result, true);
+                const user = await UserController.findOneUserFromId(userId);
+                assert.equal(user.name, userNameUpdated);
+                assert.equal(user.email, userEmailUpdated);
+            });
+
+            it('should return true with one valid input (name)', async () => {
+                // SETUP
+                const userNameUpdated = "updated!";
+                await UserStatusController.createStatusForUsers();
+                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+
+                // CALL
+                const result = await UserController.updateUserFromId(userId, userNameUpdated, "", "");
+
+                // VERIFY
+                assert.equal(result, true);
+                const user = await UserController.findOneUserFromId(userId);
+                assert.equal(user.name, userNameUpdated);
+                assert.equal(user.email, userEmail);
+            });
+
+            it('should return false with invalid id', async () => {
+                // SETUP
+                await UserStatusController.createStatusForUsers();
+
+                // CALL
+                const result = await UserController.updateUserFromId(userId, "", "", "");
+
+                // VERIFY
+                assert.equal(result, false);
+            });
+
+            it('should return false with invalid email', async () => {
+                // SETUP
+                const userEmailUpdated = "updated!";
+                await UserStatusController.createStatusForUsers();
+                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+
+                // CALL
+                const result = await UserController.updateUserFromId(userId, "", userEmailUpdated, "");
+
+                // VERIFY
+                assert.equal(result, false);
+                const user = await UserController.findOneUserFromId(userId);
+                assert.equal(user.name, userName);
+                assert.equal(user.email, userEmail);
+            });
+
+            it('should return false with empty inputs', async () => {
+                // SETUP
+                await UserStatusController.createStatusForUsers();
+                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+
+                // CALL
+                const result = await UserController.updateUserFromId(userId, "", "", "");
+
+                // VERIFY
+                assert.equal(result, false);
+                const user = await UserController.findOneUserFromId(userId);
+                assert.equal(user.name, userName);
+                assert.equal(user.email, userEmail);
+            });
+        });
+
         afterEach('Removing all registries from mockery...', () => mockery.deregisterAll());
 
         after('Disabling mockery...', () => mockery.disable());
