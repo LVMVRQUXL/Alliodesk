@@ -6,10 +6,10 @@ const UserStatusController = require('../../src/controllers').UserStatusControll
 
 module.exports = () => {
 
-    describe('User status controller tests', () => {
+    describe('UserStatusController tests', () => {
         beforeEach('Booting sequelize...', () => bootSequelize());
 
-        describe('findUserStatusFromName(status) tests', () => {
+        describe('findUserStatusFromName(status)', () => {
 
             it('should return a User_status with valid status', async () => {
                 // SETUP
