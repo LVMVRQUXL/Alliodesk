@@ -1,6 +1,6 @@
 const assert = require('assert');
 const {describe, it, before, beforeEach, after, afterEach} = require('mocha');
-const mockery = require('mockery');
+const mock = require('mock-require');
 
 const bootSequelize = require('../../src/boot_sequelize');
 const {UserController, UserStatusController} = require('../../src/controllers');
@@ -14,8 +14,6 @@ module.exports = () => {
         const userLogin = 'test1234';
         const userPassword = '1234test';
 
-        before('Enabling mockery...', () => mockery.enable());
-
         beforeEach('Booting sequelize...', () => bootSequelize());
 
         describe('#createUser(name, email, login, password)', () => {
@@ -24,7 +22,7 @@ module.exports = () => {
                 const emailValidatorMock = {
                     validate: (email) => true
                 };
-                mockery.registerMock('email-validator', emailValidatorMock);
+                mock('email-validator', emailValidatorMock);
                 await UserStatusController.createStatusForUsers();
 
                 // CALL
@@ -32,6 +30,9 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(result, true);
+
+                // TEARDOWN
+                mock.stop('email-validator');
             });
 
             it('should return false with invalid email input', async () => {
@@ -39,13 +40,16 @@ module.exports = () => {
                 const emailValidatorMock = {
                     validate: (email) => false
                 };
-                mockery.registerMock('email-validator', emailValidatorMock);
+                mock('email-validator', emailValidatorMock);
 
                 // CALL
                 const result = await UserController.createUser(userName, "", userLogin, userPassword);
 
                 // VERIFY
                 assert.equal(result, false);
+
+                // TEARDOWN
+                mock.stop('email-validator');
             });
         });
 
@@ -210,10 +214,6 @@ module.exports = () => {
                 assert.equal(user.email, userEmail);
             });
         });
-
-        afterEach('Removing all registries from mockery...', () => mockery.deregisterAll());
-
-        after('Disabling mockery...', () => mockery.disable());
     });
 
 };
