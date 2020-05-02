@@ -56,7 +56,7 @@ class UserController {
      *
      * @returns {Promise<UserDTO | null>}
      */
-    async findOneUserFromId(id) { // TODO: add unit tests!
+    async findOneUserFromId(id) {
         const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
         const user = await User.findOne({
             where: {

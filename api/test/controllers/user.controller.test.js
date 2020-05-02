@@ -7,12 +7,12 @@ const {UserController, UserStatusController} = require('../../src/controllers');
 
 module.exports = () => {
 
-    describe('User controller tests', () => {
+    describe('UserController tests', () => {
         before('Enabling mockery...', () => mockery.enable());
 
         beforeEach('Booting sequelize...', () => bootSequelize());
 
-        describe('createUser(name, email, login, password) tests', () => {
+        describe('createUser(name, email, login, password)', () => {
             const userName = 'test';
             const userEmail = 'test@gmail.com';
             const userLogin = 'test1234';
@@ -48,7 +48,7 @@ module.exports = () => {
             });
         });
 
-        describe('findAllUsers() tests', () => {
+        describe('findAllUsers()', () => {
             it('should return a list of users', async () => {
                 // SETUP
                 const userName = 'test';
@@ -77,6 +77,41 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(users.length, 0);
+            });
+        });
+
+        describe('findOneUserFromId(id)', () => {
+            const userId = 1;
+
+            it('should return one existing user', async () => {
+                // SETUP
+                const userName = 'test';
+                const userEmail = 'test@gmail.com';
+                const userLogin = 'test1234';
+                const userPassword = '1234test';
+                await UserStatusController.createStatusForUsers();
+                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+
+                // CALL
+                const user = await UserController.findOneUserFromId(userId);
+
+                // VERIFY
+                assert.notEqual(user, null);
+                assert.equal(user.id, userId);
+                assert.equal(user.name, userName);
+                assert.equal(user.email, userEmail);
+                assert.equal(user.login, userLogin);
+            });
+
+            it('should return null if user doesn\'t exist', async () => {
+                // SETUP
+                await UserStatusController.createStatusForUsers();
+
+                // CALL
+                const user = await UserController.findOneUserFromId(userId);
+
+                // VERIFY
+                assert.equal(user, null);
             });
         });
 
