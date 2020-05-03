@@ -97,8 +97,41 @@ module.exports = () => {
                 assert.equal(result, false);
             });
 
-            it('should return false if an existing user already use the given email or login', async () => {
-                // TODO: incomplete test!
+            it('should return false if an existing user already use the given email', async () => {
+                // SETUP
+                MockDependencies.EmailValidator.validate = (email) => true;
+                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
+                MockModels.User.findOne.resolves(fakeUser);
+
+                // CALL
+                const result = await UserController.createUser(userName, "", userLogin, userPassword);
+
+                // VERIFY
+                assert.equal(result, false);
+
+                // TEARDOWN
+                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
+                MockModels.User.findOne.resetHistory();
+            });
+
+            it('should return false if an existing user already use the given login', async () => {
+                // SETUP
+                MockDependencies.EmailValidator.validate = (email) => true;
+                UserController.findOneUserFromEmail = sinon.stub();
+                UserController.findOneUserFromEmail.resolves(null);
+                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
+                MockModels.User.findOne.resolves(fakeUser);
+
+                // CALL
+                const result = await UserController.createUser(userName, "", userLogin, userPassword);
+
+                // VERIFY
+                assert.equal(result, false);
+
+                // TEARDOWN
+                UserController.findOneUserFromEmail.resetHistory();
+                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
+                MockModels.User.findOne.resetHistory();
             });
         });
 
@@ -234,6 +267,8 @@ module.exports = () => {
             it('should return true with valid inputs', async () => {
                 // SETUP
                 MockDependencies.EmailValidator.validate = (email) => true;
+                UserController.findOneUserFromEmail = sinon.stub();
+                UserController.findOneUserFromEmail.resolves(null);
                 MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
                 MockModels.User.findOne.resolves(fakeUser);
                 MockDependencies.Utils.SecurityUtil.hash = (password) => `hash${password}`;
@@ -246,6 +281,7 @@ module.exports = () => {
                 assert.equal(result, true);
 
                 // TEARDOWN
+                UserController.findOneUserFromEmail.resetHistory();
                 MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
                 MockModels.User.findOne.resetHistory();
                 MockDependencies.Utils.SecurityUtil.hash = (password) => {};

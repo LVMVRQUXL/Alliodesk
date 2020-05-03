@@ -17,7 +17,6 @@ class UserController {
      * @returns {Promise<boolean>}
      */
     async createUser(name, email, login, password) {
-        // TODO: update unit tests!
         if (!emailValidator.validate(email) || await this.findOneUserFromEmail(email) !== null
             || await this.findOneUserFromLogin(login) !== null) {
             return false;
@@ -142,7 +141,6 @@ class UserController {
      * @returns {Promise<boolean>}
      */
     async updateUserFromId(id, name, email, password) {
-        // TODO: update unit tests!
         try {
             if ((email && email !== ""
                 && (!emailValidator.validate(email) || await this.findOneUserFromEmail(email) !== null))
