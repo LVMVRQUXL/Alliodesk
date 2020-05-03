@@ -17,6 +17,7 @@ class UserController {
      * @returns {Promise<boolean>}
      */
     async createUser(name, email, login, password) {
+        // TODO: vérifier que le mail n'est pas déjà existant!
         if (!emailValidator.validate(email)) { return false; }
         try {
             const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
@@ -102,6 +103,7 @@ class UserController {
      * @returns {Promise<boolean>}
      */
     async updateUserFromId(id, name, email, password) {
+        // TODO: vérifier que l'email à rajouter n'est pas déjà utilisé!
         try {
             if ((email !== "" && !emailValidator.validate(email))
                 || (name === "" && email === "" && password === "")) {

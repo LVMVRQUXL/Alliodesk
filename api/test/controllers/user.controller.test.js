@@ -1,29 +1,78 @@
+const {sequelize, dataTypes, checkModelName, makeMockModels} = require('sequelize-test-helpers');
+const {describe, it, before, afterEach, after} = require('mocha');
 const assert = require('assert');
-const {describe, it, before, beforeEach, after, afterEach} = require('mocha');
-const mock = require('mock-require');
+const sinon = require('sinon');
+const proxyquire = require('proxyquire');
 
-const bootSequelize = require('../../src/boot_sequelize');
-const {UserController, UserStatusController} = require('../../src/controllers');
+const UserModel = require('../../src/models/user.model');
 
 module.exports = () => {
 
     describe('UserController tests', () => {
+        const MockModels = makeMockModels({
+            User: {
+                create: sinon.stub(),
+                destroy: sinon.stub(),
+                findAll: sinon.stub(),
+                findOne: sinon.stub(),
+                update: sinon.stub()
+            }
+        });
+        const MockDependencies = {
+            EmailValidator: {
+                validate: (email) => {}
+            },
+            UserStatusController: {
+                userValue: 'user',
+                findUserStatusFromName: sinon.stub()
+            },
+            Utils: {
+                SecurityUtil: {
+                    hash: (password) => {}
+                }
+            }
+        };
+
+        const UserController = proxyquire('../../src/controllers/user.controller', {
+            '../models': MockModels,
+            'email-validator': MockDependencies.EmailValidator,
+            './user_status.controller': MockDependencies.UserStatusController,
+            '../utils': MockDependencies.Utils
+        });
+
         const userId = 1;
         const userName = 'test';
         const userEmail = 'test@gmail.com';
-        const userLogin = 'test1234';
-        const userPassword = '1234test';
+        const userLogin = 'testLogin';
+        const userPassword = 'testPwd';
+        const fakeUserStatus = {
+            id: 1,
+            status: MockDependencies.UserStatusController.userValue
+        };
+        const fakeUser = {
+            id: userId,
+            name: userName,
+            email: userEmail,
+            login: userLogin
+        };
 
-        beforeEach('Booting sequelize...', () => bootSequelize());
+        describe('Loading models...', () => {
+            const Model = UserModel(sequelize, dataTypes);
+            checkModelName(Model)('User');
+        });
 
         describe('#createUser(name, email, login, password)', () => {
+            afterEach(() => {
+                // TEARDOWN
+                MockDependencies.EmailValidator.validate = (email) => {};
+            });
+
             it('should return true with valid inputs', async () => {
                 // SETUP
-                const emailValidatorMock = {
-                    validate: (email) => true
-                };
-                mock('email-validator', emailValidatorMock);
-                await UserStatusController.createStatusForUsers();
+                MockDependencies.EmailValidator.validate = (email) => true;
+                MockModels.User.create.resolves();
+                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
+                MockDependencies.Utils.SecurityUtil.hash = (password) => `hash${password}`;
 
                 // CALL
                 const result = await UserController.createUser(userName, userEmail, userLogin, userPassword);
@@ -32,46 +81,58 @@ module.exports = () => {
                 assert.equal(result, true);
 
                 // TEARDOWN
-                mock.stop('email-validator');
+                MockModels.User.create.resetHistory();
+                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
+                MockDependencies.Utils.SecurityUtil.hash = (password) => {};
             });
 
-            it('should return false with invalid email input', async () => {
+            it('should return false with invalid email', async () => {
                 // SETUP
-                const emailValidatorMock = {
-                    validate: (email) => false
-                };
-                mock('email-validator', emailValidatorMock);
+                MockDependencies.EmailValidator.validate = (email) => false;
 
                 // CALL
                 const result = await UserController.createUser(userName, "", userLogin, userPassword);
 
                 // VERIFY
                 assert.equal(result, false);
+            });
 
-                // TEARDOWN
-                mock.stop('email-validator');
+            it('should return false if an existing user already use the given email or login', async () => {
+                // TODO: incomplete test!
             });
         });
 
         describe('#findAllUsers()', () => {
-            it('should return a list of users', async () => {
+            before(() => {
                 // SETUP
-                await UserStatusController.createStatusForUsers();
-                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
+            });
+
+            afterEach(() => {
+                // TEARDOWN
+                MockModels.User.findAll.resetHistory();
+            });
+
+            after(() => {
+                // TEARDOWN
+                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
+            });
+
+            it('should return a singleton list of users', async () => {
+                // SETUP
+                MockModels.User.findAll.resolves([fakeUser]);
 
                 // CALL
                 const users = await UserController.findAllUsers();
 
                 // VERIFY
                 assert.equal(users.length, 1);
-                assert.equal(users[0].name, userName);
-                assert.equal(users[0].email, userEmail);
-                assert.equal(users[0].login, userLogin);
+                assert.deepEqual(users[0], fakeUser);
             });
 
             it('should return an empty list of users', async () => {
                 // SETUP
-                await UserStatusController.createStatusForUsers();
+                MockModels.User.findAll.resolves([]);
 
                 // CALL
                 const users = await UserController.findAllUsers();
@@ -82,25 +143,36 @@ module.exports = () => {
         });
 
         describe('#findOneUserFromId(id)', () => {
+            before(() => {
+                // SETUP
+                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
+            });
+
+            afterEach(() => {
+                // TEARDOWN
+                MockModels.User.findOne.resetHistory();
+            });
+
+            after(() => {
+                // TEARDOWN
+                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
+            });
+
             it('should return one existing user', async () => {
                 // SETUP
-                await UserStatusController.createStatusForUsers();
-                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+                MockModels.User.findOne.resolves(fakeUser);
 
                 // CALL
                 const user = await UserController.findOneUserFromId(userId);
 
                 // VERIFY
                 assert.notEqual(user, null);
-                assert.equal(user.id, userId);
-                assert.equal(user.name, userName);
-                assert.equal(user.email, userEmail);
-                assert.equal(user.login, userLogin);
+                assert.deepEqual(user, fakeUser);
             });
 
             it('should return null if user doesn\'t exist', async () => {
                 // SETUP
-                await UserStatusController.createStatusForUsers();
+                MockModels.User.findOne.resolves();
 
                 // CALL
                 const user = await UserController.findOneUserFromId(userId);
@@ -111,21 +183,39 @@ module.exports = () => {
         });
 
         describe('#removeUserFromId(id)', () => {
-            it('should return true with valid id', async () => {
+            before(() => {
                 // SETUP
-                await UserStatusController.createStatusForUsers();
-                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
+            });
+
+            afterEach(() => {
+                // TEARDOWN
+                MockModels.User.findOne.resetHistory();
+            });
+
+            after(() => {
+                // TEARDOWN
+                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
+            });
+
+            it('should return true with id of an existing user', async () => {
+                // SETUP
+                MockModels.User.findOne.resolves(fakeUser);
+                MockModels.User.destroy.resolves();
 
                 // CALL
                 const result = await UserController.removeUserFromId(userId);
 
                 // VERIFY
                 assert.equal(result, true);
+
+                // TEARDOWN
+                MockModels.User.destroy.resetHistory();
             });
 
             it('should return false with invalid id', async () => {
                 // SETUP
-                await UserStatusController.createStatusForUsers();
+                MockModels.User.findOne.resolves();
 
                 // CALL
                 const result = await UserController.removeUserFromId(userId);
@@ -136,82 +226,85 @@ module.exports = () => {
         });
 
         describe('#updateUserFromId(id, name, email, password)', () => {
+            afterEach(() => {
+                // TEARDOWN
+                MockDependencies.EmailValidator.validate = (email) => {};
+            });
+
             it('should return true with valid inputs', async () => {
                 // SETUP
-                const userNameUpdated = "updated!";
-                const userEmailUpdated = "updated@test.fr";
-                const userPasswordUpdated = "updatedpwd";
-                await UserStatusController.createStatusForUsers();
-                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+                MockDependencies.EmailValidator.validate = (email) => true;
+                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
+                MockModels.User.findOne.resolves(fakeUser);
+                MockDependencies.Utils.SecurityUtil.hash = (password) => `hash${password}`;
+                MockModels.User.update.resolves();
 
                 // CALL
-                const result = await UserController.updateUserFromId(
-                    userId, userNameUpdated, userEmailUpdated, userPasswordUpdated
-                );
+                const result = await UserController.updateUserFromId(userId, userName + userName, userEmail, userPassword);
 
                 // VERIFY
                 assert.equal(result, true);
-                const user = await UserController.findOneUserFromId(userId);
-                assert.equal(user.name, userNameUpdated);
-                assert.equal(user.email, userEmailUpdated);
+
+                // TEARDOWN
+                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
+                MockModels.User.findOne.resetHistory();
+                MockDependencies.Utils.SecurityUtil.hash = (password) => {};
+                MockModels.User.update.resetHistory();
             });
 
             it('should return true with one valid input (name)', async () => {
                 // SETUP
-                const userNameUpdated = "updated!";
-                await UserStatusController.createStatusForUsers();
-                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+                MockDependencies.EmailValidator.validate = (email) => true;
+                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
+                MockModels.User.findOne.resolves(fakeUser);
+                MockModels.User.update.resolves();
 
                 // CALL
-                const result = await UserController.updateUserFromId(userId, userNameUpdated, "", "");
+                const result = await UserController.updateUserFromId(userId, `updated${userName}`, "", "");
 
                 // VERIFY
                 assert.equal(result, true);
-                const user = await UserController.findOneUserFromId(userId);
-                assert.equal(user.name, userNameUpdated);
-                assert.equal(user.email, userEmail);
+
+                // TEARDOWN
+                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
+                MockModels.User.findOne.resetHistory();
+                MockModels.User.update.resetHistory();
             });
 
             it('should return false with invalid id', async () => {
                 // SETUP
-                await UserStatusController.createStatusForUsers();
+                MockDependencies.EmailValidator.validate = (email) => true;
+                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
+                MockModels.User.findOne.resolves();
 
                 // CALL
-                const result = await UserController.updateUserFromId(userId, "", "", "");
+                const result = await UserController.updateUserFromId(userId, userName, userEmail, userPassword);
 
                 // VERIFY
                 assert.equal(result, false);
+
+                // TEARDOWN
+                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
+                MockModels.User.findOne.resetHistory();
             });
 
             it('should return false with invalid email', async () => {
                 // SETUP
-                const userEmailUpdated = "updated!";
-                await UserStatusController.createStatusForUsers();
-                await UserController.createUser(userName, userEmail, userLogin, userPassword);
+                MockDependencies.EmailValidator.validate = (email) => false;
 
                 // CALL
-                const result = await UserController.updateUserFromId(userId, "", userEmailUpdated, "");
+                const result = await UserController.updateUserFromId(userId, userName, userName, userPassword);
 
                 // VERIFY
                 assert.equal(result, false);
-                const user = await UserController.findOneUserFromId(userId);
-                assert.equal(user.name, userName);
-                assert.equal(user.email, userEmail);
             });
 
             it('should return false with empty inputs', async () => {
-                // SETUP
-                await UserStatusController.createStatusForUsers();
-                await UserController.createUser(userName, userEmail, userLogin, userPassword);
-
                 // CALL
                 const result = await UserController.updateUserFromId(userId, "", "", "");
 
                 // VERIFY
                 assert.equal(result, false);
-                const user = await UserController.findOneUserFromId(userId);
-                assert.equal(user.name, userName);
-                assert.equal(user.email, userEmail);
             });
         });
     });
