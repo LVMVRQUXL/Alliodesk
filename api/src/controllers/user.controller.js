@@ -17,8 +17,11 @@ class UserController {
      * @returns {Promise<boolean>}
      */
     async createUser(name, email, login, password) {
-        // TODO: vérifier que le mail n'est pas déjà existant!
-        if (!emailValidator.validate(email)) { return false; }
+        // TODO: update unit tests!
+        if (!emailValidator.validate(email) || await this.findOneUserFromEmail(email) !== null
+            || await this.findOneUserFromLogin(login) !== null) {
+            return false;
+        }
         try {
             const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
             await User.create({
@@ -57,11 +60,47 @@ class UserController {
      *
      * @returns {Promise<UserDTO | null>}
      */
-    async findOneUserFromId(id) {
+    async findOneUserFromId(id) { // TODO: refactor!
         const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
         const user = await User.findOne({
             where: {
                 id: id,
+                user_status_id: userStatus.id
+            }
+        });
+        return !user ? null : new UserDTO(user.id, user.name, user.email, user.login);
+    }
+
+    /**
+     * Find one user from login
+     *
+     * @param login {string}
+     *
+     * @returns {Promise<UserDTO | null>}
+     */
+    async findOneUserFromLogin(login) { // TODO: refactor!
+        const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
+        const user = await User.findOne({
+            where: {
+                login: login,
+                user_status_id: userStatus.id
+            }
+        });
+        return !user ? null : new UserDTO(user.id, user.name, user.email, user.login);
+    }
+
+    /**
+     * Find one user from email
+     *
+     * @param email {string}
+     *
+     * @returns {Promise<UserDTO | null>}
+     */
+    async findOneUserFromEmail(email) { // TODO: refactor!
+        const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
+        const user = await User.findOne({
+            where: {
+                email: email,
                 user_status_id: userStatus.id
             }
         });
@@ -103,9 +142,10 @@ class UserController {
      * @returns {Promise<boolean>}
      */
     async updateUserFromId(id, name, email, password) {
-        // TODO: vérifier que l'email à rajouter n'est pas déjà utilisé!
+        // TODO: update unit tests!
         try {
-            if ((email !== "" && !emailValidator.validate(email))
+            if ((email && email !== ""
+                && (!emailValidator.validate(email) || await this.findOneUserFromEmail(email) !== null))
                 || (name === "" && email === "" && password === "")) {
                 return false;
             }

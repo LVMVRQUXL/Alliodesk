@@ -69,6 +69,7 @@ module.exports = (app) => {
                 const result = await UserController.createUser(req.body.name, req.body.email,
                     req.body.login, req.body.password);
                 if (result) { res.status(HttpCodeUtil.CREATED).end(); }
+                else { res.status(HttpCodeUtil.CONFLICT).end(); }
             }
         } catch (e) {
             console.error(e);
