@@ -10,7 +10,7 @@ const routes = {
     UsersId: '/users/:id'
 };
 
-module.exports = (app) => { // TODO: refactor all routes and update all docs!
+module.exports = (app) => {
 
     app.use(UserStatusMiddleware.checkStatusForUsers());
 
@@ -20,6 +20,8 @@ module.exports = (app) => { // TODO: refactor all routes and update all docs!
      * '/users/{id}':
      *   delete:
      *     description: "Delete one user from id"
+     *     tags:
+     *       - users
      *     parameters:
      *       - name: id
      *         description: "User's id"
@@ -53,6 +55,8 @@ module.exports = (app) => { // TODO: refactor all routes and update all docs!
      * '/users/{id}':
      *   get:
      *     description: "Get one user from id"
+     *     tags:
+     *       - users
      *     produces:
      *       - application/json
      *     parameters:
@@ -67,6 +71,8 @@ module.exports = (app) => { // TODO: refactor all routes and update all docs!
      *         description: "Can't find user"
      *       400:
      *         description: "Invalid id"
+     *       500:
+     *         description: "An internal error has occurred"
      */
     app.get(routes.UsersId, async (req, res, next) => {
         try {
@@ -75,10 +81,9 @@ module.exports = (app) => { // TODO: refactor all routes and update all docs!
                 const user = await UserController.findOneUserFromId(userId);
                 if (user) { res.status(HttpCodeUtil.OK).json(user); }
                 else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            }
-        } catch (e) {
-            console.error(e);
-        } finally { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) { console.error(e); }
+        finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
     });
 
     /**
@@ -87,6 +92,8 @@ module.exports = (app) => { // TODO: refactor all routes and update all docs!
      * '/users/{id}':
      *   put:
      *     description: "Update one user from id"
+     *     tags:
+     *       - users
      *     parameters:
      *       - name: id
      *         description: "User's id"
@@ -107,7 +114,7 @@ module.exports = (app) => { // TODO: refactor all routes and update all docs!
      *       404:
      *         description: "Can't find user"
      *       400:
-     *         description: "Invalid input(s)"
+     *         description: "Invalid inputs"
      *       500:
      *         description: "An internal error has occurred"
      */
@@ -135,6 +142,8 @@ module.exports = (app) => { // TODO: refactor all routes and update all docs!
      * '/users':
      *   get:
      *     description: "Get all users"
+     *     tags:
+     *       - users
      *     produces:
      *       - application/json
      *     responses:
@@ -161,6 +170,8 @@ module.exports = (app) => { // TODO: refactor all routes and update all docs!
      * '/users':
      *   post:
      *     description: "Create one user"
+     *     tags:
+     *       - users
      *     produces:
      *       - application/json
      *     parameters:
