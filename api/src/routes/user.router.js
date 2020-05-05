@@ -4,12 +4,17 @@ const UserController = require('../controllers').UserController;
 const UserStatusMiddleware = require('../middlewares').UserStatusMiddleware;
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 
+const routes = {
+    Users: '/users',
+    UsersId: '/users/:id'
+};
+
 module.exports = (app) => {
 
     app.use(UserStatusMiddleware.checkStatusForUsers());
 
     // GET  /users/:id  ===> Get one user from id
-    app.get('/users/:id', async (req, res, next) => {
+    app.get(routes.UsersId, async (req, res, next) => {
         try {
             const userId = parseInt(req.params.id);
             if (!isNaN(userId)) {
@@ -23,7 +28,7 @@ module.exports = (app) => {
     });
 
     // DELETE   /users/:id  ===> Delete one user from id
-    app.delete('/users/:id', async (req, res, next) => {
+    app.delete(routes.UsersId, async (req, res, next) => {
         try {
             const userId = parseInt(req.params.id);
             if (!isNaN(userId)) {
@@ -36,7 +41,7 @@ module.exports = (app) => {
     });
 
     // PUT  /users/:id  ===> Update one user from id
-    app.put('/users/:id', bodyParser.json(), async (req, res, next) => {
+    app.put(routes.UsersId, bodyParser.json(), async (req, res, next) => {
         try {
             const userId = parseInt(req.params.id);
             const userName = req.body.name;
@@ -52,7 +57,7 @@ module.exports = (app) => {
     });
 
     // GET  /users  ===> Get all users
-    app.get('/users', async (req, res, next) => {
+    app.get(routes.Users, async (req, res, next) => {
         try {
             const users = await UserController.findAllUsers();
             if (users.length > 0) { res.status(HttpCodeUtil.OK).json(users); }
@@ -63,7 +68,7 @@ module.exports = (app) => {
     });
 
     // POST /users  ===> Create one user
-    app.post('/users', bodyParser.json(), async (req, res, next) => {
+    app.post(routes.Users, bodyParser.json(), async (req, res, next) => {
         try {
             if (req.body.name && req.body.email && req.body.login && req.body.password) {
                 const result = await UserController.createUser(req.body.name, req.body.email,
