@@ -6,13 +6,25 @@ const UserStatusMiddleware = require('../middlewares').UserStatusMiddleware;
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 
 const routes = {
-    Users: '/users',
-    UsersId: '/users/:id'
+    Login: '/users/login',
+    Logout: '/users/:id/logout',
+    UsersId: '/users/:id',
+    Users: '/users'
 };
 
 module.exports = (app) => {
 
     app.use(UserStatusMiddleware.checkStatusForUsers());
+
+    // PUT /users/login    ===> Login one user
+    app.put(routes.Login, async (req, res) => {
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    });
+
+    // PUT /users/:id/logout   ===> Logout one user from id
+    app.put(routes.Logout, async (req, res) => {
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    });
 
     /**
      * @swagger
@@ -37,7 +49,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.delete(routes.UsersId, async (req, res, next) => {
+    app.delete(routes.UsersId, async (req, res) => {
         try {
             const userId = parseInt(req.params.id);
             if (!isNaN(userId)) {
@@ -74,7 +86,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.UsersId, async (req, res, next) => {
+    app.get(routes.UsersId, async (req, res) => {
         try {
             const userId = parseInt(req.params.id);
             if (!isNaN(userId)) {
@@ -118,7 +130,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.UsersId, bodyParser.json(), async (req, res, next) => {
+    app.put(routes.UsersId, bodyParser.json(), async (req, res) => {
         try {
             const userId = parseInt(req.params.id);
             const userName = req.body.name;
@@ -154,7 +166,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.Users, async (req, res, next) => {
+    app.get(routes.Users, async (req, res) => {
         try {
             const users = await UserController.findAllUsers();
             if (users.length > 0) { res.status(HttpCodeUtil.OK).json(users); }
@@ -201,7 +213,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.post(routes.Users, bodyParser.json(), async (req, res, next) => {
+    app.post(routes.Users, bodyParser.json(), async (req, res) => {
         try {
             const userName = req.body.name;
             const userEmail = req.body.email;
