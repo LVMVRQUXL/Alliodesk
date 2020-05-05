@@ -108,6 +108,8 @@ module.exports = (app) => { // TODO: refactor all routes and update all docs!
      *         description: "Can't find user"
      *       400:
      *         description: "Invalid input(s)"
+     *       500:
+     *         description: "An internal error has occurred"
      */
     app.put(routes.UsersId, bodyParser.json(), async (req, res, next) => {
         try {
@@ -115,13 +117,16 @@ module.exports = (app) => { // TODO: refactor all routes and update all docs!
             const userName = req.body.name;
             const userEmail = req.body.email;
             const userPassword = req.body.password;
-            if (!isNaN(userId) && (userName || userEmail || userPassword)) {
+            if (!isNaN(userId)
+                && ((userName && userName !== "")
+                    || emailValidator.validate(userEmail)
+                    || (userPassword && userPassword !== ""))) {
                 const result = await UserController.updateUserFromId(userId, userName, userEmail, userPassword);
                 if (result) { res.status(HttpCodeUtil.OK).end(); }
                 else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
         } catch (e) { console.error(e); }
-        finally { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
     });
 
     /**
