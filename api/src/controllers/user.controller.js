@@ -15,7 +15,7 @@ class UserController {
      *
      * @returns {Promise<boolean>}
      */
-    async createUser(name, email, login, password) {
+    async createUser(name, email, login, password) { // TODO: refactor (put emailValidator in router)!
         if (!emailValidator.validate(email) || await this.findOneUserFromEmail(email) !== null
             || await this.findOneUserFromLogin(login) !== null) {
             return false;
