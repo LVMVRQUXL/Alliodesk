@@ -5,6 +5,7 @@ const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
 const UserModel = require('../../src/models/user.model');
+const SecurityUtil = require('../../src/utils').SecurityUtil;
 
 module.exports = () => {
 
@@ -173,6 +174,55 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(user, null);
+            });
+        });
+
+        describe('#loginOneUser(login, password)', () => {
+            afterEach(() => _teardownUserFindOne());
+
+            const call = async (login, password) => await UserController.loginOneUser(login, password);
+
+            it('should return a token with valid inputs', async () => {
+                // SETUP
+                _setupUserFindOne({
+                    fakeUser,
+                    password: SecurityUtil.hash(userPassword)
+                });
+                MockModels.User.update.resolves();
+
+                // CALL
+                const token = await call(userLogin, userPassword);
+
+                // VERIFY
+                assert.notEqual(token, undefined);
+
+                // TEARDOWN
+                MockModels.User.update.resetHistory();
+            });
+
+            it('should return undefined with invalid login', async () => {
+                // SETUP
+                _setupUserFindOne();
+
+                // CALL
+                const token = await call(userLogin, userPassword);
+
+                // VERIFY
+                assert.equal(token, undefined);
+            });
+
+            it('should return undefined with invalid password', async () => {
+                // SETUP
+                _setupUserFindOne({
+                    fakeUser,
+                    password: SecurityUtil.hash('userPassword')
+                });
+
+                // CALL
+                const token = await call(userLogin, userPassword);
+
+                // VERIFY
+                assert.equal(token, undefined);
             });
         });
 

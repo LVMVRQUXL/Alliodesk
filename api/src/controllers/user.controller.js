@@ -85,7 +85,7 @@ class UserController {
      *
      * @returns {Promise<string | null>}
      */
-    async loginOneUser(login, password) { // TODO: add unit tests
+    async loginOneUser(login, password) {
         const user = await _findOneUser({ login: login });
         if (user && SecurityUtil.hash(password) === user.password) {
             const token = await SecurityUtil.randomToken();
