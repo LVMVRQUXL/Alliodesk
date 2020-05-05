@@ -1,5 +1,5 @@
 const {sequelize, dataTypes, checkModelName, makeMockModels} = require('sequelize-test-helpers');
-const {describe, it, before, afterEach, after} = require('mocha');
+const {describe, it, before, beforeEach, afterEach, after} = require('mocha');
 const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
@@ -27,8 +27,7 @@ module.exports = () => {
 
         const UserController = proxyquire('../../src/controllers/user.controller', {
             '../models': MockModels,
-            './user_status.controller': MockDependencies.UserStatusController,
-            '../utils': MockDependencies.Utils
+            './user_status.controller': MockDependencies.UserStatusController
         });
 
         const userId = 1;
@@ -47,90 +46,89 @@ module.exports = () => {
             login: userLogin
         };
 
+        before(() => {
+            // SETUP
+            MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
+        });
+
+        after(() => {
+            // TEARDOWN
+            MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
+        });
+
+        const _setupUserFindOne = (user) => MockModels.User.findOne.resolves(user);
+        const _teardownUserFindOne = () => MockModels.User.findOne.resetHistory();
+
         describe('Loading models...', () => {
             const Model = UserModel(sequelize, dataTypes);
             checkModelName(Model)('User');
         });
 
         describe('#createUser(name, email, login, password)', () => {
-            afterEach(() => {
-                // TEARDOWN
-                MockModels.User.findOne.resetHistory();
-            });
+            afterEach(() => _teardownUserFindOne());
+
+            const call = async (name, email, login, password) => await UserController.createUser(
+                name, email, login, password
+            );
 
             it('should return true with valid inputs', async () => {
                 // SETUP
-                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
-                MockModels.User.findOne.resolves();
+                _setupUserFindOne();
                 MockModels.User.create.resolves();
 
                 // CALL
-                const result = await UserController.createUser(userName, userEmail, userLogin, userPassword);
+                const result = await call(userName, userEmail, userLogin, userPassword);
 
                 // VERIFY
                 assert.equal(result, true);
 
                 // TEARDOWN
-                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
                 MockModels.User.create.resetHistory();
             });
 
             it('should return false if an existing user already use the given email', async () => {
                 // SETUP
-                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
-                MockModels.User.findOne.resolves(fakeUser);
+                _setupUserFindOne(fakeUser);
 
                 // CALL
-                const result = await UserController.createUser(userName, "", userLogin, userPassword);
+                const result = await call(userName, userEmail, userLogin, userPassword);
 
                 // VERIFY
                 assert.equal(result, false);
-
-                // TEARDOWN
-                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
             });
 
             it('should return false if an existing user already use the given login', async () => {
                 // SETUP
                 UserController.findOneUserFromEmail = sinon.stub();
                 UserController.findOneUserFromEmail.resolves(null);
-                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
-                MockModels.User.findOne.resolves(fakeUser);
+                _setupUserFindOne(fakeUser);
 
                 // CALL
-                const result = await UserController.createUser(userName, "another@email.com", userLogin, userPassword);
+                const result = await call(userName, "another@email.com", userLogin, userPassword);
 
                 // VERIFY
                 assert.equal(result, false);
 
                 // TEARDOWN
                 UserController.findOneUserFromEmail.resetHistory();
-                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
             });
         });
 
         describe('#findAllUsers()', () => {
-            before(() => {
-                // SETUP
-                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
-            });
-
             afterEach(() => {
                 // TEARDOWN
                 MockModels.User.findAll.resetHistory();
             });
 
-            after(() => {
-                // TEARDOWN
-                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
-            });
+            const setupUserFindAll = (users) => MockModels.User.findAll.resolves(users);
+            const call = async () => await UserController.findAllUsers();
 
             it('should return a singleton list of users', async () => {
                 // SETUP
-                MockModels.User.findAll.resolves([fakeUser]);
+                setupUserFindAll([fakeUser]);
 
                 // CALL
-                const users = await UserController.findAllUsers();
+                const users = await call();
 
                 // VERIFY
                 assert.equal(users.length, 1);
@@ -139,10 +137,10 @@ module.exports = () => {
 
             it('should return an empty list of users', async () => {
                 // SETUP
-                MockModels.User.findAll.resolves([]);
+                setupUserFindAll([]);
 
                 // CALL
-                const users = await UserController.findAllUsers();
+                const users = await call();
 
                 // VERIFY
                 assert.equal(users.length, 0);
@@ -150,27 +148,16 @@ module.exports = () => {
         });
 
         describe('#findOneUserFromId(id)', () => {
-            before(() => {
-                // SETUP
-                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
-            });
+            afterEach(() => _teardownUserFindOne());
 
-            afterEach(() => {
-                // TEARDOWN
-                MockModels.User.findOne.resetHistory();
-            });
-
-            after(() => {
-                // TEARDOWN
-                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
-            });
+            const call = async () => await UserController.findOneUserFromId(userId);
 
             it('should return one existing user', async () => {
                 // SETUP
-                MockModels.User.findOne.resolves(fakeUser);
+                _setupUserFindOne(fakeUser);
 
                 // CALL
-                const user = await UserController.findOneUserFromId(userId);
+                const user = await call();
 
                 // VERIFY
                 assert.notEqual(user, null);
@@ -179,10 +166,10 @@ module.exports = () => {
 
             it('should return null if user doesn\'t exist', async () => {
                 // SETUP
-                MockModels.User.findOne.resolves();
+                _setupUserFindOne();
 
                 // CALL
-                const user = await UserController.findOneUserFromId(userId);
+                const user = await call();
 
                 // VERIFY
                 assert.equal(user, null);
@@ -190,28 +177,17 @@ module.exports = () => {
         });
 
         describe('#removeUserFromId(id)', () => {
-            before(() => {
-                // SETUP
-                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
-            });
+            afterEach(() => _teardownUserFindOne());
 
-            afterEach(() => {
-                // TEARDOWN
-                MockModels.User.findOne.resetHistory();
-            });
-
-            after(() => {
-                // TEARDOWN
-                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
-            });
+            const call = async () => await UserController.removeUserFromId(userId);
 
             it('should return true with id of an existing user', async () => {
                 // SETUP
-                MockModels.User.findOne.resolves(fakeUser);
+                _setupUserFindOne(fakeUser);
                 MockModels.User.destroy.resolves();
 
                 // CALL
-                const result = await UserController.removeUserFromId(userId);
+                const result = await call();
 
                 // VERIFY
                 assert.equal(result, true);
@@ -222,10 +198,10 @@ module.exports = () => {
 
             it('should return false with invalid id', async () => {
                 // SETUP
-                MockModels.User.findOne.resolves();
+                _setupUserFindOne();
 
                 // CALL
-                const result = await UserController.removeUserFromId(userId);
+                const result = await call();
 
                 // VERIFY
                 assert.equal(result, false);
@@ -233,74 +209,53 @@ module.exports = () => {
         });
 
         describe('#updateUserFromId(id, name, email, password)', () => {
+            afterEach(() => _teardownUserFindOne());
+
+            const setupUserUpdate = () => MockModels.User.update.resolves();
+            const call = async (id, name, email, password) => await UserController.updateUserFromId(
+                id, name, email, password
+            );
+            const teardownUserUpdate = () => MockModels.User.update.resetHistory();
+
             it('should return true with valid inputs', async () => {
                 // SETUP
+                _setupUserFindOne(fakeUser);
                 UserController.findOneUserFromEmail = sinon.stub();
-                UserController.findOneUserFromEmail.resolves(null);
-                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
-                MockModels.User.findOne.resolves(fakeUser);
-                MockModels.User.update.resolves();
+                UserController.findOneUserFromEmail.resolves();
+                setupUserUpdate();
 
                 // CALL
-                const result = await UserController.updateUserFromId(userId, userName + userName, userEmail, userPassword);
+                const result = await call(userId, userName + userName, "new@mail.com", userPassword);
 
                 // VERIFY
                 assert.equal(result, true);
 
                 // TEARDOWN
                 UserController.findOneUserFromEmail.resetHistory();
-                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
-                MockModels.User.findOne.resetHistory();
-                MockModels.User.update.resetHistory();
+                teardownUserUpdate();
             });
 
             it('should return true with one valid input (name)', async () => {
                 // SETUP
-                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
-                MockModels.User.findOne.resolves(fakeUser);
-                MockModels.User.update.resolves();
+                _setupUserFindOne(fakeUser);
+                setupUserUpdate();
 
                 // CALL
-                const result = await UserController.updateUserFromId(userId, `updated${userName}`, "", "");
+                const result = await call(userId, `updated${userName}`, null, "");
 
                 // VERIFY
                 assert.equal(result, true);
 
                 // TEARDOWN
-                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
-                MockModels.User.findOne.resetHistory();
-                MockModels.User.update.resetHistory();
+                teardownUserUpdate();
             });
 
             it('should return false with invalid id', async () => {
                 // SETUP
-                MockDependencies.UserStatusController.findUserStatusFromName.resolves(fakeUserStatus);
-                MockModels.User.findOne.resolves();
+                _setupUserFindOne();
 
                 // CALL
-                const result = await UserController.updateUserFromId(userId, userName, userEmail, userPassword);
-
-                // VERIFY
-                assert.equal(result, false);
-
-                // TEARDOWN
-                MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
-                MockModels.User.findOne.resetHistory();
-            });
-
-            it('should return false with invalid email', async () => {
-                // SETUP
-
-                // CALL
-                const result = await UserController.updateUserFromId(userId, userName, userName, userPassword);
-
-                // VERIFY
-                assert.equal(result, false);
-            });
-
-            it('should return false with empty inputs', async () => {
-                // CALL
-                const result = await UserController.updateUserFromId(userId, "", "", "");
+                const result = await call(userId, userName, userEmail, userPassword);
 
                 // VERIFY
                 assert.equal(result, false);

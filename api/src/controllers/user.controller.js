@@ -110,13 +110,12 @@ class UserController {
      * @returns {Promise<boolean>}
      */
     async updateUserFromId(id, name, email, password) {
-        // TODO: update unit tests!
         try {
-            const user = await _findOneUser(await _getUserStatusId({ id: id }));
-            if (!user
-                || (email && email !== "" && await this.findOneUserFromEmail(email) !== null)) {
+            if (email && email !== "" && await this.findOneUserFromEmail(email)) {
                 return false;
             }
+            const user = await _findOneUser({ id: id });
+            if (!user) { return false; }
 
             const values = {};
             if (name && name !== "" && name !== user.name) { values.name = name; }
