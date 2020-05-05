@@ -16,13 +16,48 @@ module.exports = (app) => {
 
     app.use(UserStatusMiddleware.checkStatusForUsers());
 
-    // PUT /users/login    ===> Login one user
-    app.put(routes.Login, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     *
+     * '/users/login':
+     *   put:
+     *     description: "Login one user"
+     *     tags:
+     *       - users
+     *     parameters:
+     *       - name: login
+     *         description: "User's login"
+     *         in: body
+     *         required: true
+     *       - name: password
+     *         description: "User's password"
+     *         in: body
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       404:
+     *         description: "Can't find user"
+     *       400:
+     *         description: "Invalid login and/or password"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.put(routes.Login, bodyParser.json(), async (req, res) => {
+        try {
+            const userLogin = req.body.login;
+            const userPassword = req.body.password;
+            if (userLogin && userLogin !== "" && userPassword && userPassword !== "") {
+                const token = await UserController.loginOneUser(userLogin, userPassword);
+                if (token) { res.status(HttpCodeUtil.OK).json({ token_session: token }); }
+                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) { console.error(e); }
+        finally { res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); }
     });
 
     // PUT /users/:id/logout   ===> Logout one user from id
-    app.put(routes.Logout, async (req, res) => {
+    app.put(routes.Logout, async (req, res) => { // TODO: not implemented
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
