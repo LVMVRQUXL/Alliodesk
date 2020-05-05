@@ -175,7 +175,7 @@ module.exports = (app) => {
                 && ((userName && userName !== "")
                     || emailValidator.validate(userEmail)
                     || (userPassword && userPassword !== ""))) {
-                const result = await UserController.updateUserFromId(userId, userName, userEmail, userPassword);
+                const result = await UserController.updateUserInfosFromId(userId, userName, userEmail, userPassword);
                 if (result) { res.status(HttpCodeUtil.OK).end(); }
                 else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
             } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }

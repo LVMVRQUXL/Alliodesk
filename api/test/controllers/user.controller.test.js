@@ -258,11 +258,11 @@ module.exports = () => {
             });
         });
 
-        describe('#updateUserFromId(id, name, email, password)', () => {
+        describe('#updateUserInfosFromId(id, name, email, password)', () => {
             afterEach(() => _teardownUserFindOne());
 
             const setupUserUpdate = () => MockModels.User.update.resolves();
-            const call = async (id, name, email, password) => await UserController.updateUserFromId(
+            const call = async (id, name, email, password) => await UserController.updateUserInfosFromId(
                 id, name, email, password
             );
             const teardownUserUpdate = () => MockModels.User.update.resetHistory();

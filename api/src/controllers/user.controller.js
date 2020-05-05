@@ -126,7 +126,7 @@ class UserController {
      *
      * @returns {Promise<boolean>}
      */
-    async updateUserFromId(id, name, email, password) {
+    async updateUserInfosFromId(id, name, email, password) {
         try {
             if (email && email !== "" && await this.findOneUserFromEmail(email)) {
                 return false;
