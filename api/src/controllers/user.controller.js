@@ -1,5 +1,3 @@
-const emailValidator = require('email-validator');
-
 const {User} = require('../models');
 const UserStatusController = require('./user_status.controller');
 const SecurityUtil = require('../utils').SecurityUtil;
@@ -15,13 +13,12 @@ class UserController {
      *
      * @returns {Promise<boolean>}
      */
-    async createUser(name, email, login, password) { // TODO: refactor (put emailValidator in router)!
-        if (!emailValidator.validate(email) || await this.findOneUserFromEmail(email) !== null
-            || await this.findOneUserFromLogin(login) !== null) {
+    async createUser(name, email, login, password) {
+        if (await this.findOneUserFromEmail(email) !== null || await this.findOneUserFromLogin(login) !== null) {
             return false;
         }
         try {
-            await User.create(await _addUserStatusProperty({
+            await User.create(await _getUserStatusId({
                 name: name,
                 email: email,
                 login: login,
@@ -40,7 +37,7 @@ class UserController {
      * @returns {Promise<UserDTO[]>}
      */
     async findAllUsers() {
-        const users = await User.findAll({ where: await _addUserStatusProperty({}) });
+        const users = await User.findAll({ where: await _getUserStatusId({}) });
         return users.map(user => _mapToDTO(user));
     }
 
@@ -92,7 +89,7 @@ class UserController {
             const user = await this.findOneUserFromId(id);
             if (!user) { return false; }
             await User.destroy({
-                where: await _addUserStatusProperty({ id: id })
+                where: await _getUserStatusId({ id: id })
             });
             return true;
         } catch (e) {
@@ -112,9 +109,9 @@ class UserController {
      *
      * @returns {Promise<boolean>}
      */
-    async updateUserFromId(id, name, email, password) {
+    async updateUserFromId(id, name, email, password) { // TODO: refactor (put emailValidator in router)!
         try {
-            const user = await _findOneUser(await _addUserStatusProperty({ id: id }));
+            const user = await _findOneUser(await _getUserStatusId({ id: id }));
             if (!user
                 || (email && email !== ""
                     && (!emailValidator.validate(email) || await this.findOneUserFromEmail(email) !== null))
@@ -155,7 +152,7 @@ class UserDTO {
  *
  * @private
  */
-const _addUserStatusProperty = async (properties) => {
+const _getUserStatusId = async (properties) => {
     const userStatus = await UserStatusController.findUserStatusFromName(UserStatusController.userValue);
     properties.user_status_id = userStatus.id;
     return properties;
@@ -170,7 +167,7 @@ const _addUserStatusProperty = async (properties) => {
  *
  * @private
  */
-const _findOneUser = async (where) => await User.findOne({ where: await _addUserStatusProperty(where) });
+const _findOneUser = async (where) => await User.findOne({ where: await _getUserStatusId(where) });
 
 /**
  * Map given user to DTO

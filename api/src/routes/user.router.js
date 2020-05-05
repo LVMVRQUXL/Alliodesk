@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser');
+const emailValidator = require('email-validator');
 
 const UserController = require('../controllers').UserController;
 const UserStatusMiddleware = require('../middlewares').UserStatusMiddleware;
@@ -181,18 +182,25 @@ module.exports = (app) => { // TODO: refactor all routes and update all docs!
      *         description: "User is already existing"
      *       400:
      *         description: "Invalid inputs"
+     *       500:
+     *         description: "An internal error has occurred"
      */
     app.post(routes.Users, bodyParser.json(), async (req, res, next) => {
         try {
-            if (req.body.name && req.body.email && req.body.login && req.body.password) {
-                const result = await UserController.createUser(req.body.name, req.body.email,
-                    req.body.login, req.body.password);
+            const userName = req.body.name;
+            const userEmail = req.body.email;
+            const userLogin = req.body.login;
+            const userPassword = req.body.password;
+            if (userName && userName !== ""
+                && emailValidator.validate(userEmail)
+                && userLogin && userLogin !== ""
+                && userPassword && userPassword !== "") {
+                const result = await UserController.createUser(userName, userEmail, userLogin, userPassword);
                 if (result) { res.status(HttpCodeUtil.CREATED).end(); }
                 else { res.status(HttpCodeUtil.CONFLICT).end(); }
-            }
-        } catch (e) {
-            console.error(e);
-        } finally { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) { console.error(e); }
+        finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
     });
 
 };
