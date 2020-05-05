@@ -9,7 +9,7 @@ class UserStatusMiddleware {
      */
     checkStatusForAdmins() {
         return async (req, res, next) => {
-            const status = UserStatusController.findUserStatusFromName(UserStatusController.adminValue);
+            const status = await UserStatusController.findUserStatusFromName(UserStatusController.adminValue);
             if (!status) { await UserStatusController.createStatusForAdmins(); }
             next();
         };

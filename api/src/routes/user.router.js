@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser');
+const swaggerUi = require('swagger-ui-express');
 
 const UserController = require('../controllers').UserController;
 const UserStatusMiddleware = require('../middlewares').UserStatusMiddleware;

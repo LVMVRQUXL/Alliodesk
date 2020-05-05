@@ -13,18 +13,14 @@ class UserStatusController {
      *
      * @returns {Promise<void>}
      */
-    async createStatusForAdmins() {
-        await User_status.create({status: adminValue});
-    }
+    async createStatusForAdmins() { await User_status.create({status: adminValue}); }
 
     /**
      * Create one status for users
      *
      * @returns {Promise<void>}
      */
-    async createStatusForUsers() {
-        await User_status.create({status: userValue});
-    }
+    async createStatusForUsers() { await User_status.create({status: userValue}); }
 
     /**
      * Find one user status from status
@@ -33,8 +29,8 @@ class UserStatusController {
      *
      * @returns {Promise<User_status | null>}
      */
-    findUserStatusFromName(status) {
-        return User_status.findOne({
+    async findUserStatusFromName(status) {
+        return await User_status.findOne({
             where: {
                 status: status
             }
