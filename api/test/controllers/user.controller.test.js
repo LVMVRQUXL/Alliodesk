@@ -36,6 +36,7 @@ module.exports = () => {
         const userEmail = 'test@gmail.com';
         const userLogin = 'testLogin';
         const userPassword = 'testPwd';
+        const userTokenSession = 'zzzzzzzzzz';
         const fakeUserStatus = {
             id: 1,
             status: MockDependencies.UserStatusController.userValue
@@ -211,6 +212,20 @@ module.exports = () => {
                 assert.equal(token, undefined);
             });
 
+            it('should return undefined with user already logged in', async () => {
+                // SETUP
+                _setupUserFindOne({
+                    fakeUser,
+                    token_session: 'zzzzzzzzzz'
+                });
+
+                // CALL
+                const token = await call(userLogin, userPassword);
+
+                // VERIFY
+                assert.equal(token, undefined);
+            });
+
             it('should return undefined with invalid password', async () => {
                 // SETUP
                 _setupUserFindOne({
@@ -223,6 +238,55 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(token, undefined);
+            });
+        });
+
+        describe('#logoutOneUser(id, token)', () => {
+            afterEach(() => _teardownUserFindOne());
+
+            const call = async (id, token) => await UserController.logoutOneUser(id, token);
+
+            it('should return true with valid inputs', async () => {
+                // SETUP
+                _setupUserFindOne({
+                    fakeUser,
+                    token_session: userTokenSession
+                });
+                MockModels.User.update.resolves();
+
+                // CALL
+                const result = await call(userId, userTokenSession);
+
+                // VERIFY
+                assert.equal(result, true);
+
+                // TEARDOWN
+                MockModels.User.update.resetHistory();
+            });
+
+            it('should return false with invalid id', async () => {
+                // SETUP
+                _setupUserFindOne();
+
+                // CALL
+                const result = await call(userId, userTokenSession);
+
+                // VERIFY
+                assert.equal(result, undefined);
+            });
+
+            it('should return false with invalid token', async () => {
+                // SETUP
+                _setupUserFindOne({
+                    fakeUser,
+                    token_session: 'userTokenSession'
+                });
+
+                // CALL
+                const result = await call(userId, userTokenSession);
+
+                // VERIFY
+                assert.equal(result, undefined);
             });
         });
 
