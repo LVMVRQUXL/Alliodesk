@@ -85,12 +85,27 @@ class UserController {
      *
      * @returns {Promise<string | null>}
      */
-    async loginOneUser(login, password) {
+    async loginOneUser(login, password) { // TODO: update unit tests!
         const user = await _findOneUser({ login: login });
-        if (user && SecurityUtil.hash(password) === user.password) {
+        if (user && !user.token_session && SecurityUtil.hash(password) === user.password) {
             const token = await SecurityUtil.randomToken();
             const result = await _updateUser(user.id, { token_session: token });
             if (result) { return token; }
+        }
+    }
+
+    /**
+     * Logout one user from id
+     *
+     * @param id {number}
+     * @param token {string}
+     *
+     * @returns {Promise<boolean | null>}
+     */
+    async logoutOneUser(id, token) { // TODO: add unit tests!
+        const user = await _findOneUser({ id: id });
+        if (user && token === user.token_session) {
+            return await _updateUser(id, { token_session: null });
         }
     }
 

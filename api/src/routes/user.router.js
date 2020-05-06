@@ -53,12 +53,47 @@ module.exports = (app) => {
                 else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
             } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
         } catch (e) { console.error(e); }
-        finally { res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); }
+        finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
     });
 
-    // PUT /users/:id/logout   ===> Logout one user from id
-    app.put(routes.Logout, async (req, res) => { // TODO: not implemented
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     *
+     * '/users/{id}/logout':
+     *   put:
+     *     description: "Logout one user from id"
+     *     tags:
+     *       - users
+     *     parameters:
+     *       - name: id
+     *         description: "User's id"
+     *         in: path
+     *         required: true
+     *       - name: token_session
+     *         description: "User's token session"
+     *         in: body
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       404:
+     *         description: "Can't find user"
+     *       400:
+     *         description: "Invalid id and/or token session"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.put(routes.Logout, bodyParser.json(), async (req, res) => {
+        try {
+            const userId = parseInt(req.params.id);
+            const userTokenSession = req.body.token_session;
+            if (!isNaN(userId) && userTokenSession && userTokenSession !== "") {
+                const result = await UserController.logoutOneUser(userId, userTokenSession);
+                if (result) { res.status(HttpCodeUtil.OK).end(); }
+                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) { console.error(e); }
+        finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
     });
 
     /**
