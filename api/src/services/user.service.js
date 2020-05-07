@@ -41,9 +41,9 @@ class UserService {
      *
      * @param where {object}
      *
-     * @returns {Promise<User | null>}
+     * @returns {Promise<User[] | null>}
      */
-    async findAll(where) { return await User.findAll({ where: where }); }
+    async findAll(where) { return User.findAll({where: where}); }
 
     /**
      * Find one user corresponding to where clause
@@ -52,7 +52,7 @@ class UserService {
      *
      * @returns {Promise<User | null>}
      */
-    async findOne(where) { return await User.findOne({ where: where }); }
+    async findOne(where) { return User.findOne({where: where}); }
 
     /**
      * Map given user to DTO
