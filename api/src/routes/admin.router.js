@@ -58,9 +58,46 @@ module.exports = (app) => {
         }
     });
 
-    // PUT  /admins/:id/logout  ===> Logout one administrator from id
-    app.put(routes.AdminsIdLogout, async (req, res) => { // TODO: not implemented!
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     *
+     * '/admins/{id}/logout':
+     *   put:
+     *     description: "Logout one administrator from id"
+     *     tags:
+     *       - admins
+     *     parameters:
+     *       - name: id
+     *         description: "Administrator's id"
+     *         in: path
+     *         required: true
+     *       - name: token_session
+     *         description: "Administrator's token session"
+     *         in: body
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       404:
+     *         description: "Can't find administrator"
+     *       400:
+     *         description: "Invalid id and/or token session"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.put(routes.AdminsIdLogout, async (req, res) => { // TODO: integration tests!
+        try {
+            const userId = parseInt(req.params.id);
+            const userTokenSession = req.body.token_session;
+            if (!isNaN(userId) && userTokenSession && userTokenSession !== "") {
+                const result = await AdminController.logoutOneAdmin(userId, userTokenSession);
+                if (result) { res.status(HttpCodeUtil.OK).end(); }
+                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**

@@ -90,6 +90,21 @@ class AdminController {
     }
 
     /**
+     * Logout one administrator from id
+     *
+     * @param id {number}
+     * @param token {string}
+     *
+     * @returns {Promise<boolean | null>}
+     */
+    async logoutOneAdmin(id, token) {
+        const user = await UserService.findOne(await _getAdminStatusId({ id: id }));
+        if (user && token === user.token_session) {
+            return await UserService.update(id, { token_session: null });
+        }
+    }
+
+    /**
      * Remove one administrator from id
      *
      * @param id {number}

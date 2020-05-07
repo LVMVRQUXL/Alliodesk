@@ -6,8 +6,8 @@ const UserStatusMiddleware = require('../middlewares').UserStatusMiddleware;
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 
 const routes = {
-    Login: '/users/login',
-    Logout: '/users/:id/logout',
+    UsersLogin: '/users/login',
+    UsersIdLogout: '/users/:id/logout',
     UsersId: '/users/:id',
     Users: '/users'
 };
@@ -43,7 +43,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.Login, bodyParser.json(), async (req, res) => {
+    app.put(routes.UsersLogin, bodyParser.json(), async (req, res) => {
         try {
             const userLogin = req.body.login;
             const userPassword = req.body.password;
@@ -85,7 +85,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.Logout, bodyParser.json(), async (req, res) => {
+    app.put(routes.UsersIdLogout, bodyParser.json(), async (req, res) => {
         try {
             const userId = parseInt(req.params.id);
             const userTokenSession = req.body.token_session;
