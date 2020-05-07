@@ -16,8 +16,8 @@ module.exports = () => {
                     findAll: sinon.stub(),
                     findOne: sinon.stub(),
                     mapToDTO: sinon.stub(),
-                    updateOneUser: sinon.stub(),
-                    update: sinon.stub()
+                    update: sinon.stub(),
+                    updateOneUser: sinon.stub()
                 }
             },
             UserStatusController: {
@@ -137,7 +137,7 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(users.length, 1);
-                assert.deepEqual(users[0], fakeUser);
+                assert.equal(users[0].id, fakeUser.id);
             });
 
             it('should return an empty list of users', async () => {
@@ -157,7 +157,7 @@ module.exports = () => {
             afterEach(() => MockDependencies.Services.UserService.findOne.resetHistory());
 
             const _setupUserServiceFindOne = (user) => MockDependencies.Services.UserService.findOne.resolves(user);
-            const call = async () => await UserController.findOneUserFromId(userId);
+            const _call = async () => await UserController.findOneUserFromId(userId);
 
             it('should return one existing user', async () => {
                 // SETUP
@@ -165,7 +165,7 @@ module.exports = () => {
                 MockDependencies.Services.UserService.mapToDTO.resolves(fakeUser);
 
                 // CALL
-                const user = await call();
+                const user = await _call();
 
                 // VERIFY
                 assert.notEqual(user, null);
@@ -180,7 +180,7 @@ module.exports = () => {
                 _setupUserServiceFindOne();
 
                 // CALL
-                const user = await call();
+                const user = await _call();
 
                 // VERIFY
                 assert.equal(user, null);

@@ -32,8 +32,7 @@ class UserController {
      */
     async findAllUsers() {
         let users = await UserService.findAll(await _getUserStatusId({}));
-        users = users.map(user => UserService.mapToDTO(user));
-        return users;
+        return Promise.all(users.map(user => UserService.mapToDTO(user)));
     }
 
     /**
