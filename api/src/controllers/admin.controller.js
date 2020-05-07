@@ -49,7 +49,7 @@ class AdminController {
     }
 
     /**
-     * Find one admin from login
+     * Find one administrator from login
      *
      * @param login {string}
      *
@@ -61,7 +61,7 @@ class AdminController {
     }
 
     /**
-     * Find one admin from email
+     * Find one administrator from email
      *
      * @param email {string}
      *
@@ -70,6 +70,18 @@ class AdminController {
     async findOneAdminFromEmail(email) {
         const user = await UserService.findOne(await _getAdminStatusId({ email: email }));
         return !user ? null : UserService.mapToDTO(user);
+    }
+
+    /**
+     * Remove one administrator from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async removeAdminFromId(id) {
+        if (!await this.findOneAdminFromId(id)) { return false; }
+        return await UserService.destroy(await _getAdminStatusId({ id: id }));
     }
 }
 

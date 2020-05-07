@@ -66,8 +66,41 @@ module.exports = (app) => {
     });
 
     // DELETE   /admins/:id ===> Delete one administrator from id
-    app.delete(routes.AdminsId, async (req, res) => { // TODO: not implemented!
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     *
+     * '/admins/{id}':
+     *   delete:
+     *     description: "Delete one administrator from id"
+     *     tags:
+     *       - admins
+     *     parameters:
+     *       - name: id
+     *         description: "Administrator's id"
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       404:
+     *         description: "Can't find administrator"
+     *       400:
+     *         description: "Invalid id"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.delete(routes.AdminsId, async (req, res) => { // TODO: integration tests!
+        try {
+            const adminId = parseInt(req.params.id);
+            if (!isNaN(adminId)) {
+                const result = await AdminController.removeAdminFromId(adminId);
+                if (result) { res.status(HttpCodeUtil.OK).end(); }
+                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     // PUT   /admins/:id ===> Update one administrator from id
