@@ -37,6 +37,18 @@ class AdminController {
     }
 
     /**
+     * Find one administrator from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<UserDTO | null>}
+     */
+    async findOneAdminFromId(id) {
+        const user = await UserService.findOne(await _getAdminStatusId({ id: id }));
+        return !user ? null : UserService.mapToDTO(user);
+    }
+
+    /**
      * Find one admin from login
      *
      * @param login {string}
