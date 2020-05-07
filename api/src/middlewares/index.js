@@ -1,3 +1,3 @@
 module.exports = {
-    // TODO: incomplete code!
+    UserStatusMiddleware: require('./user_status.middleware')
 };

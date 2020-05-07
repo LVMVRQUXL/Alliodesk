@@ -1,3 +1,4 @@
 module.exports = {
-    // TODO: incomplete code!
+    UserController: require('./user.controller'),
+    UserStatusController: require('./user_status.controller')
 };
