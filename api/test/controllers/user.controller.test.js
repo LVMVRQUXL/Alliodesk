@@ -275,7 +275,7 @@ module.exports = () => {
                 MockDependencies.Services.UserService.update.resetHistory();
             });
 
-            it('should return false with invalid id', async () => {
+            it('should return undefined with invalid id', async () => {
                 // SETUP
                 _setupUserServiceFindOne();
 
@@ -286,7 +286,7 @@ module.exports = () => {
                 assert.equal(result, undefined);
             });
 
-            it('should return false with invalid token', async () => {
+            it('should return undefined with invalid token', async () => {
                 // SETUP
                 _setupUserServiceFindOne({
                     fakeUser,
@@ -341,7 +341,7 @@ module.exports = () => {
             const _setupUserServiceUpdateOneUser = () => {
                 MockDependencies.Services.UserService.updateOneUser.resolves(true);
             };
-            const call = async (id, name, email, password) => await UserController.updateUserInfosFromId(
+            const _call = async (id, name, email, password) => await UserController.updateUserInfosFromId(
                 id, name, email, password
             );
             const _teardownUserServiceUpdateOneUser = () => {
@@ -356,7 +356,7 @@ module.exports = () => {
                 _setupUserServiceUpdateOneUser(true);
 
                 // CALL
-                const result = await call(userId, userName + userName, "new@mail.com", userPassword);
+                const result = await _call(userId, userName + userName, "new@mail.com", userPassword);
 
                 // VERIFY
                 assert.equal(result, true);
@@ -372,7 +372,7 @@ module.exports = () => {
                 _setupUserServiceUpdateOneUser(true);
 
                 // CALL
-                const result = await call(userId, `updated${userName}`, null, "");
+                const result = await _call(userId, `updated${userName}`, null, "");
 
                 // VERIFY
                 assert.equal(result, true);
@@ -386,7 +386,7 @@ module.exports = () => {
                 _setupUserServiceFindOne();
 
                 // CALL
-                const result = await call(userId, userName, userEmail, userPassword);
+                const result = await _call(userId, userName, userEmail, userPassword);
 
                 // VERIFY
                 assert.equal(result, false);

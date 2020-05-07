@@ -13,7 +13,7 @@ class AdminController {
      *
      * @returns {Promise<boolean>}
      */
-    async createAdmin(name, email, login, password) { // TODO: unit tests!
+    async createAdmin(name, email, login, password) {
         if (await this.findOneAdminFromEmail(email) || await this.findOneAdminFromLogin(login)) {
             return false;
         }
@@ -30,10 +30,9 @@ class AdminController {
      *
      * @returns {Promise<UserDTO[]>}
      */
-    async findAllAdmins() { // TODO: unit tests!
+    async findAllAdmins() {
         let admins = await UserService.findAll(await _getAdminStatusId({}));
-        admins = admins.map(admin => UserService.mapToDTO(admin));
-        return admins;
+        return Promise.all(admins.map(admin => UserService.mapToDTO(admin)));
     }
 
     /**
@@ -43,7 +42,7 @@ class AdminController {
      *
      * @returns {Promise<UserDTO | null>}
      */
-    async findOneAdminFromId(id) { // TODO: unit tests!
+    async findOneAdminFromId(id) {
         const admin = await UserService.findOne(await _getAdminStatusId({ id: id }));
         return !admin ? null : UserService.mapToDTO(admin);
     }
@@ -80,7 +79,7 @@ class AdminController {
      *
      * @returns {Promise<string | null>}
      */
-    async loginOneAdmin(login, password) { // TODO: unit tests!
+    async loginOneAdmin(login, password) {
         const admin = await UserService.findOne(await _getAdminStatusId({ login: login }));
         if (admin && !admin.token_session && SecurityUtil.hash(password) === admin.password) {
             const token = await SecurityUtil.randomToken();
@@ -97,7 +96,7 @@ class AdminController {
      *
      * @returns {Promise<boolean | null>}
      */
-    async logoutOneAdmin(id, token) { // TODO: unit tests!
+    async logoutOneAdmin(id, token) {
         const admin = await UserService.findOne(await _getAdminStatusId({ id: id }));
         if (admin && token === admin.token_session) {
             return await UserService.update(id, { token_session: null });
@@ -111,7 +110,7 @@ class AdminController {
      *
      * @returns {Promise<boolean>}
      */
-    async removeAdminFromId(id) { // TODO: unit tests!
+    async removeAdminFromId(id) {
         if (!await this.findOneAdminFromId(id)) { return false; }
         return await UserService.destroy(await _getAdminStatusId({ id: id }));
     }
@@ -127,7 +126,7 @@ class AdminController {
      *
      * @returns {Promise<boolean>}
      */
-    async updateAdminInfosFromId(id, name, email, password) { // TODO: unit tests!
+    async updateAdminInfosFromId(id, name, email, password) {
         if (email && email !== "" && await this.findOneAdminFromEmail(email)) {
             return false;
         }

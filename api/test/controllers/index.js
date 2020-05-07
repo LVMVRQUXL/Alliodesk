@@ -1,4 +1,5 @@
 module.exports = () => {
-    require('./user.controller.test')();
-    require('./user_status.controller.test')();
+    require('./admin.controller.test')();
+    //require('./user.controller.test')();
+    //require('./user_status.controller.test')();
 };
