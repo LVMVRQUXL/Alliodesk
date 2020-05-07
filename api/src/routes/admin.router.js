@@ -16,9 +16,46 @@ module.exports = (app) => {
 
     app.use(UserStatusMiddleware.checkStatusForAdmins());
 
-    // PUT  /admins/login   ===> Login one administrator
-    app.put(routes.AdminsLogin, async (req, res) => { // TODO: not implemented!
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     *
+     * '/admins/login':
+     *   put:
+     *     description: "Login one administrator"
+     *     tags:
+     *       - admins
+     *     parameters:
+     *       - name: login
+     *         description: "Administrator's login"
+     *         in: body
+     *         required: true
+     *       - name: password
+     *         description: "Administrator's password"
+     *         in: body
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       404:
+     *         description: "Can't find administrator"
+     *       400:
+     *         description: "Invalid login and/or password"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.put(routes.AdminsLogin, bodyParser.json(), async (req, res) => { // TODO: integration tests!
+        try {
+            const adminLogin = req.body.login;
+            const adminPassword = req.body.password;
+            if (adminLogin && adminLogin !== "" && adminPassword && adminPassword !== "") {
+                const token = await AdminController.loginOneAdmin(adminLogin, adminPassword);
+                if (token) { res.status(HttpCodeUtil.OK).json({ token_session: token }); }
+                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     // PUT  /admins/:id/logout  ===> Logout one administrator from id
@@ -65,7 +102,6 @@ module.exports = (app) => {
         }
     });
 
-    // DELETE   /admins/:id ===> Delete one administrator from id
     /**
      * @swagger
      *

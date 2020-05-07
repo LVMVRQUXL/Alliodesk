@@ -31,9 +31,9 @@ class AdminController {
      * @returns {Promise<UserDTO[]>}
      */
     async findAllAdmins() { // TODO: unit tests!
-        const users = await UserService.findAll(await _getAdminStatusId({}));
-        users.map(user => UserService.mapToDTO(user));
-        return users;
+        const admins = await UserService.findAll(await _getAdminStatusId({}));
+        admins.map(user => UserService.mapToDTO(user));
+        return admins;
     }
 
     /**
@@ -44,8 +44,8 @@ class AdminController {
      * @returns {Promise<UserDTO | null>}
      */
     async findOneAdminFromId(id) {
-        const user = await UserService.findOne(await _getAdminStatusId({ id: id }));
-        return !user ? null : UserService.mapToDTO(user);
+        const admin = await UserService.findOne(await _getAdminStatusId({ id: id }));
+        return !admin ? null : UserService.mapToDTO(admin);
     }
 
     /**
@@ -56,8 +56,8 @@ class AdminController {
      * @returns {Promise<UserDTO | null>}
      */
     async findOneAdminFromLogin(login) {
-        const user = await UserService.findOne(await _getAdminStatusId({ login: login }));
-        return !user ? null : UserService.mapToDTO(user);
+        const admin = await UserService.findOne(await _getAdminStatusId({ login: login }));
+        return !admin ? null : UserService.mapToDTO(admin);
     }
 
     /**
@@ -68,8 +68,25 @@ class AdminController {
      * @returns {Promise<UserDTO | null>}
      */
     async findOneAdminFromEmail(email) {
-        const user = await UserService.findOne(await _getAdminStatusId({ email: email }));
-        return !user ? null : UserService.mapToDTO(user);
+        const admin = await UserService.findOne(await _getAdminStatusId({ email: email }));
+        return !admin ? null : UserService.mapToDTO(admin);
+    }
+
+    /**
+     * Login one administrator
+     *
+     * @param login {string}
+     * @param password {string}
+     *
+     * @returns {Promise<string | null>}
+     */
+    async loginOneAdmin(login, password) {
+        const admin = await UserService.findOne(await _getAdminStatusId({ login: login }));
+        if (admin && !admin.token_session && SecurityUtil.hash(password) === admin.password) {
+            const token = await SecurityUtil.randomToken();
+            const result = await UserService.update(admin.id, { token_session: token });
+            if (result) { return token; }
+        }
     }
 
     /**
