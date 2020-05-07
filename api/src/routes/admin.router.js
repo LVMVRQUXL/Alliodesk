@@ -43,7 +43,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.AdminsLogin, bodyParser.json(), async (req, res) => { // TODO: integration tests!
+    app.put(routes.AdminsLogin, bodyParser.json(), async (req, res) => {
         try {
             const adminLogin = req.body.login;
             const adminPassword = req.body.password;
@@ -85,12 +85,12 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.AdminsIdLogout, async (req, res) => { // TODO: integration tests!
+    app.put(routes.AdminsIdLogout, bodyParser.json(), async (req, res) => {
         try {
-            const userId = parseInt(req.params.id);
-            const userTokenSession = req.body.token_session;
-            if (!isNaN(userId) && userTokenSession && userTokenSession !== "") {
-                const result = await AdminController.logoutOneAdmin(userId, userTokenSession);
+            const adminId = parseInt(req.params.id);
+            const adminTokenSession = req.body.token_session;
+            if (!isNaN(adminId) && adminTokenSession && adminTokenSession !== "") {
+                const result = await AdminController.logoutOneAdmin(adminId, adminTokenSession);
                 if (result) { res.status(HttpCodeUtil.OK).end(); }
                 else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
             } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
@@ -125,7 +125,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.AdminsId, async (req, res) => { // TODO: integration tests!
+    app.get(routes.AdminsId, async (req, res) => {
         try {
             const adminId = parseInt(req.params.id);
             if (!isNaN(adminId)) {
@@ -162,7 +162,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.delete(routes.AdminsId, async (req, res) => { // TODO: integration tests!
+    app.delete(routes.AdminsId, async (req, res) => {
         try {
             const adminId = parseInt(req.params.id);
             if (!isNaN(adminId)) {
@@ -176,9 +176,58 @@ module.exports = (app) => {
         }
     });
 
-    // PUT   /admins/:id ===> Update one administrator from id
-    app.put(routes.AdminsId, async (req, res) => { // TODO: not implemented!
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     *
+     * '/admins/{id}':
+     *   put:
+     *     description: "Update one administrator from id"
+     *     tags:
+     *       - admins
+     *     parameters:
+     *       - name: id
+     *         description: "Administrator's id"
+     *         in: path
+     *         required: true
+     *       - name: name
+     *         description: "New administrator's name"
+     *         in: body
+     *       - name: email
+     *         description: "New administrator's email address"
+     *         in: body
+     *       - name: password
+     *         description: "New administrator's password"
+     *         in: body
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       404:
+     *         description: "Can't find administrator"
+     *       400:
+     *         description: "Invalid inputs"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.put(routes.AdminsId, bodyParser.json(), async (req, res) => {
+        try {
+            const adminId = parseInt(req.params.id);
+            const adminName = req.body.name;
+            const adminEmail = req.body.email;
+            const adminPassword = req.body.password;
+            if (!isNaN(adminId)
+                && ((adminName && adminName !== "")
+                    || emailValidator.validate(adminEmail)
+                    || (adminPassword && adminPassword !== ""))) {
+                const result = await AdminController.updateAdminInfosFromId(
+                    adminId, adminName, adminEmail, adminPassword
+                );
+                if (result) { res.status(HttpCodeUtil.OK).end(); }
+                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
@@ -199,7 +248,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.Admins, async (req, res) => { // TODO: integration tests!
+    app.get(routes.Admins, async (req, res) => {
         try {
             const admins = await AdminController.findAllAdmins();
             if (admins.length > 0) { res.status(HttpCodeUtil.OK).json(admins); }
@@ -247,7 +296,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.post(routes.Admins, bodyParser.json(), async (req, res) => { // TODO: integration tests!
+    app.post(routes.Admins, bodyParser.json(), async (req, res) => {
         try {
             const adminName = req.body.name;
             const adminEmail = req.body.email;

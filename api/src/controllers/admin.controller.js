@@ -31,8 +31,8 @@ class AdminController {
      * @returns {Promise<UserDTO[]>}
      */
     async findAllAdmins() { // TODO: unit tests!
-        const admins = await UserService.findAll(await _getAdminStatusId({}));
-        admins.map(user => UserService.mapToDTO(user));
+        let admins = await UserService.findAll(await _getAdminStatusId({}));
+        admins = admins.map(admin => UserService.mapToDTO(admin));
         return admins;
     }
 
@@ -43,7 +43,7 @@ class AdminController {
      *
      * @returns {Promise<UserDTO | null>}
      */
-    async findOneAdminFromId(id) {
+    async findOneAdminFromId(id) { // TODO: unit tests!
         const admin = await UserService.findOne(await _getAdminStatusId({ id: id }));
         return !admin ? null : UserService.mapToDTO(admin);
     }
@@ -80,7 +80,7 @@ class AdminController {
      *
      * @returns {Promise<string | null>}
      */
-    async loginOneAdmin(login, password) {
+    async loginOneAdmin(login, password) { // TODO: unit tests!
         const admin = await UserService.findOne(await _getAdminStatusId({ login: login }));
         if (admin && !admin.token_session && SecurityUtil.hash(password) === admin.password) {
             const token = await SecurityUtil.randomToken();
@@ -97,9 +97,9 @@ class AdminController {
      *
      * @returns {Promise<boolean | null>}
      */
-    async logoutOneAdmin(id, token) {
-        const user = await UserService.findOne(await _getAdminStatusId({ id: id }));
-        if (user && token === user.token_session) {
+    async logoutOneAdmin(id, token) { // TODO: unit tests!
+        const admin = await UserService.findOne(await _getAdminStatusId({ id: id }));
+        if (admin && token === admin.token_session) {
             return await UserService.update(id, { token_session: null });
         }
     }
@@ -111,9 +111,29 @@ class AdminController {
      *
      * @returns {Promise<boolean>}
      */
-    async removeAdminFromId(id) {
+    async removeAdminFromId(id) { // TODO: unit tests!
         if (!await this.findOneAdminFromId(id)) { return false; }
         return await UserService.destroy(await _getAdminStatusId({ id: id }));
+    }
+
+    /**
+     * Update one administrator from id
+     * PS: Empty inputs will be ignored!
+     *
+     * @param id {number}
+     * @param name {string}
+     * @param email {string}
+     * @param password {string}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async updateAdminInfosFromId(id, name, email, password) { // TODO: unit tests!
+        if (email && email !== "" && await this.findOneAdminFromEmail(email)) {
+            return false;
+        }
+        const admin = await UserService.findOne(await _getAdminStatusId({ id: id }));
+        if (!admin) { return false; }
+        return await UserService.updateOneUser(admin, name, email, password);
     }
 }
 
