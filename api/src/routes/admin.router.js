@@ -6,6 +6,8 @@ const HttpCodeUtil = require('../utils').HttpCodeUtil;
 const AdminController = require('../controllers').AdminController;
 
 const routes = {
+    AdminsLogin: '/admins/login',
+    AdminsIdLogout: '/admins/:id/logout',
     AdminsId: '/admins/:id',
     Admins: '/admins'
 };
@@ -13,6 +15,16 @@ const routes = {
 module.exports = (app) => {
 
     app.use(UserStatusMiddleware.checkStatusForAdmins());
+
+    // PUT  /admins/login   ===> Login one administrator
+    app.put(routes.AdminsLogin, async (req, res) => { // TODO: not implemented!
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    });
+
+    // PUT  /admins/:id/logout  ===> Logout one administrator from id
+    app.put(routes.AdminsIdLogout, async (req, res) => { // TODO: not implemented!
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    });
 
     // GET      /admins/:id ===> Get one administrator from id
     app.get(routes.AdminsId, async (req, res) => { // TODO: not implemented!
@@ -29,9 +41,33 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
-    // GET      /admins     ===> Get all administrators
-    app.get(routes.Admins, async (req, res) => { // TODO: not implemented!
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     *
+     * '/admins':
+     *   get:
+     *     description: "Get all administrators"
+     *     tags:
+     *       - admins
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       204:
+     *         description: "No administrators to return"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.get(routes.Admins, async (req, res) => { // TODO: integration tests!
+        try {
+            const users = await AdminController.findAllAdmins();
+            if (users.length > 0) { res.status(HttpCodeUtil.OK).json(users); }
+            else { res.status(HttpCodeUtil.NO_CONTENT).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**

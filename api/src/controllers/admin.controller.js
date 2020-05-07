@@ -26,6 +26,17 @@ class AdminController {
     }
 
     /**
+     * Find all administrators
+     *
+     * @returns {Promise<UserDTO[]>}
+     */
+    async findAllAdmins() { // TODO: unit tests!
+        const users = await UserService.findAll(await _getAdminStatusId({}));
+        users.map(user => UserService.mapToDTO(user));
+        return users;
+    }
+
+    /**
      * Find one admin from login
      *
      * @param login {string}
