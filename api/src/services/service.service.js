@@ -26,6 +26,15 @@ class ServiceService {
     async findAll() { return Service.findAll(); }
 
     /**
+     * Find one service corresponding to where clause
+     *
+     * @param where {object}
+     *
+     * @returns {Promise<Service>}
+     */
+    async findOne(where) { return Service.findOne({ where: where }) }
+
+    /**
      * Map given service to DTO
      *
      * @param service {Service}

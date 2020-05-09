@@ -28,6 +28,18 @@ class ServiceController {
         const services = await ServiceService.findAll();
         return Promise.all(services.map(service => ServiceService.mapToDTO(service)));
     }
+
+    /**
+     * Find one service from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<ServiceDTO>}
+     */
+    async findOneServiceFromId(id) {
+        const service = await ServiceService.findOne({ id: id });
+        return !service ? null : ServiceService.mapToDTO(service);
+    }
 }
 
 /**

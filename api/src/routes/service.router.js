@@ -13,9 +13,43 @@ module.exports = (app) => {
 
     app.use(ServiceStatusMiddleware.checkStatusForServices());
 
-    // GET '/services/:id' ===> Get one service from id
-    app.get(routes.ServicesId, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); // TODO: not implemented
+    /**
+     * @swagger
+     *
+     * '/services/:id':
+     *   get:
+     *     description: "Get one service from id"
+     *     tags:
+     *       - services
+     *     parameters:
+     *       - name: id
+     *         description: "Service's id"
+     *         in: path
+     *         required: true
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       404:
+     *         description: "Can't find service"
+     *       400:
+     *         description: "Invalid id"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.get(routes.ServicesId, async (req, res) => { // TODO: integration tests
+        try {
+            const serviceId = parseInt(req.params.id);
+            if (!isNaN(serviceId)) {
+                const service = await ServiceController.findOneServiceFromId(serviceId);
+                if (service) { res.status(HttpCodeUtil.OK).json(service); }
+                else { res.status(HttpCodeUtil.NO_CONTENT).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     // DELETE '/services/:id' ===> Remove one service from id
