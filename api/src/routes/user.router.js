@@ -6,8 +6,8 @@ const UserStatusMiddleware = require('../middlewares').UserStatusMiddleware;
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 
 const routes = {
-    Login: '/users/login',
-    Logout: '/users/:id/logout',
+    UsersLogin: '/users/login',
+    UsersIdLogout: '/users/:id/logout',
     UsersId: '/users/:id',
     Users: '/users'
 };
@@ -43,7 +43,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.Login, bodyParser.json(), async (req, res) => {
+    app.put(routes.UsersLogin, bodyParser.json(), async (req, res) => {
         try {
             const userLogin = req.body.login;
             const userPassword = req.body.password;
@@ -52,8 +52,10 @@ module.exports = (app) => {
                 if (token) { res.status(HttpCodeUtil.OK).json({ token_session: token }); }
                 else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
             } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
-        } catch (e) { console.error(e); }
-        finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
@@ -83,7 +85,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.Logout, bodyParser.json(), async (req, res) => {
+    app.put(routes.UsersIdLogout, bodyParser.json(), async (req, res) => {
         try {
             const userId = parseInt(req.params.id);
             const userTokenSession = req.body.token_session;
@@ -92,8 +94,10 @@ module.exports = (app) => {
                 if (result) { res.status(HttpCodeUtil.OK).end(); }
                 else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
             } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
-        } catch (e) { console.error(e); }
-        finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
@@ -127,8 +131,10 @@ module.exports = (app) => {
                 if (result) { res.status(HttpCodeUtil.OK).end(); }
                 else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
             } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
-        } catch (e) { console.error(e); }
-        finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
@@ -164,8 +170,10 @@ module.exports = (app) => {
                 if (user) { res.status(HttpCodeUtil.OK).json(user); }
                 else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
             } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
-        } catch (e) { console.error(e); }
-        finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
@@ -214,8 +222,10 @@ module.exports = (app) => {
                 if (result) { res.status(HttpCodeUtil.OK).end(); }
                 else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
             } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
-        } catch (e) { console.error(e); }
-        finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
@@ -243,7 +253,8 @@ module.exports = (app) => {
             else { res.status(HttpCodeUtil.NO_CONTENT).end(); }
         } catch (e) {
             console.error(e);
-        } finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
@@ -297,8 +308,10 @@ module.exports = (app) => {
                 if (result) { res.status(HttpCodeUtil.CREATED).end(); }
                 else { res.status(HttpCodeUtil.CONFLICT).end(); }
             } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
-        } catch (e) { console.error(e); }
-        finally { res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
 };
