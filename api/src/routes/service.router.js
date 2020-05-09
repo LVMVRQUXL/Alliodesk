@@ -5,6 +5,8 @@ const ServiceStatusMiddleware = require('../middlewares').ServiceStatusMiddlewar
 const ServiceController = require('../controllers').ServiceController;
 
 const routes = {
+    ServicesIdReject: '/services/:id/reject',
+    ServicesIdValidate: '/services/:id/validate',
     ServicesId: '/services/:id',
     Services: '/services'
 };
@@ -13,8 +15,47 @@ module.exports = (app) => {
 
     app.use(ServiceStatusMiddleware.checkStatusForServices());
 
-    // PUT /services/:id/validate ===> Validate one service from id
     // PUT /services/:id/reject ===> Reject one service from id
+    app.put(routes.ServicesIdValidate, bodyParser.json(), async (req, res) => {
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); // TODO: not implemented
+    });
+
+    /**
+     * @swagger
+     *
+     * '/services/:id/validate':
+     *   put:
+     *     description: "Validate one service from id"
+     *     tags:
+     *       - service
+     *     parameters:
+     *       - name: id
+     *         description: "Service's id"
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       404:
+     *         description: "Can't find service"
+     *       400:
+     *         description: "Invalid id"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.put(routes.ServicesIdReject, bodyParser.json(), async (req, res) => { // TODO: integration tests
+        try {
+            const serviceId = parseInt(req.params.id);
+            if (!isNaN(serviceId)) {
+                const result = await ServiceController.validateOneServiceFromId(serviceId);
+                if (result) { res.status(HttpCodeUtil.OK).end(); }
+                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
+    });
 
     /**
      * @swagger

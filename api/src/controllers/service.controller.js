@@ -74,6 +74,22 @@ class ServiceController {
         if (sourceUrl !== service.source_url) { values.source_url = sourceUrl; }
         return await ServiceService.update(values, { id: id });
     }
+
+    /**
+     * Validate one service from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async validateOneServiceFromId(id) {
+        const service = await this.findOneServiceFromId(id);
+        if (service && service.service_status_id === ServiceStatusController.pendingStatus) {
+            return await ServiceService.update({
+                service_status_id: ServiceStatusController.validatedStatus
+            }, { id: id });
+        }
+    }
 }
 
 /**
