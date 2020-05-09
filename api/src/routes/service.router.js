@@ -13,6 +13,9 @@ module.exports = (app) => {
 
     app.use(ServiceStatusMiddleware.checkStatusForServices());
 
+    // PUT /services/:id/validate ===> Validate one service from id
+    // PUT /services/:id/reject ===> Reject one service from id
+
     /**
      * @swagger
      *
@@ -21,13 +24,13 @@ module.exports = (app) => {
      *     description: "Get one service from id"
      *     tags:
      *       - services
+     *     produces:
+     *       - application/json
      *     parameters:
      *       - name: id
      *         description: "Service's id"
      *         in: path
      *         required: true
-     *     produces:
-     *       - application/json
      *     responses:
      *       200:
      *         description: "Ok"
@@ -58,6 +61,8 @@ module.exports = (app) => {
      * '/services/:id':
      *   delete:
      *     description: "Remove one service from id"
+     *     tags:
+     *       - services
      *     parameters:
      *       - name: id
      *         description: "Service's id"
@@ -87,9 +92,58 @@ module.exports = (app) => {
         }
     });
 
-    // PUT '/services/:id' ===> Update one service from id
-    app.put(routes.ServicesId, bodyParser.json(), async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); // TODO: not implemented
+    /**
+     * @swagger
+     *
+     * '/services/:id':
+     *   put:
+     *     description: "Update one service from id"
+     *     tags:
+     *       - services
+     *     parameters:
+     *       - name: id
+     *         description: "Service's id"
+     *         in: path
+     *         required: true
+     *       - name: name
+     *         description: "New service's name"
+     *         in: body
+     *       - name: version
+     *         description: "New service's version"
+     *         in: body
+     *       - name: source_url
+     *         description: "New service's source URL"
+     *         in: body
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       404:
+     *         description: "Can't find service"
+     *       400:
+     *         description: "Invalid inputs"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.put(routes.ServicesId, bodyParser.json(), async (req, res) => { // TODO: integration tests
+        try {
+            const serviceId = parseInt(req.params.id);
+            const serviceName = req.body.name;
+            const serviceVersion = req.body.version;
+            const serviceSourceUrl = req.body.source_url;
+            if (!isNaN(serviceId)
+                && ((serviceName && serviceName !== "")
+                    || (serviceVersion && serviceVersion !== "")
+                    || (serviceSourceUrl && serviceSourceUrl !== ""))) {
+                const result = await ServiceController.updateOneServiceFromId(
+                    serviceId, serviceName, serviceVersion, serviceSourceUrl
+                );
+                if (result) { res.status(HttpCodeUtil.OK).end(); }
+                else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**

@@ -59,6 +59,24 @@ class ServiceService {
      * @returns {ServiceDTO}
      */
     mapToDTO(service) { return new ServiceDTO(service.id, service.name, service.version, service.source_url); }
+
+    /**
+     * Update one service corresponding to where clause
+     *
+     * @param values {object}
+     * @param where {object}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async update(values, where) {
+        try {
+            await Service.update(values, { where: where });
+            return true;
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
+    }
 }
 
 class ServiceDTO {
