@@ -15,9 +15,41 @@ module.exports = (app) => {
 
     app.use(ServiceStatusMiddleware.checkStatusForServices());
 
-    // PUT /services/:id/reject ===> Reject one service from id
-    app.put(routes.ServicesIdValidate, bodyParser.json(), async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); // TODO: not implemented
+    /**
+     * @swagger
+     *
+     * '/services/:id/reject':
+     *   put:
+     *     description: "Reject one service from id"
+     *     tags:
+     *       - services
+     *     parameters:
+     *       - name: id
+     *         description: "Service's id"
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       404:
+     *         description: "Can't find service"
+     *       400:
+     *         description: "Invalid id"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.put(routes.ServicesIdValidate, bodyParser.json(), async (req, res) => { // TODO: integration tests
+        try {
+            const serviceId = parseInt(req.params.id);
+            if (!isNaN(serviceId)) {
+                const result = await ServiceController.rejectOneServiceFromId(serviceId);
+                if (result) { res.status(HttpCodeUtil.OK).end(); }
+                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
+            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
@@ -27,7 +59,7 @@ module.exports = (app) => {
      *   put:
      *     description: "Validate one service from id"
      *     tags:
-     *       - service
+     *       - services
      *     parameters:
      *       - name: id
      *         description: "Service's id"
