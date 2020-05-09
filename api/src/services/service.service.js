@@ -19,6 +19,23 @@ class ServiceService {
     }
 
     /**
+     * Remove one service corresponding to where clause
+     *
+     * @param where {object}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async destroy(where) {
+        try {
+            await Service.destroy({ where: where });
+            return true;
+        } catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
+
+    /**
      * Find all services
      *
      * @returns {Promise<Service[]>}

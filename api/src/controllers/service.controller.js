@@ -40,6 +40,19 @@ class ServiceController {
         const service = await ServiceService.findOne({ id: id });
         return !service ? null : ServiceService.mapToDTO(service);
     }
+
+    /**
+     * Remove one service from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async removeOneServiceFromId(id) {
+        const service = await this.findOneServiceFromId(id);
+        if (!service) { return false; }
+        return await ServiceService.destroy({ id: id });
+    }
 }
 
 /**
