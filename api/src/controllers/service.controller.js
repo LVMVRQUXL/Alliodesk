@@ -18,6 +18,16 @@ class ServiceController {
             source_url: sourceUrl
         }));
     }
+
+    /**
+     * Find all services
+     *
+     * @returns {Promise<ServiceDTO[]>}
+     */
+    async findAllServices() {
+        const services = await ServiceService.findAll();
+        return Promise.all(services.map(service => ServiceService.mapToDTO(service)));
+    }
 }
 
 /**

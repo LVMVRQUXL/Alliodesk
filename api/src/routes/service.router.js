@@ -28,9 +28,33 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); // TODO: not implemented
     });
 
-    // GET '/services' ===> Get all services
-    app.get(routes.Services, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end(); // TODO: not implemented
+    /**
+     * @swagger
+     *
+     * '/services':
+     *   get:
+     *     description: "Get all services"
+     *     tags:
+     *       - services
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: "Ok"
+     *       204:
+     *         description: "No services to return"
+     *       500:
+     *         description: "An internal error has occurred"
+     */
+    app.get(routes.Services, async (req, res) => { // TODO: integration tests
+        try {
+            const services = await ServiceController.findAllServices();
+            if (services.length > 0) { res.status(HttpCodeUtil.OK).json(services); }
+            else { res.status(HttpCodeUtil.NO_CONTENT).end(); }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
@@ -40,7 +64,7 @@ module.exports = (app) => {
      *   post:
      *     description: "Create a new service with pending status"
      *     tags:
-     *       - service
+     *       - services
      *     parameters:
      *       - name: name
      *         description: "Service's name"

@@ -17,6 +17,31 @@ class ServiceService {
             return false;
         }
     }
+
+    /**
+     * Find all services
+     *
+     * @returns {Promise<Service[]>}
+     */
+    async findAll() { return Service.findAll(); }
+
+    /**
+     * Map given service to DTO
+     *
+     * @param service {Service}
+     *
+     * @returns {ServiceDTO}
+     */
+    mapToDTO(service) { return new ServiceDTO(service.id, service.name, service.version, service.source_url); }
+}
+
+class ServiceDTO {
+    constructor(id, name, version, sourceUrl) {
+        this.id = id;
+        this.name = name;
+        this.version = version;
+        this.source_url = sourceUrl;
+    }
 }
 
 module.exports = new ServiceService();
