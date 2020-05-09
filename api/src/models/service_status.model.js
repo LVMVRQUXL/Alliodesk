@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         }
     }, {
-        paranoid: true,
         freezeTableName: true,
         underscored: true,
         timestamps: true
