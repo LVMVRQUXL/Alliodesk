@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        tag: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
         source_url: {
             type: DataTypes.STRING,
             allowNull: false
