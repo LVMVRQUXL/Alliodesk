@@ -1,4 +1,4 @@
-const { Service } = require('../models');
+const {Service} = require('../models');
 
 class ServiceService {
     /**
@@ -27,7 +27,7 @@ class ServiceService {
      */
     async destroy(where) {
         try {
-            await Service.destroy({ where: where });
+            await Service.destroy({where: where});
             return true;
         } catch (e) {
             console.log(e);
@@ -40,7 +40,9 @@ class ServiceService {
      *
      * @returns {Promise<Service[]>}
      */
-    async findAll() { return Service.findAll(); }
+    async findAll() {
+        return Service.findAll();
+    }
 
     /**
      * Find one service corresponding to where clause
@@ -49,7 +51,9 @@ class ServiceService {
      *
      * @returns {Promise<Service>}
      */
-    async findOne(where) { return Service.findOne({ where: where }) }
+    async findOne(where) {
+        return Service.findOne({where: where})
+    }
 
     /**
      * Map given service to DTO
@@ -58,7 +62,11 @@ class ServiceService {
      *
      * @returns {ServiceDTO}
      */
-    mapToDTO(service) { return new ServiceDTO(service.id, service.name, service.version, service.source_url); }
+    mapToDTO(service) {
+        return new ServiceDTO(
+            service.id, service.name, service.version, service.source_url, service.user_id, service.service_status_id
+        );
+    }
 
     /**
      * Update one service corresponding to where clause
@@ -70,7 +78,7 @@ class ServiceService {
      */
     async update(values, where) {
         try {
-            await Service.update(values, { where: where });
+            await Service.update(values, {where: where});
             return true;
         } catch (e) {
             console.error(e);
@@ -80,11 +88,13 @@ class ServiceService {
 }
 
 class ServiceDTO {
-    constructor(id, name, version, sourceUrl) {
+    constructor(id, name, version, sourceUrl, userId, serviceStatusId) {
         this.id = id;
         this.name = name;
         this.version = version;
         this.source_url = sourceUrl;
+        this.user_id = userId;
+        this.service_status_id = serviceStatusId;
     }
 }
 

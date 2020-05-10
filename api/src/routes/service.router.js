@@ -22,7 +22,7 @@ module.exports = (app) => {
      *   put:
      *     description: "Reject one service from id"
      *     tags:
-     *       - services
+     *       - Services
      *     parameters:
      *       - name: id
      *         description: "Service's id"
@@ -38,14 +38,19 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.ServicesIdValidate, bodyParser.json(), async (req, res) => { // TODO: integration tests
+    app.put(routes.ServicesIdReject, async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             if (!isNaN(serviceId)) {
                 const result = await ServiceController.rejectOneServiceFromId(serviceId);
-                if (result) { res.status(HttpCodeUtil.OK).end(); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -59,7 +64,7 @@ module.exports = (app) => {
      *   put:
      *     description: "Validate one service from id"
      *     tags:
-     *       - services
+     *       - Services
      *     parameters:
      *       - name: id
      *         description: "Service's id"
@@ -75,14 +80,19 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.ServicesIdReject, bodyParser.json(), async (req, res) => { // TODO: integration tests
+    app.put(routes.ServicesIdValidate, async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             if (!isNaN(serviceId)) {
                 const result = await ServiceController.validateOneServiceFromId(serviceId);
-                if (result) { res.status(HttpCodeUtil.OK).end(); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -96,7 +106,7 @@ module.exports = (app) => {
      *   get:
      *     description: "Get one service from id"
      *     tags:
-     *       - services
+     *       - Services
      *     produces:
      *       - application/json
      *     parameters:
@@ -114,14 +124,19 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.ServicesId, async (req, res) => { // TODO: integration tests
+    app.get(routes.ServicesId, async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             if (!isNaN(serviceId)) {
                 const service = await ServiceController.findOneServiceFromId(serviceId);
-                if (service) { res.status(HttpCodeUtil.OK).json(service); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (service) {
+                    res.status(HttpCodeUtil.OK).json(service);
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -135,7 +150,7 @@ module.exports = (app) => {
      *   delete:
      *     description: "Remove one service from id"
      *     tags:
-     *       - services
+     *       - Services
      *     parameters:
      *       - name: id
      *         description: "Service's id"
@@ -151,14 +166,19 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.delete(routes.ServicesId, async (req, res) => { // TODO: integration tests
+    app.delete(routes.ServicesId, async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             if (!isNaN(serviceId)) {
                 const result = await ServiceController.removeOneServiceFromId(serviceId);
-                if (result) { res.status(HttpCodeUtil.OK).end(); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -172,7 +192,7 @@ module.exports = (app) => {
      *   put:
      *     description: "Update one service from id"
      *     tags:
-     *       - services
+     *       - Services
      *     parameters:
      *       - name: id
      *         description: "Service's id"
@@ -197,7 +217,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.ServicesId, bodyParser.json(), async (req, res) => { // TODO: integration tests
+    app.put(routes.ServicesId, bodyParser.json(), async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             const serviceName = req.body.name;
@@ -210,9 +230,14 @@ module.exports = (app) => {
                 const result = await ServiceController.updateOneServiceFromId(
                     serviceId, serviceName, serviceVersion, serviceSourceUrl
                 );
-                if (result) { res.status(HttpCodeUtil.OK).end(); }
-                else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -226,7 +251,7 @@ module.exports = (app) => {
      *   get:
      *     description: "Get all services"
      *     tags:
-     *       - services
+     *       - Services
      *     produces:
      *       - application/json
      *     responses:
@@ -237,11 +262,14 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.Services, async (req, res) => { // TODO: integration tests
+    app.get(routes.Services, async (req, res) => {
         try {
             const services = await ServiceController.findAllServices();
-            if (services.length > 0) { res.status(HttpCodeUtil.OK).json(services); }
-            else { res.status(HttpCodeUtil.NO_CONTENT).end(); }
+            if (services.length > 0) {
+                res.status(HttpCodeUtil.OK).json(services);
+            } else {
+                res.status(HttpCodeUtil.NO_CONTENT).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -255,7 +283,7 @@ module.exports = (app) => {
      *   post:
      *     description: "Create a new service with pending status"
      *     tags:
-     *       - services
+     *       - Services
      *     parameters:
      *       - name: name
      *         description: "Service's name"
@@ -277,7 +305,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.post(routes.Services, bodyParser.json(), async (req, res) => { // TODO: integration tests
+    app.post(routes.Services, bodyParser.json(), async (req, res) => {
         try {
             const serviceName = req.body.name;
             const serviceVersion = req.body.version;
@@ -286,8 +314,12 @@ module.exports = (app) => {
                 && serviceVersion && serviceVersion !== ""
                 && serviceSourceUrl && serviceSourceUrl !== "") {
                 const result = await ServiceController.createService(serviceName, serviceVersion, serviceSourceUrl);
-                if (result) { res.status(HttpCodeUtil.CREATED).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.CREATED).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
