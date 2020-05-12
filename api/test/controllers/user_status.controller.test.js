@@ -1,47 +1,48 @@
-const {sequelize, dataTypes, checkModelName, makeMockModels} = require('sequelize-test-helpers');
 const {describe, it, afterEach} = require('mocha');
 const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
-const UserStatusModel = require('../../src/models/user_status.model');
-
 module.exports = () => {
 
     describe('UserStatusController tests', () => {
-        const MockModels = makeMockModels({
-            User_status: {
-                create: sinon.stub(),
-                findOne: sinon.stub()
+        const MockDependencies = {
+            Services: {
+                UserStatusService: {
+                    adminValue: 'admin',
+                    create: sinon.stub(),
+                    findOneFromStatus: sinon.stub(),
+                    userValue: 'user'
+                }
             }
-        });
+        };
+
         const UserStatusController = proxyquire('../../src/controllers/user_status.controller', {
-            '../models': MockModels
+            '../services': MockDependencies.Services
         });
 
-        describe('Loading models...', () => {
-            const Model = UserStatusModel(sequelize, dataTypes);
-            checkModelName(Model)('User_status');
-        });
+        const fakeUserStatus = {
+            id: 1,
+            status: MockDependencies.Services.UserStatusService.userValue
+        };
 
         describe('#findUserStatusFromName(status)', () => {
             afterEach(() => {
-                // TEARDOWN
-                MockModels.User_status.create.resetHistory();
-                MockModels.User_status.findOne.resetHistory();
+                MockDependencies.Services.UserStatusService.create.resetHistory();
+                MockDependencies.Services.UserStatusService.findOneFromStatus.resetHistory();
             });
+
+            const _setupUserStatusServiceFindOneFromStatus = (userStatus) => {
+                MockDependencies.Services.UserStatusService.findOneFromStatus.resolves(userStatus);
+            };
+            const _call = async (status) => await UserStatusController.findUserStatusFromName(status);
 
             it('should return a User_status with valid status', async () => {
                 // SETUP
-                const userValue = 'user';
-                const fakeUserStatus = {
-                    id: 1,
-                    status: userValue
-                };
-                MockModels.User_status.findOne.resolves(fakeUserStatus);
+                _setupUserStatusServiceFindOneFromStatus(fakeUserStatus);
 
                 // CALL
-                const userStatus = await UserStatusController.findUserStatusFromName(userValue);
+                const userStatus = await _call(MockDependencies.Services.UserStatusService.userValue);
 
                 // VERIFY
                 assert.notEqual(userStatus, null);
@@ -51,10 +52,10 @@ module.exports = () => {
 
             it('should return null with invalid status', async () => {
                 // SETUP
-                MockModels.User_status.findOne.resolves(null);
+                _setupUserStatusServiceFindOneFromStatus();
 
                 // CALL
-                const userStatus = await UserStatusController.findUserStatusFromName("invalidStatus");
+                const userStatus = await _call("invalidStatus");
 
                 // VERIFY
                 assert.equal(userStatus, null);
