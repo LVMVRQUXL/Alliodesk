@@ -10,7 +10,6 @@ class ServiceController {
      * @param sourceUrl {string}
      *
      * @returns {Promise<boolean>}
-     * TODO: unit tests
      */
     async createService(name, version, sourceUrl) {
         return await ServiceService.create(await _getPendingStatusId({
@@ -24,7 +23,6 @@ class ServiceController {
      * Find all services
      *
      * @returns {Promise<ServiceDTO[]>}
-     * TODO: unit tests
      */
     async findAllServices() {
         const services = await ServiceService.findAll();
@@ -37,7 +35,6 @@ class ServiceController {
      * @param id {number}
      *
      * @returns {Promise<ServiceDTO>}
-     * TODO: unit tests
      */
     async findOneServiceFromId(id) {
         const service = await ServiceService.findOne({id: id});
@@ -49,14 +46,14 @@ class ServiceController {
      *
      * @param id {number}
      *
-     * @returns {Promise<boolean>}
-     * TODO: unit tests
+     * @returns {Promise<boolean|undefined>}
      */
     async rejectOneServiceFromId(id) {
         const service = await this.findOneServiceFromId(id);
         const status = await _getPendingStatusId({});
         if (service && service.service_status_id === status.service_status_id) {
-            return await _updateServiceStatusFromId(id, false);
+            const status = await _getRejectedStatusId({});
+            return await ServiceService.update({service_status_id: status.service_status_id}, {id: id});
         }
     }
 
@@ -66,7 +63,6 @@ class ServiceController {
      * @param id {number}
      *
      * @returns {Promise<boolean>}
-     * TODO: unit tests
      */
     async removeOneServiceFromId(id) {
         const service = await this.findOneServiceFromId(id);
@@ -85,7 +81,6 @@ class ServiceController {
      * @param sourceUrl {string}
      *
      * @returns {Promise<boolean>}
-     * TODO: unit tests
      */
     async updateOneServiceFromId(id, name, version, sourceUrl) {
         if (name === "" && version === "" && sourceUrl === "") {
@@ -114,13 +109,13 @@ class ServiceController {
      * @param id {number}
      *
      * @returns {Promise<boolean>}
-     * TODO: unit tests
      */
     async validateOneServiceFromId(id) {
         const service = await this.findOneServiceFromId(id);
         const status = await _getPendingStatusId({});
         if (service && service.service_status_id === status.service_status_id) {
-            return await _updateServiceStatusFromId(id, true);
+            const status = await _getValidatedStatusId({});
+            return await ServiceService.update({service_status_id: status.service_status_id}, {id: id});
         }
     }
 }
@@ -168,21 +163,6 @@ const _getValidatedStatusId = async (obj) => {
     const status = await ServiceStatusController.findServiceStatusFromValue(ServiceStatusController.validatedStatus);
     obj.service_status_id = status.id;
     return obj;
-};
-
-/**
- * Update status of one service from id
- *
- * @param id {number}
- * @param validate {boolean}
- *
- * @returns {Promise<boolean>}
- *
- * @private
- */
-const _updateServiceStatusFromId = async (id, validate) => {
-    const status = validate ? await _getValidatedStatusId({}) : await _getRejectedStatusId({});
-    return await ServiceService.update({service_status_id: status.service_status_id}, {id: id});
 };
 
 module.exports = new ServiceController();
