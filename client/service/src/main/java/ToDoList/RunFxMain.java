@@ -1,24 +1,25 @@
-package fr.esgi.pa.alliodesk.ui;
+package ToDoList;
+
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class AlliodeskMainLayout extends Application {
+public class RunFxMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(Main.class.getResource("/AlliodeskLayout.fxml"));
+        ToDoController todo;
+        Parent root = FXMLLoader.load(getClass().getResource("/Todo.fxml"));
         Scene scene = new Scene (root);
-        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/AlliodeskLogo.png")));
-        primaryStage.setTitle("Alliodesk");
+        primaryStage.setTitle("ToDo");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     public static void main(String[] args) {
+
         launch(args);
     }
 }
