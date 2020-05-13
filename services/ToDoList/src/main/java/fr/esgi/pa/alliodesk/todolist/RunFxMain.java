@@ -11,7 +11,7 @@ public class RunFxMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/Todo.fxml"));
-        Scene scene = new Scene (root);
+        Scene scene = new Scene(root);
         primaryStage.setTitle("ToDo");
         primaryStage.setScene(scene);
         primaryStage.show();

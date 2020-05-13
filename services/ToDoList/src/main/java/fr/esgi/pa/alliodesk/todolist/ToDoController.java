@@ -1,4 +1,6 @@
 package fr.esgi.pa.alliodesk.todolist;
+
+import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,16 +11,26 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
 public class ToDoController {
-    @FXML
-    public void initialize(){
+    private static Gson gson = new Gson();
+    ObservableList<LocalEvent> list = FXCollections.observableArrayList();
+    private static LocalEvent[] todos = LocalEvent.todolistReadFromFile();
 
+    @FXML
+    public void initialize() {
         datePicker.setValue(LocalDate.now());
+
+        if (todos != null) {
+            list.addAll(todos);
+            eventList.setItems(list);
+        }
+
     }
 
     @FXML
@@ -30,10 +42,12 @@ public class ToDoController {
     @FXML
     private ListView<LocalEvent> eventList;
 
-    ObservableList<LocalEvent> list = FXCollections.observableArrayList();
+
     @FXML
     private void addEvent(ActionEvent event) {
-        list.add(new LocalEvent(descriptionTestField.getText(),datePicker.getValue()));
+        LocalEvent todo = new LocalEvent(descriptionTestField.getText(), datePicker.getValue());
+        list.add(todo);
+        LocalEvent.todolistWriteToFile(list);
         eventList.setItems(list);
         descriptionTestField.setText("");
     }
