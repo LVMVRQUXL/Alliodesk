@@ -10,7 +10,6 @@
     <version>0.0.0-SNAPSHOT</version>
     <modules>
         <module>ui</module>
-        <module>service</module>
     </modules>
 
     <properties>
