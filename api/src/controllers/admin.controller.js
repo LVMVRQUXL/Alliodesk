@@ -43,7 +43,7 @@ class AdminController {
      * @returns {Promise<UserDTO | null>}
      */
     async findOneAdminFromId(id) {
-        const admin = await UserService.findOne(await _getAdminStatusId({ id: id }));
+        const admin = await UserService.findOne(await _getAdminStatusId({id: id}));
         return !admin ? null : UserService.mapToDTO(admin);
     }
 
@@ -55,7 +55,7 @@ class AdminController {
      * @returns {Promise<UserDTO | null>}
      */
     async findOneAdminFromLogin(login) {
-        const admin = await UserService.findOne(await _getAdminStatusId({ login: login }));
+        const admin = await UserService.findOne(await _getAdminStatusId({login: login}));
         return !admin ? null : UserService.mapToDTO(admin);
     }
 
@@ -67,7 +67,19 @@ class AdminController {
      * @returns {Promise<UserDTO | null>}
      */
     async findOneAdminFromEmail(email) {
-        const admin = await UserService.findOne(await _getAdminStatusId({ email: email }));
+        const admin = await UserService.findOne(await _getAdminStatusId({email: email}));
+        return !admin ? null : UserService.mapToDTO(admin);
+    }
+
+    /**
+     * Find one administrator from token
+     *
+     * @param token {string}
+     *
+     * @returns {Promise<UserDTO | null>}
+     */
+    async findOneAdminFromToken(token) {
+        const admin = await UserService.findOne(await _getAdminStatusId({token_session: token}));
         return !admin ? null : UserService.mapToDTO(admin);
     }
 
@@ -80,11 +92,13 @@ class AdminController {
      * @returns {Promise<string | null>}
      */
     async loginOneAdmin(login, password) {
-        const admin = await UserService.findOne(await _getAdminStatusId({ login: login }));
+        const admin = await UserService.findOne(await _getAdminStatusId({login: login}));
         if (admin && !admin.token_session && SecurityUtil.hash(password) === admin.password) {
             const token = await SecurityUtil.randomToken();
-            const result = await UserService.update(admin.id, { token_session: token });
-            if (result) { return token; }
+            const result = await UserService.update(admin.id, {token_session: token});
+            if (result) {
+                return token;
+            }
         }
     }
 
@@ -97,9 +111,9 @@ class AdminController {
      * @returns {Promise<boolean | null>}
      */
     async logoutOneAdmin(id, token) {
-        const admin = await UserService.findOne(await _getAdminStatusId({ id: id }));
+        const admin = await UserService.findOne(await _getAdminStatusId({id: id}));
         if (admin && token === admin.token_session) {
-            return await UserService.update(id, { token_session: null });
+            return await UserService.update(id, {token_session: null});
         }
     }
 
@@ -111,8 +125,10 @@ class AdminController {
      * @returns {Promise<boolean>}
      */
     async removeAdminFromId(id) {
-        if (!await this.findOneAdminFromId(id)) { return false; }
-        return await UserService.destroy(await _getAdminStatusId({ id: id }));
+        if (!await this.findOneAdminFromId(id)) {
+            return false;
+        }
+        return await UserService.destroy(await _getAdminStatusId({id: id}));
     }
 
     /**
@@ -130,8 +146,10 @@ class AdminController {
         if (email && email !== "" && await this.findOneAdminFromEmail(email)) {
             return false;
         }
-        const admin = await UserService.findOne(await _getAdminStatusId({ id: id }));
-        if (!admin) { return false; }
+        const admin = await UserService.findOne(await _getAdminStatusId({id: id}));
+        if (!admin) {
+            return false;
+        }
         return await UserService.updateOneUser(admin, name, email, password);
     }
 }

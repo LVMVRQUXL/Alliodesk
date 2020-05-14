@@ -1,7 +1,7 @@
 const bodyParser = require('body-parser');
 
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
-const {ServiceStatusMiddleware, UserMiddleware} = require('../middlewares');
+const {AdminMiddleware, ServiceStatusMiddleware, UserMiddleware} = require('../middlewares');
 const ServiceController = require('../controllers').ServiceController;
 
 const routes = {
@@ -23,6 +23,8 @@ module.exports = (app) => {
      *     description: "Reject one service from id"
      *     tags:
      *       - Services
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: "Service's id"
@@ -31,14 +33,16 @@ module.exports = (app) => {
      *     responses:
      *       200:
      *         description: "Ok"
+     *       400:
+     *         description: "Invalid inputs"
+     *       401:
+     *         description: "Invalid administrator's token session"
      *       404:
      *         description: "Can't find service"
-     *       400:
-     *         description: "Invalid id"
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.ServicesIdReject, async (req, res) => {
+    app.put(routes.ServicesIdReject, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             if (!isNaN(serviceId)) {

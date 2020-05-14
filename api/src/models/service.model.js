@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         Service.belongsTo(models.User, {
             foreignKey: {
                 name: 'user_id',
-                allowNull: false // TODO: put false when managing rights!
+                allowNull: false
             }
         });
         Service.belongsTo(models.Service_status, {
