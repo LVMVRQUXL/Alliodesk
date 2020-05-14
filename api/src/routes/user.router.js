@@ -65,9 +65,51 @@ module.exports = (app) => {
         }
     });
 
-    // TODO: GET '/users/:id/services/:service_id' ===> Get a service of one user from id
-    app.get(routes.UsersIdServicesService_id, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     *
+     * '/users/{id}/services/{service_id}':
+     *   get:
+     *     description: Get a service of one user from id
+     *     tags:
+     *       - Users
+     *     parameters:
+     *       - name: id
+     *         description: User's id
+     *         in: path
+     *         required: true
+     *       - name: service_id
+     *         description: Service's id
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid user id or service id
+     *       404:
+     *         description: Can't find user or service from id
+     *       500:
+     *         description: An internal error has occurred
+     */
+    app.get(routes.UsersIdServicesService_id, async (req, res) => { // TODO: add rights
+        try {
+            const userId = parseInt(req.params.id);
+            const serviceId = parseInt(req.params.service_id);
+            if (!isNaN(userId) && !isNaN(serviceId)) {
+                const service = await UserController.findOneServiceOfOneUserFromId(userId, serviceId);
+                if (service) {
+                    res.status(HttpCodeUtil.OK).json(service);
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     // TODO: DELETE '/users/:id/services/:service_id' ===> Remove a service of one user from id
