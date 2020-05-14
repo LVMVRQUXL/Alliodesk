@@ -23,7 +23,7 @@ module.exports = (app) => {
      *   put:
      *     description: "Login one administrator"
      *     tags:
-     *       - admins
+     *       - Administrators
      *     parameters:
      *       - name: login
      *         description: "Administrator's login"
@@ -70,7 +70,7 @@ module.exports = (app) => {
      *   put:
      *     description: "Logout one administrator from id"
      *     tags:
-     *       - admins
+     *       - Administrators
      *     security:
      *       - bearerToken: []
      *     parameters:
@@ -115,7 +115,7 @@ module.exports = (app) => {
      *   get:
      *     description: "Get one administrator from id"
      *     tags:
-     *       - admins
+     *       - Administrators
      *     produces:
      *       - application/json
      *     parameters:
@@ -159,7 +159,7 @@ module.exports = (app) => {
      *   delete:
      *     description: "Delete one administrator from id"
      *     tags:
-     *       - admins
+     *       - Administrators
      *     parameters:
      *       - name: id
      *         description: "Administrator's id"
@@ -201,7 +201,7 @@ module.exports = (app) => {
      *   put:
      *     description: "Update one administrator from id"
      *     tags:
-     *       - admins
+     *       - Administrators
      *     parameters:
      *       - name: id
      *         description: "Administrator's id"
@@ -260,7 +260,7 @@ module.exports = (app) => {
      *   get:
      *     description: "Get all administrators"
      *     tags:
-     *       - admins
+     *       - Administrators
      *     produces:
      *       - application/json
      *     responses:
@@ -292,7 +292,7 @@ module.exports = (app) => {
      *   post:
      *     description: "Create one administrator"
      *     tags:
-     *       - admins
+     *       - Administrators
      *     produces:
      *       - application/json
      *     parameters:

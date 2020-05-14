@@ -6,5 +6,5 @@ module.exports = (app) => {
     require('./service.router')(app);
     require('./user.router')(app);
 
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(SwaggerSpec));
+    app.use('/swagger', swaggerUi.serve, swaggerUi.setup(SwaggerSpec));
 };

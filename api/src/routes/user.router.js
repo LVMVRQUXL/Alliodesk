@@ -23,7 +23,7 @@ module.exports = (app) => {
      *   put:
      *     description: "Login one user"
      *     tags:
-     *       - users
+     *       - Users
      *     parameters:
      *       - name: login
      *         description: "User's login"
@@ -65,7 +65,7 @@ module.exports = (app) => {
      *   put:
      *     description: "Logout one user from id"
      *     tags:
-     *       - users
+     *       - Users
      *     security:
      *       - bearerToken: []
      *     parameters:
@@ -105,7 +105,7 @@ module.exports = (app) => {
      *   delete:
      *     description: "Delete one user from id"
      *     tags:
-     *       - users
+     *       - Users
      *     parameters:
      *       - name: id
      *         description: "User's id"
@@ -142,7 +142,7 @@ module.exports = (app) => {
      *   get:
      *     description: "Get one user from id"
      *     tags:
-     *       - users
+     *       - Users
      *     produces:
      *       - application/json
      *     parameters:
@@ -181,7 +181,7 @@ module.exports = (app) => {
      *   put:
      *     description: "Update one user from id"
      *     tags:
-     *       - users
+     *       - Users
      *     parameters:
      *       - name: id
      *         description: "User's id"
@@ -233,7 +233,7 @@ module.exports = (app) => {
      *   get:
      *     description: "Get all users"
      *     tags:
-     *       - users
+     *       - Users
      *     produces:
      *       - application/json
      *     responses:
@@ -262,7 +262,7 @@ module.exports = (app) => {
      *   post:
      *     description: "Create one user"
      *     tags:
-     *       - users
+     *       - Users
      *     produces:
      *       - application/json
      *     parameters:
