@@ -14,7 +14,6 @@
 
     <properties>
         <java.version>11</java.version>
-<!--        <java.mainClass>fr.esgi.alliodesk.service.Main</java.mainClass> -->
 
         <javafx.version>${java.version}</javafx.version>
 
@@ -61,7 +60,6 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-<!--                                    <mainClass>${java.mainClass}</mainClass> -->
                                 </transformer>
                             </transformers>
                         </configuration>
