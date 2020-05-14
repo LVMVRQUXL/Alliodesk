@@ -15,14 +15,16 @@ class ServiceController {
      */
     async createService(name, version, sourceUrl, userToken) {
         const user = await UserController.findOneUserFromToken(userToken);
-        if (user) {
-            return await ServiceService.create(await _getPendingStatusId({
-                name: name,
-                version: version,
-                source_url: sourceUrl,
-                user_id: user.id
-            }));
+        if (!user) {
+            return false;
         }
+        return await ServiceService.create(await _getPendingStatusId({
+            name: name,
+            version: version,
+            source_url: sourceUrl,
+            user_id: user.id
+        }));
+
     }
 
     /**
