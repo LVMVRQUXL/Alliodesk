@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<SplitPane dividerPositions="0.25092250922509224" orientation="VERTICAL" prefHeight="273.0" prefWidth="714.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.todolist.ToDoController">
+   <items>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="710.0">
+         <children>
+            <Button fx:id="addButton" layoutX="34.0" layoutY="20.0" mnemonicParsing="false" onAction="#addEvent" text="Add ">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+            </Button>
+            <DatePicker fx:id="datePicker" layoutX="141.0" layoutY="20.0" prefHeight="25.0" prefWidth="120.0" />
+            <TextField fx:id="descriptionTestField" layoutX="314.0" layoutY="21.0" prefHeight="25.0" prefWidth="332.0" promptText="Add ToDo description..." />
+            <Separator layoutX="281.0" layoutY="4.0" orientation="VERTICAL" prefHeight="59.0" prefWidth="5.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="281.0" AnchorPane.topAnchor="4.0" />
+            <Separator layoutX="118.0" orientation="VERTICAL" prefHeight="65.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="118.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <ListView fx:id="eventList" prefHeight="200.0" prefWidth="551.0" />
+   </items>
+</SplitPane>
