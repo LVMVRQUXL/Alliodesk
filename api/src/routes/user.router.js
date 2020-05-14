@@ -2,7 +2,7 @@ const bodyParser = require('body-parser');
 const emailValidator = require('email-validator');
 
 const UserController = require('../controllers').UserController;
-const UserStatusMiddleware = require('../middlewares').UserStatusMiddleware;
+const {UserStatusMiddleware, UserMiddleware} = require('../middlewares');
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 
 const routes = {
@@ -66,14 +66,12 @@ module.exports = (app) => {
      *     description: "Logout one user from id"
      *     tags:
      *       - users
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: "User's id"
      *         in: path
-     *         required: true
-     *       - name: token_session
-     *         description: "User's token session"
-     *         in: body
      *         required: true
      *     responses:
      *       200:
@@ -85,10 +83,10 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.UsersIdLogout, bodyParser.json(), async (req, res) => {
+    app.put(routes.UsersIdLogout, async (req, res) => {
         try {
             const userId = parseInt(req.params.id);
-            const userTokenSession = req.body.token_session;
+            const userTokenSession = UserMiddleware.extractTokenFromHeaders(req.headers);
             if (!isNaN(userId) && userTokenSession && userTokenSession !== "") {
                 const result = await UserController.logoutOneUser(userId, userTokenSession);
                 if (result) { res.status(HttpCodeUtil.OK).end(); }
