@@ -7,6 +7,8 @@ const HttpCodeUtil = require('../utils').HttpCodeUtil;
 
 const routes = {
     UsersLogin: '/users/login',
+    UsersIdServicesService_id: '/users/:id/services/:service_id',
+    UsersIdServices: '/users/:id/services',
     UsersIdLogout: '/users/:id/logout',
     UsersId: '/users/:id',
     Users: '/users'
@@ -49,13 +51,38 @@ module.exports = (app) => {
             const userPassword = req.body.password;
             if (userLogin && userLogin !== "" && userPassword && userPassword !== "") {
                 const token = await UserController.loginOneUser(userLogin, userPassword);
-                if (token) { res.status(HttpCodeUtil.OK).json({ token_session: token }); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (token) {
+                    res.status(HttpCodeUtil.OK).json({token_session: token});
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
         }
+    });
+
+    // TODO: GET '/users/:id/services/:service_id' ===> Get a service of one user from id
+    app.get(routes.UsersIdServicesService_id, async (req, res) => {
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    });
+
+    // TODO: POST '/users/:id/services/:service_id' ===> Add a service in one user's account from id
+    app.post(routes.UsersIdServicesService_id, async (req, res) => {
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    });
+
+    // TODO: DELETE '/users/:id/services/:service_id' ===> Remove a service of one user from id
+    app.delete(routes.UsersIdServicesService_id, async (req, res) => {
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    });
+
+    // TODO: GET '/users/:id/services' ===> Get all services of one user from id
+    app.get(routes.UsersIdServices, async (req, res) => {
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
     /**
@@ -89,9 +116,14 @@ module.exports = (app) => {
             const userTokenSession = UserMiddleware.extractTokenFromHeaders(req.headers);
             if (!isNaN(userId) && userTokenSession && userTokenSession !== "") {
                 const result = await UserController.logoutOneUser(userId, userTokenSession);
-                if (result) { res.status(HttpCodeUtil.OK).end(); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -126,9 +158,14 @@ module.exports = (app) => {
             const userId = parseInt(req.params.id);
             if (!isNaN(userId)) {
                 const result = await UserController.removeUserFromId(userId);
-                if (result) { res.status(HttpCodeUtil.OK).end(); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -165,9 +202,14 @@ module.exports = (app) => {
             const userId = parseInt(req.params.id);
             if (!isNaN(userId)) {
                 const user = await UserController.findOneUserFromId(userId);
-                if (user) { res.status(HttpCodeUtil.OK).json(user); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (user) {
+                    res.status(HttpCodeUtil.OK).json(user);
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -217,9 +259,14 @@ module.exports = (app) => {
                     || emailValidator.validate(userEmail)
                     || (userPassword && userPassword !== ""))) {
                 const result = await UserController.updateUserInfosFromId(userId, userName, userEmail, userPassword);
-                if (result) { res.status(HttpCodeUtil.OK).end(); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -247,8 +294,11 @@ module.exports = (app) => {
     app.get(routes.Users, async (req, res) => {
         try {
             const users = await UserController.findAllUsers();
-            if (users.length > 0) { res.status(HttpCodeUtil.OK).json(users); }
-            else { res.status(HttpCodeUtil.NO_CONTENT).end(); }
+            if (users.length > 0) {
+                res.status(HttpCodeUtil.OK).json(users);
+            } else {
+                res.status(HttpCodeUtil.NO_CONTENT).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -303,9 +353,14 @@ module.exports = (app) => {
                 && userLogin && userLogin !== ""
                 && userPassword && userPassword !== "") {
                 const result = await UserController.createUser(userName, userEmail, userLogin, userPassword);
-                if (result) { res.status(HttpCodeUtil.CREATED).end(); }
-                else { res.status(HttpCodeUtil.CONFLICT).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.CREATED).end();
+                } else {
+                    res.status(HttpCodeUtil.CONFLICT).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
