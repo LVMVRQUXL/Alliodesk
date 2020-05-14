@@ -176,6 +176,24 @@ class UserController {
     }
 
     /**
+     * Remove a service of one user from id
+     *
+     * @param userId {number}
+     * @param serviceId {number}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async removeServiceOfOneUserFromId(userId, serviceId) {
+        const user = await UserService.findOne(await _getUserStatusId({id: userId}));
+        const service = await this.findOneServiceOfOneUserFromId(userId, serviceId);
+        if (!user || !service) {
+            return false;
+        }
+        await user.removeService(serviceId);
+        return true;
+    }
+
+    /**
      * Remove one user from id
      *
      * @param id {number}
