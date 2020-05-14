@@ -81,9 +81,9 @@ class UserController {
      * @param userId {number}
      * @param serviceId {number}
      *
-     * @returns {Promise<ServiceDTO|null>}
+     * @returns {Promise<ServiceDTO[]|undefined>}
      */
-    async findOneServiceOfOneUserFromId(userId, serviceId) { // TODO: unit tests
+    async findOneServiceOfOneUserFromId(userId, serviceId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
         if (user) {
             const services = await user.getServices({
@@ -183,7 +183,7 @@ class UserController {
      *
      * @returns {Promise<boolean>}
      */
-    async removeServiceOfOneUserFromId(userId, serviceId) {
+    async removeServiceOfOneUserFromId(userId, serviceId) { // TODO: unit tests
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
         const service = await this.findOneServiceOfOneUserFromId(userId, serviceId);
         if (!user || !service) {

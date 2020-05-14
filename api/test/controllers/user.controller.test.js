@@ -293,6 +293,59 @@ module.exports = () => {
             });
         });
 
+        describe('#findOneServiceOfOneUserFromId(userId, serviceId)', () => {
+            afterEach(() => MockDependencies.Services.UserService.findOne.resetHistory());
+
+            const _setupUserServiceFindOne = (user) => MockDependencies.Services.UserService.findOne.resolves(user);
+            const _call = async () => await UserController.findOneServiceOfOneUserFromId(fakeUser.id, fakeService.id);
+
+            it('should return a singleton list of services with valid inputs', async () => {
+                // SETUP
+                fakeUser.getServices = sinon.stub();
+                fakeUser.getServices.resolves([fakeService]);
+                _setupUserServiceFindOne(fakeUser);
+                MockDependencies.Services.ServiceService.mapToDTO.returns(fakeService);
+
+                // CALL
+                const services = await _call();
+
+                // VERIFY
+                assert.equal(services.length, 1);
+                assert.deepEqual(services[0], fakeService);
+
+                // TEARDOWN
+                fakeUser.getServices.resetHistory();
+                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
+            });
+
+            it('should return undefined with invalid user id', async () => {
+                // SETUP
+                _setupUserServiceFindOne();
+
+                // CALL
+                const services = await _call();
+
+                // VERIFY
+                assert.equal(services, undefined);
+            });
+
+            it('should return an empty list with invalid service id', async () => {
+                // SETUP
+                fakeUser.getServices = sinon.stub();
+                fakeUser.getServices.resolves([]);
+                _setupUserServiceFindOne(fakeUser);
+
+                // CALL
+                const services = await _call();
+
+                // VERIFY
+                assert.equal(services.length, 0);
+
+                // TEARDOWN
+                fakeUser.getServices.resetHistory();
+            });
+        });
+
         describe('#findOneUserFromId(id)', () => {
             afterEach(() => MockDependencies.Services.UserService.findOne.resetHistory());
 
