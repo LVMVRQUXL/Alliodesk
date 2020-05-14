@@ -183,7 +183,7 @@ class UserController {
      *
      * @returns {Promise<boolean>}
      */
-    async removeServiceOfOneUserFromId(userId, serviceId) { // TODO: unit tests
+    async removeServiceOfOneUserFromId(userId, serviceId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
         const service = await this.findOneServiceOfOneUserFromId(userId, serviceId);
         if (!user || !service) {

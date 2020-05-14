@@ -494,6 +494,60 @@ module.exports = () => {
             });
         });
 
+        describe('#removeServiceOfOneUserFromId(userId, serviceId)', () => {
+            afterEach(() => {
+                MockDependencies.Services.UserService.findOne.resetHistory();
+                UserController.findOneServiceOfOneUserFromId.resetHistory();
+            });
+
+            const _setupUserServiceFindOne = (user) => MockDependencies.Services.UserService.findOne.resolves(user);
+            const _call = async () => await UserController.removeServiceOfOneUserFromId(fakeUser.id, fakeService.id);
+
+            it('should return true with valid inputs', async () => {
+                // SETUP
+                fakeUser.removeService = sinon.stub();
+                fakeUser.removeService.resolves();
+                _setupUserServiceFindOne(fakeUser);
+                UserController.findOneServiceOfOneUserFromId = sinon.stub();
+                UserController.findOneServiceOfOneUserFromId.resolves(fakeService);
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, true);
+
+                // TEARDOWN
+                fakeUser.removeService.resetHistory();
+            });
+
+            it('should return false with invalid user id', async () => {
+                // SETUP
+                _setupUserServiceFindOne();
+                UserController.findOneServiceOfOneUserFromId = sinon.stub();
+                UserController.findOneServiceOfOneUserFromId.resolves(fakeService);
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, false);
+            });
+
+            it('should return false with invalid service id', async () => {
+                // SETUP
+                _setupUserServiceFindOne(fakeUser);
+                UserController.findOneServiceOfOneUserFromId = sinon.stub();
+                UserController.findOneServiceOfOneUserFromId.resolves();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, false);
+            });
+        });
+
         describe('#removeUserFromId(id)', () => {
             afterEach(() => MockDependencies.Services.UserService.findOne.resetHistory());
 
