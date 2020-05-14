@@ -1,7 +1,7 @@
 const bodyParser = require('body-parser');
 const emailValidator = require('email-validator');
 
-const UserStatusMiddleware = require('../middlewares').UserStatusMiddleware;
+const {UserMiddleware, UserStatusMiddleware} = require('../middlewares');
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 const AdminController = require('../controllers').AdminController;
 
@@ -49,9 +49,14 @@ module.exports = (app) => {
             const adminPassword = req.body.password;
             if (adminLogin && adminLogin !== "" && adminPassword && adminPassword !== "") {
                 const token = await AdminController.loginOneAdmin(adminLogin, adminPassword);
-                if (token) { res.status(HttpCodeUtil.OK).json({ token_session: token }); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (token) {
+                    res.status(HttpCodeUtil.OK).json({token_session: token});
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -66,14 +71,12 @@ module.exports = (app) => {
      *     description: "Logout one administrator from id"
      *     tags:
      *       - admins
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: "Administrator's id"
      *         in: path
-     *         required: true
-     *       - name: token_session
-     *         description: "Administrator's token session"
-     *         in: body
      *         required: true
      *     responses:
      *       200:
@@ -88,12 +91,17 @@ module.exports = (app) => {
     app.put(routes.AdminsIdLogout, bodyParser.json(), async (req, res) => {
         try {
             const adminId = parseInt(req.params.id);
-            const adminTokenSession = req.body.token_session;
+            const adminTokenSession = UserMiddleware.extractTokenFromHeaders(req.headers);
             if (!isNaN(adminId) && adminTokenSession && adminTokenSession !== "") {
                 const result = await AdminController.logoutOneAdmin(adminId, adminTokenSession);
-                if (result) { res.status(HttpCodeUtil.OK).end(); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -130,9 +138,14 @@ module.exports = (app) => {
             const adminId = parseInt(req.params.id);
             if (!isNaN(adminId)) {
                 const admin = await AdminController.findOneAdminFromId(adminId);
-                if (admin) { res.status(HttpCodeUtil.OK).json(admin); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (admin) {
+                    res.status(HttpCodeUtil.OK).json(admin);
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -167,9 +180,14 @@ module.exports = (app) => {
             const adminId = parseInt(req.params.id);
             if (!isNaN(adminId)) {
                 const result = await AdminController.removeAdminFromId(adminId);
-                if (result) { res.status(HttpCodeUtil.OK).end(); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -221,9 +239,14 @@ module.exports = (app) => {
                 const result = await AdminController.updateAdminInfosFromId(
                     adminId, adminName, adminEmail, adminPassword
                 );
-                if (result) { res.status(HttpCodeUtil.OK).end(); }
-                else { res.status(HttpCodeUtil.NOT_FOUND).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -251,8 +274,11 @@ module.exports = (app) => {
     app.get(routes.Admins, async (req, res) => {
         try {
             const admins = await AdminController.findAllAdmins();
-            if (admins.length > 0) { res.status(HttpCodeUtil.OK).json(admins); }
-            else { res.status(HttpCodeUtil.NO_CONTENT).end(); }
+            if (admins.length > 0) {
+                res.status(HttpCodeUtil.OK).json(admins);
+            } else {
+                res.status(HttpCodeUtil.NO_CONTENT).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -307,9 +333,14 @@ module.exports = (app) => {
                 && adminLogin && adminLogin !== ""
                 && adminPassword && adminPassword !== "") {
                 const result = await AdminController.createAdmin(adminName, adminEmail, adminLogin, adminPassword);
-                if (result) { res.status(HttpCodeUtil.CREATED).end(); }
-                else { res.status(HttpCodeUtil.CONFLICT).end(); }
-            } else { res.status(HttpCodeUtil.BAD_REQUEST).end(); }
+                if (result) {
+                    res.status(HttpCodeUtil.CREATED).end();
+                } else {
+                    res.status(HttpCodeUtil.CONFLICT).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
         } catch (e) {
             console.error(e);
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
