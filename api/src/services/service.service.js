@@ -49,7 +49,7 @@ class ServiceService {
      *
      * @param where {object}
      *
-     * @returns {Promise<Service>}
+     * @returns {Promise<Service|null>}
      */
     async findOne(where) {
         return Service.findOne({where: where})

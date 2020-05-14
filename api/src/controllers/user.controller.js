@@ -1,8 +1,33 @@
 const {ServiceService, UserService} = require('../services');
 const UserStatusController = require('./user_status.controller');
+const ServiceStatusController = require('./service_status.controller');
 const SecurityUtil = require('../utils').SecurityUtil;
 
 class UserController {
+    /**
+     * Add a service in one user's account from id
+     *
+     * @param userId {number}
+     * @param serviceId {number}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async addServiceInOneUserAccountFromId(userId, serviceId) { // TODO: unit tests
+        const user = await UserService.findOne(await _getUserStatusId({id: userId}));
+        const status = await ServiceStatusController.findServiceStatusFromValue(
+            ServiceStatusController.validatedStatus
+        );
+        const service = await ServiceService.findOne({
+            id: serviceId,
+            service_status_id: status.id
+        });
+        if (!user || !service) {
+            return false;
+        }
+        await user.addService(serviceId);
+        return true;
+    }
+
     /**
      * Create a new user
      *
