@@ -1,5 +1,6 @@
 const ServiceService = require('../services').ServiceService;
 const ServiceStatusController = require('./service_status.controller');
+const UserController = require('./user.controller');
 
 class ServiceController {
     /**
@@ -8,15 +9,20 @@ class ServiceController {
      * @param name {string}
      * @param version {string}
      * @param sourceUrl {string}
+     * @param userToken {string}
      *
      * @returns {Promise<boolean>}
      */
-    async createService(name, version, sourceUrl) {
-        return await ServiceService.create(await _getPendingStatusId({
-            name: name,
-            version: version,
-            source_url: sourceUrl
-        }));
+    async createService(name, version, sourceUrl, userToken) {
+        const user = await UserController.findOneUserFromToken(userToken);
+        if (user) {
+            return await ServiceService.create(await _getPendingStatusId({
+                name: name,
+                version: version,
+                source_url: sourceUrl,
+                user_id: user.id
+            }));
+        }
     }
 
     /**

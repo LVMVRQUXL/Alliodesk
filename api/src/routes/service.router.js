@@ -1,7 +1,7 @@
 const bodyParser = require('body-parser');
 
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
-const ServiceStatusMiddleware = require('../middlewares').ServiceStatusMiddleware;
+const {ServiceStatusMiddleware, UserMiddleware} = require('../middlewares');
 const ServiceController = require('../controllers').ServiceController;
 
 const routes = {
@@ -284,6 +284,8 @@ module.exports = (app) => {
      *     description: "Create a new service with pending status"
      *     tags:
      *       - Services
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: name
      *         description: "Service's name"
@@ -302,6 +304,8 @@ module.exports = (app) => {
      *         description: "New service created"
      *       400:
      *         description: "Invalid input(s)"
+     *       401:
+     *         description: "Invalid user's token session"
      *       500:
      *         description: "An internal error has occurred"
      */
@@ -310,12 +314,18 @@ module.exports = (app) => {
             const serviceName = req.body.name;
             const serviceVersion = req.body.version;
             const serviceSourceUrl = req.body.source_url;
+            const userToken = UserMiddleware.extractTokenFromHeaders(req.headers);
             if (serviceName && serviceName !== ""
                 && serviceVersion && serviceVersion !== ""
-                && serviceSourceUrl && serviceSourceUrl !== "") {
-                const result = await ServiceController.createService(serviceName, serviceVersion, serviceSourceUrl);
+                && serviceSourceUrl && serviceSourceUrl !== ""
+                && userToken && userToken !== "") {
+                const result = await ServiceController.createService(
+                    serviceName, serviceVersion, serviceSourceUrl, userToken
+                );
                 if (result) {
                     res.status(HttpCodeUtil.CREATED).end();
+                } else {
+                    res.status(HttpCodeUtil.UNAUTHORIZED).end();
                 }
             } else {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();
