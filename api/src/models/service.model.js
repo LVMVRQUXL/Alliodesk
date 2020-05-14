@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        tag: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
         source_url: {
             type: DataTypes.STRING,
             allowNull: false
@@ -32,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         Service.belongsTo(models.User, {
             foreignKey: {
                 name: 'user_id',
-                allowNull: false
+                allowNull: true // TODO: put false when managing rights!
             }
         });
         Service.belongsTo(models.Service_status, {
@@ -46,8 +42,8 @@ module.exports = (sequelize, DataTypes) => {
         Service.hasMany(models.Log);
         Service.hasMany(models.Feedback);
 
-        Service.belongsToMany(models.User, { through: 'User_has_Service' });
-        Service.belongsToMany(models.Workspace, { through: 'Workspace_contains_Service' });
+        Service.belongsToMany(models.User, {through: 'User_has_Service'});
+        Service.belongsToMany(models.Workspace, {through: 'Workspace_contains_Service'});
     };
 
     return Service;
