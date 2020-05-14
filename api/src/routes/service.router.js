@@ -18,7 +18,7 @@ module.exports = (app) => {
     /**
      * @swagger
      *
-     * '/services/:id/reject':
+     * '/services/{id}/reject':
      *   put:
      *     description: "Reject one service from id"
      *     tags:
@@ -64,11 +64,13 @@ module.exports = (app) => {
     /**
      * @swagger
      *
-     * '/services/:id/validate':
+     * '/services/{id}/validate':
      *   put:
      *     description: "Validate one service from id"
      *     tags:
      *       - Services
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: "Service's id"
@@ -77,14 +79,16 @@ module.exports = (app) => {
      *     responses:
      *       200:
      *         description: "Ok"
-     *       404:
-     *         description: "Can't find service"
      *       400:
      *         description: "Invalid id"
+     *       401:
+     *         description: "Invalid administrator's token session"
+     *       404:
+     *         description: "Can't find service"
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.ServicesIdValidate, async (req, res) => {
+    app.put(routes.ServicesIdValidate, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             if (!isNaN(serviceId)) {
@@ -106,7 +110,7 @@ module.exports = (app) => {
     /**
      * @swagger
      *
-     * '/services/:id':
+     * '/services/{id}':
      *   get:
      *     description: "Get one service from id"
      *     tags:
@@ -150,11 +154,13 @@ module.exports = (app) => {
     /**
      * @swagger
      *
-     * '/services/:id':
+     * '/services/{id}':
      *   delete:
      *     description: "Remove one service from id"
      *     tags:
      *       - Services
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: "Service's id"
@@ -163,14 +169,16 @@ module.exports = (app) => {
      *     responses:
      *       200:
      *         description: "Ok"
-     *       404:
-     *         description: "Can't find service"
      *       400:
      *         description: "Invalid id"
+     *       401:
+     *         description: "Invalid administrator's token session"
+     *       404:
+     *         description: "Can't find service"
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.delete(routes.ServicesId, async (req, res) => {
+    app.delete(routes.ServicesId, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             if (!isNaN(serviceId)) {
@@ -192,11 +200,13 @@ module.exports = (app) => {
     /**
      * @swagger
      *
-     * '/services/:id':
+     * '/services/{id}':
      *   put:
      *     description: "Update one service from id"
      *     tags:
      *       - Services
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: "Service's id"
@@ -214,14 +224,16 @@ module.exports = (app) => {
      *     responses:
      *       200:
      *         description: "Ok"
-     *       404:
-     *         description: "Can't find service"
      *       400:
      *         description: "Invalid inputs"
+     *       401:
+     *         description: "Invalid administrator's token session"
+     *       404:
+     *         description: "Can't find service"
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.ServicesId, bodyParser.json(), async (req, res) => {
+    app.put(routes.ServicesId, AdminMiddleware.checkIfIsAdminFromToken(), bodyParser.json(), async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             const serviceName = req.body.name;
