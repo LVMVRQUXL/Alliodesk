@@ -80,9 +80,48 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
-    // TODO: GET '/users/:id/services' ===> Get all services of one user from id
-    app.get(routes.UsersIdServices, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     *
+     * '/users/{id}/services':
+     *   get:
+     *     description: Get all services of one user from id
+     *     parameters:
+     *       - name: id
+     *         description: User's id
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       204:
+     *         description: No services to return
+     *       400:
+     *         description: Invalid id
+     *       404:
+     *         description: Can't find user from id
+     *       500:
+     *         description: An internal error has occurred
+     */
+    app.get(routes.UsersIdServices, async (req, res) => { // TODO: add rights
+        try {
+            const userId = parseInt(req.params.id);
+            if (!isNaN(userId)) {
+                const services = await UserController.findAllServicesOfOneUserFromId(userId);
+                if (services && services.length > 0) {
+                    res.status(HttpCodeUtil.OK).json(services);
+                } else if (services) {
+                    res.status(HttpCodeUtil.NO_CONTENT).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**

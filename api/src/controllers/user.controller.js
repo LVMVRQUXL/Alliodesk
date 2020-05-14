@@ -1,4 +1,4 @@
-const UserService = require('../services').UserService;
+const {ServiceService, UserService} = require('../services');
 const UserStatusController = require('./user_status.controller');
 const SecurityUtil = require('../utils').SecurityUtil;
 
@@ -81,6 +81,21 @@ class UserController {
     async findOneUserFromToken(token) {
         const user = await UserService.findOne({token_session: token});
         return !user ? null : UserService.mapToDTO(user);
+    }
+
+    /**
+     * Find all services of one user from id
+     *
+     * @param userId {number}
+     *
+     * @returns {Promise<ServiceDTO[]>}
+     */
+    async findAllServicesOfOneUserFromId(userId) { // TODO: unit tests
+        const user = await UserService.findOne(await _getUserStatusId({id: userId}));
+        if (user) {
+            const services = await user.getServices();
+            return services.map(service => ServiceService.mapToDTO(service));
+        }
     }
 
     /**
