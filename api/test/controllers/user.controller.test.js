@@ -1,4 +1,4 @@
-const {describe, it, before, afterEach, after} = require('mocha');
+const {describe, it, before, beforeEach, afterEach, after} = require('mocha');
 const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
@@ -10,6 +10,10 @@ module.exports = () => {
     describe('UserController tests', () => {
         const MockDependencies = {
             Services: {
+                ServiceService: {
+                    findOne: sinon.stub(),
+                    mapToDTO: sinon.stub()
+                },
                 UserService: {
                     create: sinon.stub(),
                     destroy: sinon.stub(),
@@ -20,6 +24,10 @@ module.exports = () => {
                     updateOneUser: sinon.stub()
                 }
             },
+            ServiceStatusController: {
+                findServiceStatusFromValue: sinon.stub(),
+                validatedStatus: 'validated'
+            },
             UserStatusController: {
                 userValue: 'user',
                 findUserStatusFromName: sinon.stub()
@@ -28,6 +36,7 @@ module.exports = () => {
 
         const UserController = proxyquire('../../src/controllers/user.controller', {
             '../services': MockDependencies.Services,
+            './service_status.controller': MockDependencies.ServiceStatusController,
             './user_status.controller': MockDependencies.UserStatusController
         });
 
@@ -47,6 +56,22 @@ module.exports = () => {
             email: userEmail,
             login: userLogin
         };
+        const fakeServiceId = 1;
+        const fakeServiceName = 'Test Service';
+        const fakeServiceVersion = '1.0.0';
+        const fakeServiceSource_url = 'https://www.google.fr';
+        const fakeServiceService_status_id = 1;
+        const fakeService = {
+            id: fakeServiceId,
+            name: fakeServiceName,
+            version: fakeServiceVersion,
+            source_url: fakeServiceSource_url,
+            service_status_id: fakeServiceService_status_id
+        };
+        const fakeServiceStatusValidated = {
+            id: fakeServiceService_status_id,
+            status: MockDependencies.ServiceStatusController.validatedStatus
+        };
 
         before(() => {
             // SETUP
@@ -56,6 +81,68 @@ module.exports = () => {
         after(() => {
             // TEARDOWN
             MockDependencies.UserStatusController.findUserStatusFromName.resetHistory();
+        });
+
+        describe('#addServiceInOneUserAccountFromId(userId, serviceId)', () => {
+            beforeEach(() => {
+                MockDependencies.ServiceStatusController.findServiceStatusFromValue.resolves(
+                    fakeServiceStatusValidated
+                );
+            });
+            afterEach(() => {
+                MockDependencies.Services.UserService.findOne.resetHistory();
+                MockDependencies.ServiceStatusController.findServiceStatusFromValue.resetHistory();
+                MockDependencies.Services.ServiceService.findOne.resetHistory();
+            });
+
+            const _setupUserServiceFindOne = (user) => MockDependencies.Services.UserService.findOne.resolves(user);
+            const _setupServiceServiceFindOne = (service) => {
+                MockDependencies.Services.ServiceService.findOne.resolves(service);
+            };
+            const _call = async () => {
+                return await UserController.addServiceInOneUserAccountFromId(fakeUser.id, fakeService.id);
+            };
+
+            it('should return true with valid inputs', async () => {
+                // SETUP
+                fakeUser.addService = sinon.stub();
+                fakeUser.addService.returns();
+                _setupUserServiceFindOne(fakeUser);
+                _setupServiceServiceFindOne(fakeService);
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, true);
+
+                // TEARDOWN
+                fakeUser.addService.resetHistory();
+            });
+
+            it('should return false with invalid user id', async () => {
+                // SETUP
+                _setupUserServiceFindOne();
+                _setupServiceServiceFindOne(fakeService);
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, false);
+            });
+
+            it('should return false with invalid service id', async () => {
+                // SETUP
+                _setupUserServiceFindOne(fakeUser);
+                _setupServiceServiceFindOne();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, false);
+            });
         });
 
         describe('#createUser(name, email, login, password)', () => {

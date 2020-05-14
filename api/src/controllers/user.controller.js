@@ -12,7 +12,7 @@ class UserController {
      *
      * @returns {Promise<boolean>}
      */
-    async addServiceInOneUserAccountFromId(userId, serviceId) { // TODO: unit tests
+    async addServiceInOneUserAccountFromId(userId, serviceId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
         const status = await ServiceStatusController.findServiceStatusFromValue(
             ServiceStatusController.validatedStatus
