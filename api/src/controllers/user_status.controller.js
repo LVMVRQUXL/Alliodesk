@@ -1,26 +1,35 @@
-const {User_status} = require('../models');
+const UserStatusService = require('../services').UserStatusService;
 
 const adminValue = 'admin';
 const userValue = 'user';
 
 class UserStatusController {
 
-    get adminValue() { return adminValue; }
-    get userValue() { return userValue; }
+    get adminValue() {
+        return adminValue;
+    }
+
+    get userValue() {
+        return userValue;
+    }
 
     /**
      * Create one status for admins
      *
      * @returns {Promise<void>}
      */
-    async createStatusForAdmins() { await User_status.create({status: adminValue}); }
+    async createStatusForAdmins() {
+        await UserStatusService.create(adminValue);
+    }
 
     /**
      * Create one status for users
      *
      * @returns {Promise<void>}
      */
-    async createStatusForUsers() { await User_status.create({status: userValue}); }
+    async createStatusForUsers() {
+        await UserStatusService.create(userValue);
+    }
 
     /**
      * Find one user status from status
@@ -30,11 +39,7 @@ class UserStatusController {
      * @returns {Promise<User_status | null>}
      */
     async findUserStatusFromName(status) {
-        return await User_status.findOne({
-            where: {
-                status: status
-            }
-        });
+        return await UserStatusService.findOneFromStatus(status);
     }
 
 }
