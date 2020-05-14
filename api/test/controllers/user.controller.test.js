@@ -106,7 +106,7 @@ module.exports = () => {
             it('should return true with valid inputs', async () => {
                 // SETUP
                 fakeUser.addService = sinon.stub();
-                fakeUser.addService.returns();
+                fakeUser.addService.resolves();
                 _setupUserServiceFindOne(fakeUser);
                 _setupServiceServiceFindOne(fakeService);
 
@@ -201,6 +201,59 @@ module.exports = () => {
                 // TEARDOWN
                 UserController.findOneUserFromEmail.resetHistory();
                 _teardownUserServiceMapToDTO();
+            });
+        });
+
+        describe('#findAllServicesOfOneUserFromId(userId)', () => {
+            afterEach(() => MockDependencies.Services.UserService.findOne.resetHistory());
+
+            const _setupUserServiceFindOne = (user) => MockDependencies.Services.UserService.findOne.resolves(user);
+            const _call = async () => await UserController.findAllServicesOfOneUserFromId(fakeUser.id);
+
+            it('should return a singleton list of services', async () => {
+                // SETUP
+                fakeUser.getServices = sinon.stub();
+                fakeUser.getServices.resolves([fakeService]);
+                _setupUserServiceFindOne(fakeUser);
+                MockDependencies.Services.ServiceService.mapToDTO.returns(fakeService);
+
+                // CALL
+                const services = await _call();
+
+                // VERIFY
+                assert.equal(services.length, 1);
+                assert.deepEqual(services[0], fakeService);
+
+                // TEARDOWN
+                fakeUser.getServices.resetHistory();
+                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
+            });
+
+            it('should return an empty list of services', async () => {
+                // SETUP
+                fakeUser.getServices = sinon.stub();
+                fakeUser.getServices.resolves([]);
+                _setupUserServiceFindOne(fakeUser);
+
+                // CALL
+                const services = await _call();
+
+                // VERIFY
+                assert.equal(services.length, 0);
+
+                // TEARDOWN
+                fakeUser.getServices.resetHistory();
+            });
+
+            it('should return undefined with invalid user id', async () => {
+                // SETUP
+                _setupUserServiceFindOne();
+
+                // CALL
+                const services = await _call();
+
+                // VERIFY
+                assert.equal(services, undefined);
             });
         });
 

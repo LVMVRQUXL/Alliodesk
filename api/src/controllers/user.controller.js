@@ -55,9 +55,9 @@ class UserController {
      *
      * @param userId {number}
      *
-     * @returns {Promise<ServiceDTO[]>}
+     * @returns {Promise<ServiceDTO[]|undefined>}
      */
-    async findAllServicesOfOneUserFromId(userId) { // TODO: unit tests
+    async findAllServicesOfOneUserFromId(userId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
         if (user) {
             const services = await user.getServices();
