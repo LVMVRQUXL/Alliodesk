@@ -7,16 +7,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.RegisterController">
    <children>
-      <TextField layoutX="120.0" layoutY="120.0" />
-      <TextField layoutX="120.0" layoutY="80.0" />
-      <TextField layoutX="120.0" layoutY="40.0" />
+      <TextField fx:id="name" layoutX="120.0" layoutY="120.0" />
+      <TextField fx:id="login" layoutX="120.0" layoutY="80.0" />
+      <TextField fx:id="email" layoutX="120.0" layoutY="40.0" />
       <Label layoutX="40.0" layoutY="40.0" text="Name" />
-      <Label layoutX="40.0" layoutY="80.0" text="login" />
-      <Label layoutX="40.0" layoutY="120.0" text="email" />
+      <Label layoutX="40.0" layoutY="80.0" text="email" />
+      <Label layoutX="40.0" layoutY="120.0" text="login" />
       <Label layoutX="40.0" layoutY="160.0" text="Password" />
-      <Button layoutX="125.0" layoutY="230.0" mnemonicParsing="false" text="Submit" />
-      <PasswordField layoutX="120.0" layoutY="160.0" />
+      <Button layoutX="125.0" layoutY="230.0" mnemonicParsing="false" onAction="#test" text="Submit" />
+      <PasswordField fx:id="pwd" layoutX="120.0" layoutY="160.0" />
    </children>
 </AnchorPane>
