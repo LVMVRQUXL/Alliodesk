@@ -17,7 +17,8 @@ class Router {
     }
 
     void goTo(final String viewName) {
-        goTo(viewName, __ -> {});
+        goTo(viewName, __ -> {
+        });
     }
 
     <T> void goTo(final String viewName, final Consumer<T> controllerConsumer) {

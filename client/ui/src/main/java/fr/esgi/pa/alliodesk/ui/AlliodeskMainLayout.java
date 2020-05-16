@@ -11,7 +11,7 @@ public class AlliodeskMainLayout extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(Main.class.getResource("/AlliodeskLayout.fxml"));
-        Scene scene = new Scene (root);
+        Scene scene = new Scene(root);
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/AlliodeskLogo.png")));
         primaryStage.setTitle("Alliodesk");
         primaryStage.setScene(scene);

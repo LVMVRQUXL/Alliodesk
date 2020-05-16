@@ -1,8 +1,6 @@
 package fr.esgi.pa.alliodesk.core;
 
 import com.google.gson.Gson;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -16,7 +14,7 @@ public class Register {
     private InfoInForm registerForm;
 
     public Register(String name, String email, String login, String pwd) {
-        this.registerForm = new InfoInForm(name,email,login,pwd);
+        this.registerForm = new InfoInForm(name, email, login, pwd);
     }
 
     public int requestToServe() throws IOException {
@@ -33,24 +31,15 @@ public class Register {
 
         return code;
     }
-
-    public static void main(final String[] args)  {
-
-        Register reg = new Register("naem", "emaeil@gmail.com", "loge", "passew");
-        try {
-            reg.requestToServe();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
-class InfoInForm{
-    private String name,email,login,password;
-    public InfoInForm(String n,String e,String l,String p){
-        this.name=n;
-        this.email=e;
-        this.login=l;
-        this.password=p;
+
+class InfoInForm {
+    private String name, email, login, password;
+
+    InfoInForm(String n, String e, String l, String p) {
+        this.name = n;
+        this.email = e;
+        this.login = l;
+        this.password = p;
     }
 }

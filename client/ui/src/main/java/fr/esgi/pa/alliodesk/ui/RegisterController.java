@@ -1,4 +1,5 @@
 package fr.esgi.pa.alliodesk.ui;
+
 import fr.esgi.pa.alliodesk.core.Register;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,8 +9,7 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 
 
-public class RegisterController
-{
+public class RegisterController {
     Register reg;
     private Router router;
     @FXML
@@ -24,10 +24,10 @@ public class RegisterController
     @FXML
     public void test(ActionEvent event) throws IOException {
         event.consume();
-        this.reg = new Register(name.getText(),login.getText(),email.getText(),new String(pwd.getText()));
+        this.reg = new Register(name.getText(), login.getText(), email.getText(), new String(pwd.getText()));
         int status_code = this.reg.requestToServe();
         //VERIFICATION / ACTION SUITE
-        switch (status_code){
+        switch (status_code) {
             case 201:
                 System.out.println("Created");
                 break;
