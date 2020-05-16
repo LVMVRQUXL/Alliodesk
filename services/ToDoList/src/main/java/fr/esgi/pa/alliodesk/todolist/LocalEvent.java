@@ -51,7 +51,7 @@ public class LocalEvent {
     public static LocalEvent[] todolistReadFromFile() {
         File todolistFile = new File(toDoList_file_location);
         if (!todolistFile.exists())
-            System.out.println("File doesn't exist");
+            System.out.println(" Save file doesn't exist");
         LocalEvent[] todos = null;
         InputStreamReader isReader;
         try {
