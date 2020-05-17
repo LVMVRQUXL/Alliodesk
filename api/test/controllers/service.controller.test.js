@@ -19,12 +19,16 @@ module.exports = () => {
             ServiceStatusController: {
                 pendingStatus: 'pending',
                 findServiceStatusFromValue: sinon.stub()
+            },
+            UserController: {
+                findOneUserFromToken: sinon.stub()
             }
         };
 
         const ServiceController = proxyquire('../../src/controllers/service.controller', {
             '../services': MockDependencies.Services,
-            './service_status.controller': MockDependencies.ServiceStatusController
+            './service_status.controller': MockDependencies.ServiceStatusController,
+            './user.controller': MockDependencies.UserController
         });
 
         const fakeServicePendingStatus = {
@@ -42,17 +46,28 @@ module.exports = () => {
             source_url: fakeServiceSourceUrl,
             service_status_id: fakeServicePendingStatus.id
         };
+        const fakeUser = {
+            id: 1
+        };
 
         describe('#createService(name, version, sourceUrl)', () => {
+            afterEach(() => MockDependencies.UserController.findOneUserFromToken.resetHistory());
+
+            const _setupUserControllerFindOneUserFromToken = (user) => {
+                MockDependencies.UserController.findOneUserFromToken.resolves(user);
+            };
+            const _call = async () => {
+                return await ServiceController.createService(fakeServiceName, fakeServiceVersion, fakeServiceSourceUrl);
+            };
+
             it('should return true with valid inputs', async () => {
                 // SETUP
+                _setupUserControllerFindOneUserFromToken(fakeUser);
                 MockDependencies.ServiceStatusController.findServiceStatusFromValue.resolves(fakeServicePendingStatus);
                 MockDependencies.Services.ServiceService.create.resolves(true);
 
                 // CALL
-                const result = await ServiceController.createService(
-                    fakeServiceName, fakeServiceVersion, fakeServiceSourceUrl
-                );
+                const result = await _call();
 
                 // VERIFY
                 assert.equal(result, true);
@@ -60,6 +75,17 @@ module.exports = () => {
                 // TEARDOWN
                 MockDependencies.ServiceStatusController.findServiceStatusFromValue.resetHistory();
                 MockDependencies.Services.ServiceService.create.resetHistory();
+            });
+
+            it('should return false with invalid user\'s token session', async () => {
+                // SETUP
+                _setupUserControllerFindOneUserFromToken();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, false);
             });
         });
 

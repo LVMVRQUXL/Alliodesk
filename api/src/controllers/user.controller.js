@@ -1,8 +1,33 @@
-const UserService = require('../services').UserService;
+const {ServiceService, UserService} = require('../services');
 const UserStatusController = require('./user_status.controller');
+const ServiceStatusController = require('./service_status.controller');
 const SecurityUtil = require('../utils').SecurityUtil;
 
 class UserController {
+    /**
+     * Add a service in one user's account from id
+     *
+     * @param userId {number}
+     * @param serviceId {number}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async addServiceInOneUserAccountFromId(userId, serviceId) {
+        const user = await UserService.findOne(await _getUserStatusId({id: userId}));
+        const status = await ServiceStatusController.findServiceStatusFromValue(
+            ServiceStatusController.validatedStatus
+        );
+        const service = await ServiceService.findOne({
+            id: serviceId,
+            service_status_id: status.id
+        });
+        if (!user || !service) {
+            return false;
+        }
+        await user.addService(serviceId);
+        return true;
+    }
+
     /**
      * Create a new user
      *
@@ -26,6 +51,21 @@ class UserController {
     }
 
     /**
+     * Find all services of one user from id
+     *
+     * @param userId {number}
+     *
+     * @returns {Promise<ServiceDTO[]|undefined>}
+     */
+    async findAllServicesOfOneUserFromId(userId) {
+        const user = await UserService.findOne(await _getUserStatusId({id: userId}));
+        if (user) {
+            const services = await user.getServices();
+            return services.map(service => ServiceService.mapToDTO(service));
+        }
+    }
+
+    /**
      * Find all users
      *
      * @returns {Promise<UserDTO[]>}
@@ -36,6 +76,24 @@ class UserController {
     }
 
     /**
+     * Find one service of one user from id
+     *
+     * @param userId {number}
+     * @param serviceId {number}
+     *
+     * @returns {Promise<ServiceDTO[]|undefined>}
+     */
+    async findOneServiceOfOneUserFromId(userId, serviceId) {
+        const user = await UserService.findOne(await _getUserStatusId({id: userId}));
+        if (user) {
+            const services = await user.getServices({
+                where: {id: serviceId}
+            });
+            return services.map(service => ServiceService.mapToDTO(service));
+        }
+    }
+
+    /**
      * Find one user from id
      *
      * @param id {number}
@@ -43,7 +101,7 @@ class UserController {
      * @returns {Promise<UserDTO | null>}
      */
     async findOneUserFromId(id) {
-        const user = await UserService.findOne(await _getUserStatusId({ id: id }));
+        const user = await UserService.findOne(await _getUserStatusId({id: id}));
         return !user ? null : UserService.mapToDTO(user);
     }
 
@@ -55,7 +113,7 @@ class UserController {
      * @returns {Promise<UserDTO | null>}
      */
     async findOneUserFromLogin(login) {
-        const user = await UserService.findOne(await _getUserStatusId({ login: login }));
+        const user = await UserService.findOne(await _getUserStatusId({login: login}));
         return !user ? null : UserService.mapToDTO(user);
     }
 
@@ -67,7 +125,19 @@ class UserController {
      * @returns {Promise<UserDTO | null>}
      */
     async findOneUserFromEmail(email) {
-        const user = await UserService.findOne(await _getUserStatusId({ email: email }));
+        const user = await UserService.findOne(await _getUserStatusId({email: email}));
+        return !user ? null : UserService.mapToDTO(user);
+    }
+
+    /**
+     * Find one user from token session
+     *
+     * @param token {string}
+     *
+     * @returns {Promise<UserDTO | null>}
+     */
+    async findOneUserFromToken(token) {
+        const user = await UserService.findOne({token_session: token});
         return !user ? null : UserService.mapToDTO(user);
     }
 
@@ -80,11 +150,13 @@ class UserController {
      * @returns {Promise<string | null>}
      */
     async loginOneUser(login, password) {
-        const user = await UserService.findOne(await _getUserStatusId({ login: login }));
+        const user = await UserService.findOne(await _getUserStatusId({login: login}));
         if (user && !user.token_session && SecurityUtil.hash(password) === user.password) {
             const token = await SecurityUtil.randomToken();
-            const result = await UserService.update(user.id, { token_session: token });
-            if (result) { return token; }
+            const result = await UserService.update(user.id, {token_session: token});
+            if (result) {
+                return token;
+            }
         }
     }
 
@@ -97,10 +169,28 @@ class UserController {
      * @returns {Promise<boolean | null>}
      */
     async logoutOneUser(id, token) {
-        const user = await UserService.findOne(await _getUserStatusId({ id: id }));
+        const user = await UserService.findOne(await _getUserStatusId({id: id}));
         if (user && token === user.token_session) {
-            return await UserService.update(id, { token_session: null });
+            return await UserService.update(id, {token_session: null});
         }
+    }
+
+    /**
+     * Remove a service of one user from id
+     *
+     * @param userId {number}
+     * @param serviceId {number}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async removeServiceOfOneUserFromId(userId, serviceId) {
+        const user = await UserService.findOne(await _getUserStatusId({id: userId}));
+        const service = await this.findOneServiceOfOneUserFromId(userId, serviceId);
+        if (!user || !service) {
+            return false;
+        }
+        await user.removeService(serviceId);
+        return true;
     }
 
     /**
@@ -111,8 +201,10 @@ class UserController {
      * @returns {Promise<boolean>}
      */
     async removeUserFromId(id) {
-        if (!await this.findOneUserFromId(id)) { return false; }
-        return await UserService.destroy(await _getUserStatusId({ id: id }));
+        if (!await this.findOneUserFromId(id)) {
+            return false;
+        }
+        return await UserService.destroy(await _getUserStatusId({id: id}));
     }
 
     /**
@@ -130,8 +222,10 @@ class UserController {
         if (email && email !== "" && await this.findOneUserFromEmail(email)) {
             return false;
         }
-        const user = await UserService.findOne(await _getUserStatusId({ id: id }));
-        if (!user) { return false; }
+        const user = await UserService.findOne(await _getUserStatusId({id: id}));
+        if (!user) {
+            return false;
+        }
         return await UserService.updateOneUser(user, name, email, password);
     }
 }
