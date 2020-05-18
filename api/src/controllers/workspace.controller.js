@@ -27,6 +27,18 @@ class WorkspaceController {
         const workspaces = await WorkspaceService.findAll();
         return Promise.all(workspaces.map(workspace => WorkspaceService.mapToDTO(workspace)));
     }
+
+    /**
+     * Find one workspace from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<WorkspaceDTO|null>}
+     */
+    async findOneWorkspaceFromId(id) {
+        const workspace = await WorkspaceService.findOne({id: id});
+        return !workspace ? null : WorkspaceService.mapToDTO(workspace);
+    }
 }
 
 module.exports = new WorkspaceController();

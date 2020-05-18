@@ -28,6 +28,17 @@ class WorkspaceService {
     }
 
     /**
+     * Find one workspace corresponding to where clause
+     *
+     * @param where {object}
+     *
+     * @returns {Promise<Workspace|null>}
+     */
+    async findOne(where) {
+        return Workspace.findOne({where: where});
+    }
+
+    /**
      * Map given workspace to DTO
      *
      * @param workspace {Workspace}

@@ -9,9 +9,24 @@ const routes = {
 };
 
 module.exports = (app) => {
-    // GET '/workspaces/:id' ===> Get one workspace from id TODO
+    // GET '/workspaces/:id' ===> Get one workspace from id
     app.get(routes.WorkspacesId, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+        try {
+            const workspaceId = parseInt(req.params.id);
+            if (!isNaN(workspaceId)) {
+                const workspace = await WorkspaceController.findOneWorkspaceFromId(workspaceId);
+                if (workspace) {
+                    res.status(HttpCodeUtil.OK).json(workspace);
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     // DELETE '/workspaces/:id' ===> Remove one workspace from id TODO
