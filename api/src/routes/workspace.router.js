@@ -29,14 +29,49 @@ module.exports = (app) => {
         }
     });
 
-    // DELETE '/workspaces/:id' ===> Remove one workspace from id TODO
+    // DELETE '/workspaces/:id' ===> Remove one workspace from id
     app.delete(routes.WorkspacesId, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+        try {
+            const workspaceId = parseInt(req.params.id);
+            if (!isNaN(workspaceId)) {
+                const result = await WorkspaceController.removeOneWorkspaceFromId(workspaceId);
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
-    // PUT '/workspaces/:id' ===> Update one workspace from id TODO
-    app.put(routes.WorkspacesId, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    // PUT '/workspaces/:id' ===> Update one workspace from id
+    app.put(routes.WorkspacesId, bodyParser.json(), async (req, res) => {
+        try {
+            const workspaceId = parseInt(req.params.id);
+            const workspaceName = req.body.name;
+            const workspaceDescription = req.body.description;
+            if (!isNaN(workspaceId)
+                && ((workspaceName && workspaceName !== "") || (workspaceDescription && workspaceDescription !== ""))) {
+                const result = await WorkspaceController.updateOneWorkspaceFromId(
+                    workspaceId, workspaceName, workspaceDescription
+                );
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     // GET '/workspaces' ===> Get all workspaces

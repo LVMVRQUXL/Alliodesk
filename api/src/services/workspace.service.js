@@ -19,6 +19,23 @@ class WorkspaceService {
     }
 
     /**
+     * Remove one workspace corresponding to where clause
+     *
+     * @param where {object}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async destroy(where) {
+        try {
+            await Workspace.destroy({where: where});
+            return true;
+        } catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
+
+    /**
      * Find all workspaces
      *
      * @returns {Promise<Workspace[]>}
@@ -47,6 +64,24 @@ class WorkspaceService {
      */
     mapToDTO(workspace) {
         return new WorkspaceDTO(workspace.id, workspace.name, workspace.description, workspace.user_id);
+    }
+
+    /**
+     * Update one workspace corresponding to where clause
+     *
+     * @param values {object}
+     * @param where {object}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async update(values, where) {
+        try {
+            await Workspace.update(values, {where: where});
+            return true;
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
     }
 }
 

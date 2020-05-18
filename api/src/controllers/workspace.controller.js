@@ -34,10 +34,52 @@ class WorkspaceController {
      * @param id {number}
      *
      * @returns {Promise<WorkspaceDTO|null>}
+     * TODO: unit tests
      */
     async findOneWorkspaceFromId(id) {
         const workspace = await WorkspaceService.findOne({id: id});
         return !workspace ? null : WorkspaceService.mapToDTO(workspace);
+    }
+
+    /**
+     * Remove one workspace from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<boolean>}
+     * TODO: unit tests
+     */
+    async removeOneWorkspaceFromId(id) {
+        const workspace = await this.findOneWorkspaceFromId(id);
+        return !workspace ? false : await WorkspaceService.destroy({id: id});
+    }
+
+    /**
+     * Update one workspace from id
+     *
+     * @param id {number}
+     * @param name {string}
+     * @param description {string}
+     *
+     * @returns {Promise<boolean>}
+     * TODO: unit tests
+     */
+    async updateOneWorkspaceFromId(id, name, description) {
+        if (name === "" && description === "") {
+            return false;
+        }
+        const workspace = await this.findOneWorkspaceFromId(id);
+        if (!workspace) {
+            return false;
+        }
+        const values = {};
+        if (name !== workspace.name) {
+            values.name = name;
+        }
+        if (description !== workspace.description) {
+            values.description = description;
+        }
+        return await WorkspaceService.update(values, {id: id});
     }
 }
 
