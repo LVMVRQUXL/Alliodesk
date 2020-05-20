@@ -49,13 +49,15 @@ public class LocalEvent {
     }
 
     public static LocalEvent[] todolistReadFromFile() {
-        File todolistFile = new File(toDoList_file_location);
-        if (!todolistFile.exists())
+        File toDoFile = new File(toDoList_file_location);
+        if (!toDoFile.exists()) {
             System.out.println(" Save file doesn't exist");
+            return null;
+        }
         LocalEvent[] todos = null;
         InputStreamReader isReader;
         try {
-            isReader = new InputStreamReader(new FileInputStream(todolistFile), StandardCharsets.UTF_8);
+            isReader = new InputStreamReader(new FileInputStream(toDoFile), StandardCharsets.UTF_8);
 
             JsonReader myReader = new JsonReader(isReader);
             todos = gson.fromJson(myReader, LocalEvent[].class);
@@ -64,6 +66,15 @@ public class LocalEvent {
             System.out.println("error load cache from file " + e.toString());
         }
         return todos;
+    }
+
+    public static void clearFile(){
+        File toDoFile = new File(toDoList_file_location);
+        if(!toDoFile.exists()){
+            System.out.println(" Save file doesn't exist");
+        }else {
+            toDoFile.delete();
+        }
     }
 
     @Override
