@@ -20,7 +20,6 @@ public class Register {
                 .withLogin(login)
                 .withPassword(pwd)
                 .build();
-        System.out.println(registerForm);
     }
 
     public int requestToServe() throws IOException {

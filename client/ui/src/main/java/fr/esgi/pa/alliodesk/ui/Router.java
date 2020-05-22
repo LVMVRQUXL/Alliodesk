@@ -16,11 +16,6 @@ class Router {
         this.stage = stage;
     }
 
-    void goTo(final String viewName) {
-        goTo(viewName, __ -> {
-        });
-    }
-
     <T> void goTo(final String viewName, final Consumer<T> controllerConsumer) {
         final var view = loadView(viewName, controllerConsumer);
         stage.setScene(new Scene(view));

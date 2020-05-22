@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class AlliodeskMainLayout extends Application {
     private Stage primaryStage;
-    BorderPane rootLayout;
+    private BorderPane rootLayout;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -22,7 +22,7 @@ public class AlliodeskMainLayout extends Application {
         showRegisterLayout();
     }
 
-    public void initRootLayout() throws IOException {
+    private void initRootLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/AlliodeskLayout.fxml"));
         rootLayout = (BorderPane) loader.load();
@@ -33,7 +33,7 @@ public class AlliodeskMainLayout extends Application {
         primaryStage.show();
     }
 
-    public void showRegisterLayout() throws IOException {
+    private void showRegisterLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/RegisterView.fxml"));
         AnchorPane RegisterOverview = (AnchorPane) loader.load();

@@ -15,10 +15,4 @@ public class RegisterFormWithController extends Application {
         stage.setTitle("Register Form");
         stage.show();
     }
-
-    public static void main(final String[] args) {
-        launch(args);
-    }
-
-
 }
