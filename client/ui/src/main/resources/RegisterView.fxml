@@ -8,15 +8,16 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="358.0" style="-fx-background-color: grey; -fx-border-color: black;" stylesheets="@AlliodeskLayout.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.RegisterController">
    <children>
-      <TextField fx:id="name" layoutX="120.0" layoutY="120.0" />
+      <TextField fx:id="name" layoutX="120.0" layoutY="40.0" />
       <TextField fx:id="login" layoutX="120.0" layoutY="80.0" />
-      <TextField fx:id="email" layoutX="120.0" layoutY="40.0" />
+      <TextField fx:id="email" layoutX="120.0" layoutY="120.0" />
+      <PasswordField fx:id="pwd" layoutX="120.0" layoutY="160.0" />
       <Label layoutX="40.0" layoutY="40.0" text="Name" textFill="#320606" />
       <Label layoutX="40.0" layoutY="80.0" text="email" />
       <Label layoutX="40.0" layoutY="120.0" text="login" />
       <Label layoutX="40.0" layoutY="160.0" text="Password" />
-      <Button layoutX="125.0" layoutY="230.0" mnemonicParsing="false" onAction="#test" text="Submit" />
-      <PasswordField fx:id="pwd" layoutX="120.0" layoutY="160.0" />
+      <Label fx:id="resultLabel" layoutX="125.0" layoutY="200.0" text=""/>
+      <Button layoutX="125.0" layoutY="230.0" mnemonicParsing="false" onAction="#registerUser" text="Submit" />
       <Label layoutX="144.0" layoutY="4.0" stylesheets="@AlliodeskLayout.css" text="Inscription" />
    </children>
 </AnchorPane>

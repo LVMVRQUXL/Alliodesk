@@ -20,6 +20,7 @@ public class Register {
                 .withLogin(login)
                 .withPassword(pwd)
                 .build();
+        System.out.println(registerForm);
     }
 
     public int requestToServe() throws IOException {
@@ -32,9 +33,7 @@ public class Register {
         post.setEntity(postingString);
         post.setHeader("Content-type", "application/json");
         HttpResponse response = httpClient.execute(post);
-        int code = response.getStatusLine().getStatusCode();
-
-        return code;
+        return response.getStatusLine().getStatusCode();
     }
 }
 

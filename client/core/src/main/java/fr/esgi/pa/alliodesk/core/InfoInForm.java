@@ -22,7 +22,7 @@ class InfoInForm {
         }
 
         FormBuilder withPassword(String pwd) {
-            this.name = pwd;
+            this.password = pwd;
             return this;
         }
 
@@ -35,7 +35,8 @@ class InfoInForm {
 
             return res;
         }
-
-
+    }
+    public String toString(){
+        return ("name = "+this.name +"  password: "+ this.password +" email : "+ this.email+" login :"+ this.login);
     }
 }
