@@ -14,7 +14,12 @@ public class Register {
     private InfoInForm registerForm;
 
     public Register(String name, String email, String login, String pwd) {
-        this.registerForm = new InfoInForm(name, email, login, pwd);
+        this.registerForm = new InfoInForm.FormBuilder()
+                .withName(name)
+                .withEmail(email)
+                .withLogin(login)
+                .withPassword(pwd)
+                .build();
     }
 
     public int requestToServe() throws IOException {
@@ -33,13 +38,3 @@ public class Register {
     }
 }
 
-class InfoInForm {
-    private String name, email, login, password;
-
-    InfoInForm(String n, String e, String l, String p) {
-        this.name = n;
-        this.email = e;
-        this.login = l;
-        this.password = p;
-    }
-}
