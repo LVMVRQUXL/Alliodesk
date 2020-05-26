@@ -20,7 +20,6 @@ class WorkspaceController {
      * Find all workspaces
      *
      * @returns {Promise<WorkspaceDTO[]>}
-     * TODO: unit tests
      */
     async findAllWorkspaces() {
         const workspaces = await WorkspaceService.findAll();
