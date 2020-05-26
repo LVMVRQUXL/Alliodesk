@@ -8,7 +8,6 @@ class WorkspaceController {
      * @param description {string}
      *
      * @returns {Promise<boolean>}
-     * TODO: unit tests
      */
     async createWorkspace(name, description) {
         return await WorkspaceService.create({
