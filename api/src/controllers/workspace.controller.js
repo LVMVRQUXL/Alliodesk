@@ -58,7 +58,6 @@ class WorkspaceController {
      * @param description {string}
      *
      * @returns {Promise<boolean>}
-     * TODO: unit tests
      */
     async updateOneWorkspaceFromId(id, name, description) {
         if (name === "" && description === "") {

@@ -12,7 +12,8 @@ module.exports = () => {
                     destroy: sinon.stub(),
                     findAll: sinon.stub(),
                     findOne: sinon.stub(),
-                    mapToDTO: sinon.stub()
+                    mapToDTO: sinon.stub(),
+                    update: sinon.stub()
                 }
             }
         };
@@ -149,6 +150,74 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(result, false);
+            });
+        });
+
+        describe('#updateOneWorkspaceFromId(id, name, description)', () => {
+            const _setupWorkspaceServiceFindOne = (workspace) => {
+                MockDependencies.Services.WorkspaceService.findOne.resolves(workspace);
+            };
+            const _setupWorkspaceServiceMapToDTO = (workspace) => {
+                MockDependencies.Services.WorkspaceService.mapToDTO.returns(workspace);
+            };
+            const _call = async () => await WorkspaceController.updateOneWorkspaceFromId(
+                fakeWorkspace.id, fakeWorkspace.name, fakeWorkspace.description
+            );
+            const _teardownWorkspaceServiceFindOne = () => {
+                MockDependencies.Services.WorkspaceService.findOne.resetHistory();
+            };
+            const _teardownWorkspaceServiceMapToDTO = () => {
+                MockDependencies.Services.WorkspaceService.mapToDTO.resetHistory();
+            };
+
+            it('should return true with valid inputs', async () => {
+                // SETUP
+                _setupWorkspaceServiceFindOne(fakeWorkspace);
+                _setupWorkspaceServiceMapToDTO(fakeWorkspace);
+                MockDependencies.Services.WorkspaceService.update.resolves(true);
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, true);
+
+                // TEARDOWN
+                _teardownWorkspaceServiceFindOne();
+                _teardownWorkspaceServiceMapToDTO();
+                MockDependencies.Services.WorkspaceService.update.resetHistory();
+            });
+
+            it('should return false with empty name and description', async () => {
+                // SETUP
+                const backupName = fakeWorkspace.name;
+                fakeWorkspace.name = '';
+                const backupDescription = fakeWorkspace.description;
+                fakeWorkspace.description = '';
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, false);
+
+                // TEARDOWN
+                fakeWorkspace.name = backupName;
+                fakeWorkspace.description = backupDescription;
+            });
+
+            it('should return false with empty invalid id', async () => {
+                // SETUP
+                _setupWorkspaceServiceFindOne();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, false);
+
+                // TEARDOWN
+                _teardownWorkspaceServiceFindOne();
             });
         });
     });
