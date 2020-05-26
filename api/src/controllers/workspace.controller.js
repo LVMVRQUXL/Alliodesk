@@ -44,7 +44,6 @@ class WorkspaceController {
      * @param id {number}
      *
      * @returns {Promise<boolean>}
-     * TODO: unit tests
      */
     async removeOneWorkspaceFromId(id) {
         const workspace = await this.findOneWorkspaceFromId(id);

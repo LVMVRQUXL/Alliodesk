@@ -9,6 +9,7 @@ module.exports = () => {
             Services: {
                 WorkspaceService: {
                     create: sinon.stub(),
+                    destroy: sinon.stub(),
                     findAll: sinon.stub(),
                     findOne: sinon.stub(),
                     mapToDTO: sinon.stub()
@@ -111,6 +112,43 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(workspace, null);
+            });
+        });
+
+        describe('#removeOneWorkspaceFromId(id)', () => {
+            afterEach(() => MockDependencies.Services.WorkspaceService.findOne.resetHistory());
+
+            const _setupWorkspaceServiceFindOne = (workspace) => {
+                MockDependencies.Services.WorkspaceService.findOne.resolves(workspace);
+            };
+            const _call = async () => await WorkspaceController.removeOneWorkspaceFromId(fakeWorkspace.id);
+
+            it('should return true with valid id', async () => {
+                // SETUP
+                _setupWorkspaceServiceFindOne(fakeWorkspace);
+                MockDependencies.Services.WorkspaceService.mapToDTO.returns(fakeWorkspace);
+                MockDependencies.Services.WorkspaceService.destroy.resolves(true);
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, true);
+
+                // TEARDOWN
+                MockDependencies.Services.WorkspaceService.mapToDTO.resetHistory();
+                MockDependencies.Services.WorkspaceService.destroy.resetHistory();
+            });
+
+            it('should return false with invalid id', async () => {
+                // SETUP
+                _setupWorkspaceServiceFindOne();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, false);
             });
         });
     });
