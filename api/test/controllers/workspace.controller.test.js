@@ -10,6 +10,7 @@ module.exports = () => {
                 WorkspaceService: {
                     create: sinon.stub(),
                     findAll: sinon.stub(),
+                    findOne: sinon.stub(),
                     mapToDTO: sinon.stub()
                 }
             }
@@ -43,9 +44,7 @@ module.exports = () => {
         });
 
         describe('#findAllWorkspaces()', () => {
-            afterEach(() => {
-                MockDependencies.Services.WorkspaceService.findAll.resetHistory();
-            });
+            afterEach(() => MockDependencies.Services.WorkspaceService.findAll.resetHistory());
 
             const _setupWorkspaceServiceFindAll = (array) => {
                 MockDependencies.Services.WorkspaceService.findAll.resolves(array);
@@ -77,6 +76,41 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(workspaces.length, 0);
+            });
+        });
+
+        describe('#findOneWorkspaceFromId(id)', () => {
+            afterEach(() => MockDependencies.Services.WorkspaceService.findOne.resetHistory());
+
+            const _setupWorkspaceServiceFindOne = (workspace) => {
+                MockDependencies.Services.WorkspaceService.findOne.resolves(workspace);
+            };
+            const _call = async () => await WorkspaceController.findOneWorkspaceFromId(fakeWorkspace.id);
+
+            it('should return a workspace with valid id', async () => {
+                // SETUP
+                _setupWorkspaceServiceFindOne(fakeWorkspace);
+                MockDependencies.Services.WorkspaceService.mapToDTO.returns(fakeWorkspace);
+
+                // CALL
+                const workspace = await _call();
+
+                // VERIFY
+                assert.equal(workspace, fakeWorkspace);
+
+                // TEARDOWN
+                MockDependencies.Services.WorkspaceService.mapToDTO.resetHistory();
+            });
+
+            it('should return null with invalid id', async () => {
+                // SETUP
+                _setupWorkspaceServiceFindOne();
+
+                // CALL
+                const workspace = await _call();
+
+                // VERIFY
+                assert.equal(workspace, null);
             });
         });
     });

@@ -32,7 +32,6 @@ class WorkspaceController {
      * @param id {number}
      *
      * @returns {Promise<WorkspaceDTO|null>}
-     * TODO: unit tests
      */
     async findOneWorkspaceFromId(id) {
         const workspace = await WorkspaceService.findOne({id: id});
