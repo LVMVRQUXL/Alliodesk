@@ -13,7 +13,7 @@
       <PasswordField fx:id="pwd" layoutX="107.0" layoutY="161.0" AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="130.0" />
       <Label layoutX="28.0" layoutY="68.0" text="Login" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="50.0" />
       <Label layoutX="28.0" layoutY="165.0" text="Password" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="130.0" />
-      <Button layoutX="43.0" layoutY="217.0" mnemonicParsing="false" text="Sign up" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="220.0" onAction="#test" />
-      <Button layoutX="182.0" layoutY="217.0" mnemonicParsing="false" text="Log in" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="220.0" onAction="#signUp"/>
+      <Button layoutX="43.0" layoutY="217.0" mnemonicParsing="false" text="Sign up" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="220.0" onAction="#signUp" />
+      <Button layoutX="182.0" layoutY="217.0" mnemonicParsing="false" text="Log in" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="220.0" onAction="#logIn"/>
    </children>
 </AnchorPane>
