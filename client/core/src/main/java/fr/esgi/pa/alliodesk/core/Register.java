@@ -32,6 +32,7 @@ public class Register {
         final HttpClient httpClient = HttpClientBuilder.create().build();
         final HttpPost post = new HttpPost(postUrl);
         final StringEntity postingString = new StringEntity(gson.toJson(registerForm));
+
         post.setEntity(postingString);
         post.setHeader("Content-type", "application/json");
         final HttpResponse response = httpClient.execute(post);
