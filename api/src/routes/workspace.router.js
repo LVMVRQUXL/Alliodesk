@@ -9,7 +9,31 @@ const routes = {
 };
 
 module.exports = (app) => {
-    // GET '/workspaces/:id' ===> Get one workspace from id
+    /**
+     * @swagger
+     *
+     * '/workspaces/{id}':
+     *   get:
+     *     description: Get one workspace from id
+     *     tags:
+     *       - Workspaces
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: id
+     *         description: Workspace's id
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid workspace's id
+     *       404:
+     *         description: Can't find workspace from given id
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.get(routes.WorkspacesId, async (req, res) => {
         try {
             const workspaceId = parseInt(req.params.id);
@@ -29,7 +53,29 @@ module.exports = (app) => {
         }
     });
 
-    // DELETE '/workspaces/:id' ===> Remove one workspace from id
+    /**
+     * @swagger
+     *
+     * '/workspaces/{id}':
+     *   delete:
+     *     description: Remove one workspace from id
+     *     tags:
+     *       - Workspaces
+     *     parameters:
+     *       - name: id
+     *         description: Workspace's id
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid workspace's id
+     *       404:
+     *         description: Can't find workspace from given id
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.delete(routes.WorkspacesId, async (req, res) => {
         try {
             const workspaceId = parseInt(req.params.id);
@@ -49,7 +95,37 @@ module.exports = (app) => {
         }
     });
 
-    // PUT '/workspaces/:id' ===> Update one workspace from id
+    /**
+     * @swagger
+     *
+     * '/workspaces/{id}':
+     *   put:
+     *     description: Update one workspace from id
+     *     tags:
+     *       - Workspaces
+     *     parameters:
+     *       - name: id
+     *         description: Workspace's id
+     *         in: path
+     *         required: true
+     *       - name: name
+     *         description: Workspace's name
+     *         in: body
+     *         required: true
+     *       - name: description
+     *         description: Workspace's description
+     *         in: body
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid inputs
+     *       404:
+     *         description: Can't find workspace from given id
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.put(routes.WorkspacesId, bodyParser.json(), async (req, res) => {
         try {
             const workspaceId = parseInt(req.params.id);
@@ -74,7 +150,24 @@ module.exports = (app) => {
         }
     });
 
-    // GET '/workspaces' ===> Get all workspaces
+    /**
+     * @swagger
+     *
+     * '/workspaces':
+     *   get:
+     *     description: Get all workspaces
+     *     tags:
+     *       - Workspaces
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       204:
+     *         description: No workspaces to return
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.get(routes.Workspaces, async (req, res) => {
         try {
             const workspaces = await WorkspaceController.findAllWorkspaces();
@@ -89,13 +182,36 @@ module.exports = (app) => {
         }
     });
 
-    // POST '/workspaces' ===> Create a new workspace
+    /**
+     * @swagger
+     *
+     * '/workspaces':
+     *   post:
+     *     description: Create a new workspace
+     *     tags:
+     *       - Workspaces
+     *     parameters:
+     *       - name: name
+     *         description: Workspace's name
+     *         in: body
+     *         required: true
+     *       - name: description
+     *         description: Workspace's description
+     *         in: body
+     *         required: true
+     *     responses:
+     *       201:
+     *         description: New workspace created
+     *       400:
+     *         description: Invalid workspace's name or description
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.post(routes.Workspaces, bodyParser.json(), async (req, res) => {
         try {
             const workspaceName = req.body.name;
             const workspaceDescription = req.body.description;
-            if (workspaceName && workspaceName !== ""
-                && workspaceDescription && workspaceDescription !== "") {
+            if (workspaceName && workspaceName !== "" && workspaceDescription && workspaceDescription !== "") {
                 const result = await WorkspaceController.createWorkspace(workspaceName, workspaceDescription);
                 if (result) {
                     res.status(HttpCodeUtil.CREATED).end();
