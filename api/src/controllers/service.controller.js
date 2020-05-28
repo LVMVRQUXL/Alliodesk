@@ -11,20 +11,20 @@ class ServiceController {
      * @param sourceUrl {string}
      * @param userToken {string}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<ServiceDTO|null>}
      */
     async createService(name, version, sourceUrl, userToken) {
         const user = await UserController.findOneUserFromToken(userToken);
         if (!user) {
-            return false;
+            return null;
         }
-        return await ServiceService.create(await _getPendingStatusId({
+        const service = await ServiceService.create(await _getPendingStatusId({
             name: name,
             version: version,
             source_url: sourceUrl,
             user_id: user.id
         }));
-
+        return ServiceService.mapToDTO(service);
     }
 
     /**

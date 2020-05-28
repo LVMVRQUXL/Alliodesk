@@ -335,11 +335,11 @@ module.exports = (app) => {
                 && serviceVersion && serviceVersion !== ""
                 && serviceSourceUrl && serviceSourceUrl !== ""
                 && userToken && userToken !== "") {
-                const result = await ServiceController.createService(
+                const service = await ServiceController.createService(
                     serviceName, serviceVersion, serviceSourceUrl, userToken
                 );
-                if (result) {
-                    res.status(HttpCodeUtil.CREATED).end();
+                if (service) {
+                    res.status(HttpCodeUtil.CREATED).json(service);
                 } else {
                     res.status(HttpCodeUtil.UNAUTHORIZED).end();
                 }
