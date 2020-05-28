@@ -7,13 +7,14 @@ class WorkspaceController {
      * @param name {string}
      * @param description {string}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<WorkspaceDTO>}
      */
     async createWorkspace(name, description) {
-        return await WorkspaceService.create({
+        const workspace = await WorkspaceService.create({
             name: name,
             description: description
         });
+        return WorkspaceService.mapToDTO(workspace);
     }
 
     /**

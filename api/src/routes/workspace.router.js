@@ -190,6 +190,8 @@ module.exports = (app) => {
      *     description: Create a new workspace
      *     tags:
      *       - Workspaces
+     *     produces:
+     *       - application/json
      *     parameters:
      *       - name: name
      *         description: Workspace's name
@@ -212,9 +214,9 @@ module.exports = (app) => {
             const workspaceName = req.body.name;
             const workspaceDescription = req.body.description;
             if (workspaceName && workspaceName !== "" && workspaceDescription && workspaceDescription !== "") {
-                const result = await WorkspaceController.createWorkspace(workspaceName, workspaceDescription);
-                if (result) {
-                    res.status(HttpCodeUtil.CREATED).end();
+                const workspace = await WorkspaceController.createWorkspace(workspaceName, workspaceDescription);
+                if (workspace) {
+                    res.status(HttpCodeUtil.CREATED).json(workspace);
                 }
             } else {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();

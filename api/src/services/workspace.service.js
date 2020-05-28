@@ -6,16 +6,10 @@ class WorkspaceService {
      *
      * @param values {object}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<Workspace>}
      */
     async create(values) {
-        try {
-            await Workspace.create(values);
-            return true;
-        } catch (e) {
-            console.error(e);
-            return false;
-        }
+        return Workspace.create(values);
     }
 
     /**
@@ -63,7 +57,7 @@ class WorkspaceService {
      * @returns {WorkspaceDTO}
      */
     mapToDTO(workspace) {
-        return new WorkspaceDTO(workspace.id, workspace.name, workspace.description, workspace.user_id);
+        return new WorkspaceDTO(workspace.id, workspace.name, workspace.description, workspace.UserId);
     }
 
     /**
