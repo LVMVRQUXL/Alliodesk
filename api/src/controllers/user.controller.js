@@ -36,18 +36,19 @@ class UserController {
      * @param login {string}
      * @param password {string}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<UserDTO|null>}
      */
     async createUser(name, email, login, password) {
         if (await this.findOneUserFromEmail(email) || await this.findOneUserFromLogin(login)) {
-            return false;
+            return null;
         }
-        return await UserService.create(await _getUserStatusId({
+        const user = await UserService.create(await _getUserStatusId({
             name: name,
             email: email,
             login: login,
             password: SecurityUtil.hash(password)
         }));
+        return UserService.mapToDTO(user);
     }
 
     /**
