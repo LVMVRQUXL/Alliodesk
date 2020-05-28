@@ -26,22 +26,26 @@ module.exports = () => {
             id: 1,
             name: 'Test',
             description: 'Something',
-            user_id: null
+            UserId: null
         };
 
         describe('#createWorkspace(name, description)', () => {
-            it('should return true with valid inputs', async () => {
+            it('should return the created workspace with valid inputs', async () => {
                 // SETUP
-                MockDependencies.Services.WorkspaceService.create.resolves(true);
+                MockDependencies.Services.WorkspaceService.create.resolves(fakeWorkspace);
+                MockDependencies.Services.WorkspaceService.mapToDTO.resolves(fakeWorkspace);
 
                 // CALL
-                const result = await WorkspaceController.createWorkspace(fakeWorkspace.name, fakeWorkspace.description);
+                const workspace = await WorkspaceController.createWorkspace(
+                    fakeWorkspace.name, fakeWorkspace.description
+                );
 
                 // VERIFY
-                assert.equal(result, true);
+                assert.deepEqual(workspace, fakeWorkspace);
 
                 // TEARDOWN
                 MockDependencies.Services.WorkspaceService.create.resetHistory();
+                MockDependencies.Services.WorkspaceService.mapToDTO.resetHistory();
             });
         });
 
