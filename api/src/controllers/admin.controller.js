@@ -11,18 +11,19 @@ class AdminController {
      * @param login {string}
      * @param password {string}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<UserDTO|null>}
      */
     async createAdmin(name, email, login, password) {
         if (await this.findOneAdminFromEmail(email) || await this.findOneAdminFromLogin(login)) {
-            return false;
+            return null;
         }
-        return await UserService.create(await _getAdminStatusId({
+        const user = await UserService.create(await _getAdminStatusId({
             name: name,
             email: email,
             login: login,
             password: SecurityUtil.hash(password)
         }));
+        return UserService.mapToDTO(user);
     }
 
     /**

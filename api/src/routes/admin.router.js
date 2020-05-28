@@ -332,9 +332,9 @@ module.exports = (app) => {
                 && emailValidator.validate(adminEmail)
                 && adminLogin && adminLogin !== ""
                 && adminPassword && adminPassword !== "") {
-                const result = await AdminController.createAdmin(adminName, adminEmail, adminLogin, adminPassword);
-                if (result) {
-                    res.status(HttpCodeUtil.CREATED).end();
+                const admin = await AdminController.createAdmin(adminName, adminEmail, adminLogin, adminPassword);
+                if (admin) {
+                    res.status(HttpCodeUtil.CREATED).json(admin);
                 } else {
                     res.status(HttpCodeUtil.CONFLICT).end();
                 }
