@@ -1,5 +1,5 @@
 package fr.esgi.pa.alliodesk.ui;
-import fr.esgi.pa.alliodesk.todolist.RunFxMain;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,7 +21,6 @@ public class AlliodeskMainLayout extends Application {
         this.primaryStage.setTitle("Alliodesk");
         initRootLayout();
         showRegisterLayout();
-        showToDoListLAyout();
     }
 
     private void initRootLayout() throws IOException {
@@ -30,7 +29,6 @@ public class AlliodeskMainLayout extends Application {
         rootLayout = loader.load();
         Scene scene = new Scene(rootLayout);
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/AlliodeskLogo.png")));
-
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -41,10 +39,13 @@ public class AlliodeskMainLayout extends Application {
         AnchorPane RegisterOverview = loader.load();
         rootLayout.setCenter(RegisterOverview);
     }
-    public void showToDoListLAyout() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(RunFxMain.class.getResource("/Todo.fxml"));
-        SplitPane TodoOverview = (SplitPane) loader.load();
+
+    static void showToDoListLayout() throws IOException {
+        ExtensionGetter eg = new ExtensionGetter();
+        eg.load();
+        FXMLLoader loader = new FXMLLoader(eg.url);
+        loader.setController(eg.controller);
+        SplitPane TodoOverview = loader.load();
         rootLayout.setCenter(TodoOverview);
     }
 
