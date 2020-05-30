@@ -4,7 +4,7 @@ package fr.esgi.pa.alliodesk.core;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
@@ -17,7 +17,6 @@ public class Connection {
                 .withLogin(login)
                 .withPassword(pwd)
                 .build();
-
     }
     public int requestToServe() throws IOException {
 
@@ -27,10 +26,11 @@ public class Connection {
         StringEntity postingString = new StringEntity(gson.toJson(connectionForm));
         String visual = gson.toJson(connectionForm);
         System.out.println(visual);
-        HttpPost post = new HttpPost(postUrl);
+        HttpPut post = new HttpPut(postUrl);
         post.setEntity(postingString);
         post.setHeader("Content-type", "application/json");
         HttpResponse response = httpClient.execute(post);
         return response.getStatusLine().getStatusCode();
     }
 }
+
