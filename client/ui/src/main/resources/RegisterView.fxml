@@ -17,7 +17,8 @@
       <Label layoutX="40.0" layoutY="120.0" text="login" />
       <Label layoutX="40.0" layoutY="160.0" text="Password" />
       <Label fx:id="resultLabel" layoutX="125.0" layoutY="200.0" text=""/>
-      <Button layoutX="125.0" layoutY="230.0" mnemonicParsing="false" onAction="#registerUser" text="Submit" />
+      <Button layoutX="200.0" layoutY="230.0" mnemonicParsing="false" onAction="#registerUser" text="Submit" />
+      <Button layoutX="50.0" layoutY="230.0" mnemonicParsing="false" onAction="#signIn" text="Sign in" />
       <Label layoutX="144.0" layoutY="4.0" stylesheets="@AlliodeskLayout.css" text="Inscription" />
    </children>
 </AnchorPane>
