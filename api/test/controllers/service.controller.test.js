@@ -56,25 +56,27 @@ module.exports = () => {
             const _setupUserControllerFindOneUserFromToken = (user) => {
                 MockDependencies.UserController.findOneUserFromToken.resolves(user);
             };
-            const _call = async () => {
-                return await ServiceController.createService(fakeServiceName, fakeServiceVersion, fakeServiceSourceUrl);
-            };
+            const _call = async () => await ServiceController.createService(
+                fakeServiceName, fakeServiceVersion, fakeServiceSourceUrl
+            );
 
-            it('should return true with valid inputs', async () => {
+            it('should return the created service with valid inputs', async () => {
                 // SETUP
                 _setupUserControllerFindOneUserFromToken(fakeUser);
                 MockDependencies.ServiceStatusController.findServiceStatusFromValue.resolves(fakeServicePendingStatus);
-                MockDependencies.Services.ServiceService.create.resolves(true);
+                MockDependencies.Services.ServiceService.create.resolves(fakeService);
+                MockDependencies.Services.ServiceService.mapToDTO.returns(fakeService);
 
                 // CALL
-                const result = await _call();
+                const service = await _call();
 
                 // VERIFY
-                assert.equal(result, true);
+                assert.equal(service, fakeService);
 
                 // TEARDOWN
                 MockDependencies.ServiceStatusController.findServiceStatusFromValue.resetHistory();
                 MockDependencies.Services.ServiceService.create.resetHistory();
+                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
             });
 
             it('should return false with invalid user\'s token session', async () => {
@@ -82,10 +84,10 @@ module.exports = () => {
                 _setupUserControllerFindOneUserFromToken();
 
                 // CALL
-                const result = await _call();
+                const service = await _call();
 
                 // VERIFY
-                assert.equal(result, false);
+                assert.equal(service, null);
             });
         });
 

@@ -155,37 +155,39 @@ module.exports = () => {
             );
             const _teardownUserServiceMapToDTO = () => MockDependencies.Services.UserService.mapToDTO.resetHistory();
 
-            it('should return true with valid inputs', async () => {
+            it('should return the created user with valid inputs', async () => {
                 // SETUP
                 _setupUserServiceFindOne();
-                MockDependencies.Services.UserService.create.resolves(true);
+                MockDependencies.Services.UserService.create.resolves(fakeUser);
+                _setupUserServiceMapToDTO(fakeUser);
 
                 // CALL
-                const result = await _call(userName, userEmail, userLogin, userPassword);
+                const user = await _call(userName, userEmail, userLogin, userPassword);
 
                 // VERIFY
-                assert.equal(result, true);
+                assert.equal(user, fakeUser);
 
                 // TEARDOWN
                 MockDependencies.Services.UserService.create.resetHistory();
+                _teardownUserServiceMapToDTO();
             });
 
-            it('should return false if an existing user already use the given email', async () => {
+            it('should return null if an existing user already use the given email', async () => {
                 // SETUP
                 _setupUserServiceFindOne(fakeUser);
                 _setupUserServiceMapToDTO(fakeUser);
 
                 // CALL
-                const result = await _call(userName, userEmail, userLogin, userPassword);
+                const user = await _call(userName, userEmail, userLogin, userPassword);
 
                 // VERIFY
-                assert.equal(result, false);
+                assert.equal(user, null);
 
                 // TEARDOWN
                 _teardownUserServiceMapToDTO();
             });
 
-            it('should return false if an existing user already use the given login', async () => {
+            it('should return null if an existing user already use the given login', async () => {
                 // SETUP
                 UserController.findOneUserFromEmail = sinon.stub();
                 UserController.findOneUserFromEmail.resolves();
@@ -193,10 +195,10 @@ module.exports = () => {
                 _setupUserServiceMapToDTO(fakeUser);
 
                 // CALL
-                const result = await _call(userName, userEmail, userLogin, userPassword);
+                const user = await _call(userName, userEmail, userLogin, userPassword);
 
                 // VERIFY
-                assert.equal(result, false);
+                assert.equal(user, null);
 
                 // TEARDOWN
                 UserController.findOneUserFromEmail.resetHistory();

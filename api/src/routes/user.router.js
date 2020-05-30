@@ -547,9 +547,9 @@ module.exports = (app) => {
                 && emailValidator.validate(userEmail)
                 && userLogin && userLogin !== ""
                 && userPassword && userPassword !== "") {
-                const result = await UserController.createUser(userName, userEmail, userLogin, userPassword);
-                if (result) {
-                    res.status(HttpCodeUtil.CREATED).end();
+                const user = await UserController.createUser(userName, userEmail, userLogin, userPassword);
+                if (user) {
+                    res.status(HttpCodeUtil.CREATED).json(user);
                 } else {
                     res.status(HttpCodeUtil.CONFLICT).end();
                 }

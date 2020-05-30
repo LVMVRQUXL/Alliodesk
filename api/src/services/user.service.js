@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const {User} = require('../models');
 const SecurityUtil = require('../utils').SecurityUtil;
 
 class UserService {
@@ -7,16 +7,10 @@ class UserService {
      *
      * @param values {object}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<User>}
      */
     async create(values) {
-        try {
-            await User.create(values);
-            return true;
-        } catch (e) {
-            console.log(e);
-            return false;
-        }
+        return User.create(values);
     }
 
     /**
@@ -28,7 +22,7 @@ class UserService {
      */
     async destroy(where) {
         try {
-            await User.destroy({ where: where });
+            await User.destroy({where: where});
             return true;
         } catch (e) {
             console.log(e);
@@ -43,7 +37,9 @@ class UserService {
      *
      * @returns {Promise<User[] | null>}
      */
-    async findAll(where) { return User.findAll({where: where}); }
+    async findAll(where) {
+        return User.findAll({where: where});
+    }
 
     /**
      * Find one user corresponding to where clause
@@ -52,7 +48,9 @@ class UserService {
      *
      * @returns {Promise<User | null>}
      */
-    async findOne(where) { return User.findOne({where: where}); }
+    async findOne(where) {
+        return User.findOne({where: where});
+    }
 
     /**
      * Map given user to DTO
@@ -61,7 +59,9 @@ class UserService {
      *
      * @returns {UserDTO}
      */
-    mapToDTO(user) { return new UserDTO(user.id, user.name, user.email, user.login); }
+    mapToDTO(user) {
+        return new UserDTO(user.id, user.name, user.email, user.login);
+    }
 
     /**
      * Update one user with given values
@@ -75,11 +75,17 @@ class UserService {
      */
     async updateOneUser(user, name, email, password) {
         const values = {};
-        if (name && name !== "" && name !== user.name) { values.name = name; }
-        if (email && email !== "" && email !== user.email) { values.email = email; }
+        if (name && name !== "" && name !== user.name) {
+            values.name = name;
+        }
+        if (email && email !== "" && email !== user.email) {
+            values.email = email;
+        }
         if (password && password !== "") {
             const pwd = SecurityUtil.hash(password);
-            if (pwd !== user.password) { values.password = pwd; }
+            if (pwd !== user.password) {
+                values.password = pwd;
+            }
         }
         return await this.update(user.id, values);
     }
@@ -95,7 +101,7 @@ class UserService {
     async update(id, values) {
         try {
             await User.update(values, {
-                where: { id: id }
+                where: {id: id}
             });
             return true;
         } catch (e) {
