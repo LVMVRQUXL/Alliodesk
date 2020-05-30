@@ -1,6 +1,7 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
 import fr.esgi.pa.alliodesk.core.request.ConnectionRequest;
+import fr.esgi.pa.alliodesk.ui.AlliodeskMainLayout;
 import fr.esgi.pa.alliodesk.ui.Router;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +19,7 @@ public class ConnectionController {
     private PasswordField pwd;
 
     @FXML
-    public void logIn(ActionEvent event) {
+    private void logIn(ActionEvent event) {
         event.consume();
         this.conn = new ConnectionRequest(login.getText(), pwd.getText());
         int status_code = this.conn.requestToServe();
@@ -39,8 +40,9 @@ public class ConnectionController {
     }
 
     @FXML
-    public void signUp(ActionEvent event) {
+    private void signUp(ActionEvent event) throws IOException {
         event.consume();
+        AlliodeskMainLayout.showRegisterLayout();
     }
 
     void setRouter(final Router router) {

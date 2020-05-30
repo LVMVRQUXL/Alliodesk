@@ -1,12 +1,15 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
 import fr.esgi.pa.alliodesk.core.request.RegisterRequest;
+import fr.esgi.pa.alliodesk.ui.AlliodeskMainLayout;
 import fr.esgi.pa.alliodesk.ui.Router;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+
+import java.io.IOException;
 
 import static javafx.scene.paint.Color.GREEN;
 import static javafx.scene.paint.Color.RED;
@@ -25,7 +28,8 @@ public class RegisterController {
     @FXML
     private Label resultLabel;
 
-    public void registerUser(ActionEvent event) {
+    @FXML
+    private void registerUser(ActionEvent event) {
         event.consume();
         this.reg = new RegisterRequest(name.getText(), login.getText(), email.getText(), pwd.getText());
         int status_code = this.reg.requestToServe();
@@ -55,5 +59,11 @@ public class RegisterController {
 
     void setRouter(final Router router) {
         this.router = router;
+    }
+
+    @FXML
+    private void signIn(ActionEvent event) throws IOException {
+        event.consume();
+        AlliodeskMainLayout.showConnectionLayout();
     }
 }
