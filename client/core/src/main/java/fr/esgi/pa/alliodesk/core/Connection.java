@@ -19,10 +19,9 @@ public class Connection {
     private InfoInForm connectionForm;
     private String tok;
     public Connection(String login, String pwd) {
-        this.connectionForm = new InfoInForm.FormBuilder()
+        this.connectionForm = InfoInForm.build()
                 .withLogin(login)
-                .withPassword(pwd)
-                .build();
+                .withPassword(pwd);
     }
     public int requestToServe() throws IOException {
 
