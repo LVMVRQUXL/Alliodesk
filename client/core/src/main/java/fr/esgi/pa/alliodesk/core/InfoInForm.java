@@ -3,40 +3,40 @@ package fr.esgi.pa.alliodesk.core;
 class InfoInForm {
     private String name, email, login, password;
 
-    static class FormBuilder {
-        private String name = null, email = null, login = null, password = null;
-
-        FormBuilder withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        FormBuilder withEmail(String email) {
-            this.email = email;
-            return this;
-        }
-
-        FormBuilder withLogin(String login) {
-            this.login = login;
-            return this;
-        }
-
-        FormBuilder withPassword(String pwd) {
-            this.password = pwd;
-            return this;
-        }
-
-        InfoInForm build() {
-            InfoInForm res = new InfoInForm();
-            res.name = this.name;
-            res.email = this.email;
-            res.login = this.login;
-            res.password = this.password;
-
-            return res;
-        }
+    private InfoInForm() {
+        this.name = null;
+        this.email = null;
+        this.login = null;
+        this.password = null;
     }
-    public String toString(){
-        return ("name = "+this.name +"  password: "+ this.password +" email : "+ this.email+" login :"+ this.login);
+
+    static InfoInForm build() {
+        return new InfoInForm();
+    }
+
+    InfoInForm withName(final String name) {
+        this.name = name;
+        return this;
+    }
+
+    InfoInForm withEmail(final String email) {
+        this.email = email;
+        return this;
+    }
+
+    InfoInForm withLogin(final String login) {
+        this.login = login;
+        return this;
+    }
+
+    InfoInForm withPassword(final String password) {
+        this.password = password;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("InfoInForm(name: %s, email: %s, login: %s, password: %s)",
+                this.name, this.email, this.login, this.password);
     }
 }

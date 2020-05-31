@@ -25,7 +25,7 @@ public class AlliodeskMainLayout extends Application {
     private void initRootLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/AlliodeskLayout.fxml"));
-        rootLayout = (BorderPane) loader.load();
+        rootLayout = loader.load();
         Scene scene = new Scene(rootLayout);
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/AlliodeskLogo.png")));
 
@@ -36,7 +36,7 @@ public class AlliodeskMainLayout extends Application {
     private void showRegisterLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/RegisterView.fxml"));
-        AnchorPane RegisterOverview = (AnchorPane) loader.load();
+        AnchorPane RegisterOverview = loader.load();
         rootLayout.setCenter(RegisterOverview);
     }
 

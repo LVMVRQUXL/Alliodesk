@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.function.Consumer;
 
 class Router {
-
     private final Stage stage;
 
     Router(final Stage stage) {
