@@ -8,14 +8,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.function.Consumer;
 
-class Router {
+public class Router {
     private final Stage stage;
 
-    Router(final Stage stage) {
+    public Router(final Stage stage) {
         this.stage = stage;
     }
 
-    <T> void goTo(final String viewName, final Consumer<T> controllerConsumer) {
+    public <T> void goTo(final String viewName, final Consumer<T> controllerConsumer) {
         final var view = loadView(viewName, controllerConsumer);
         stage.setScene(new Scene(view));
     }

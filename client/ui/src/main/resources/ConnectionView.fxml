@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.ConnectionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.controller.ConnectionController">
    <children>
       <TextField fx:id="login" layoutX="107.0" layoutY="64.0" AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="50.0" />
       <PasswordField fx:id="pwd" layoutX="107.0" layoutY="161.0" AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="130.0" />
