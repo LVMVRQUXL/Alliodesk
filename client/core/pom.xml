@@ -30,5 +30,11 @@
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>${java-dotenv.version}</version>
+        </dependency>
     </dependencies>
 </project>

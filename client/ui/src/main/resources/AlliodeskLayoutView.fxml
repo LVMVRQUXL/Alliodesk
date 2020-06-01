@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController">
    <top>
       <MenuBar prefHeight="35.0" prefWidth="1119.0" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
         <menus>
@@ -33,7 +33,8 @@
    <left>
       <Pane prefHeight="800.0" prefWidth="129.0" style="-fx-background-color: #393C42;" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
          <children>
-            <Button disable="true" layoutX="2.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="125.0" text="Service 1" />
+            <Button fx:id="todolistButton" layoutX="2.0" mnemonicParsing="false" onAction="#showTodoEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="ToDoList" />
+            <Button fx:id="RegisterButton" layoutX="2.0" layoutY="44.0" mnemonicParsing="false" onAction="#showRegisterEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="Register" />
          </children>
       </Pane>
    </left>

@@ -20,12 +20,11 @@ import java.util.ResourceBundle;
 public class ToDoController {
     private static Gson gson = new Gson();
     ObservableList<LocalEvent> list = FXCollections.observableArrayList();
-    private static LocalEvent[] todos = LocalEvent.todolistReadFromFile();
 
     @FXML
     public void initialize() {
         datePicker.setValue(LocalDate.now());
-
+        LocalEvent[] todos = LocalEvent.todolistReadFromFile();
         if (todos != null) {
             list.addAll(todos);
             eventList.setItems(list);
@@ -43,6 +42,7 @@ public class ToDoController {
     private ListView<LocalEvent> eventList;
 
 
+
     @FXML
     private void addEvent(ActionEvent event) {
         LocalEvent todo = new LocalEvent(descriptionTestField.getText(), datePicker.getValue());
@@ -50,5 +50,11 @@ public class ToDoController {
         LocalEvent.todolistWriteToFile(list);
         eventList.setItems(list);
         descriptionTestField.setText("");
+    }
+
+    @FXML
+    void clearEvent(ActionEvent event) {
+        LocalEvent.clearFile();
+        eventList.getItems().clear();
     }
 }

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.25092250922509224" orientation="VERTICAL" prefHeight="273.0" prefWidth="714.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.todolist.ToDoController">
+<SplitPane dividerPositions="0.25092250922509224, 0.5" orientation="VERTICAL" prefHeight="273.0" prefWidth="714.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
    <items>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="710.0">
          <children>
@@ -25,5 +25,6 @@
          </children>
       </AnchorPane>
       <ListView fx:id="eventList" prefHeight="200.0" prefWidth="551.0" />
+      <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearEvent" text="Clear" />
    </items>
 </SplitPane>

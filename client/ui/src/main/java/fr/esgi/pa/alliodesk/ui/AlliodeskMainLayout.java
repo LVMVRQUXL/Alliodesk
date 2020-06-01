@@ -3,6 +3,7 @@ package fr.esgi.pa.alliodesk.ui;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -24,11 +25,10 @@ public class AlliodeskMainLayout extends Application {
 
     private void initRootLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("/AlliodeskLayout.fxml"));
+        loader.setLocation(Main.class.getResource("/AlliodeskLayoutView.fxml"));
         rootLayout = loader.load();
         Scene scene = new Scene(rootLayout);
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/AlliodeskLogo.png")));
-
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -40,10 +40,18 @@ public class AlliodeskMainLayout extends Application {
         rootLayout.setCenter(RegisterOverview);
     }
 
+    static void showToDoListLayout() throws IOException {
+        ExtensionGetter eg = new ExtensionGetter();
+        FXMLLoader loader = new FXMLLoader(eg.getUrl());
+        loader.setController(eg.getController());
+        SplitPane TodoOverview = loader.load();
+        rootLayout.setCenter(TodoOverview);
+    }
+
     public static void showConnectionLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/ConnectionView.fxml"));
-        AnchorPane RegisterOverview = (AnchorPane) loader.load();
+        AnchorPane RegisterOverview = loader.load();
         rootLayout.setCenter(RegisterOverview);
     }
 
