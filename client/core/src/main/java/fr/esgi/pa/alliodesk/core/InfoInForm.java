@@ -1,6 +1,6 @@
 package fr.esgi.pa.alliodesk.core;
 
-class InfoInForm {
+public class InfoInForm {
     private String name, email, login, password;
 
     private InfoInForm() {
@@ -10,26 +10,26 @@ class InfoInForm {
         this.password = null;
     }
 
-    static InfoInForm build() {
+    public static InfoInForm build() {
         return new InfoInForm();
     }
 
-    InfoInForm withName(final String name) {
+    public InfoInForm withName(final String name) {
         this.name = name;
         return this;
     }
 
-    InfoInForm withEmail(final String email) {
+    public InfoInForm withEmail(final String email) {
         this.email = email;
         return this;
     }
 
-    InfoInForm withLogin(final String login) {
+    public InfoInForm withLogin(final String login) {
         this.login = login;
         return this;
     }
 
-    InfoInForm withPassword(final String password) {
+    public InfoInForm withPassword(final String password) {
         this.password = password;
         return this;
     }

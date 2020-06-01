@@ -1,21 +1,18 @@
-package fr.esgi.pa.alliodesk.ui;
+package fr.esgi.pa.alliodesk.ui.controller;
 
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_GREENPeer;
-import fr.esgi.pa.alliodesk.core.Register;
+import fr.esgi.pa.alliodesk.core.request.RegisterRequest;
+import fr.esgi.pa.alliodesk.ui.Router;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
-
 import static javafx.scene.paint.Color.GREEN;
 import static javafx.scene.paint.Color.RED;
 
-
 public class RegisterController {
-    private Register reg;
+    private RegisterRequest reg;
     private Router router;
     @FXML
     private TextField name;
@@ -28,9 +25,9 @@ public class RegisterController {
     @FXML
     private Label resultLabel;
 
-    public void registerUser(ActionEvent event) throws IOException {
+    public void registerUser(ActionEvent event) {
         event.consume();
-        this.reg = new Register(name.getText(), login.getText(), email.getText(), pwd.getText());
+        this.reg = new RegisterRequest(name.getText(), login.getText(), email.getText(), pwd.getText());
         int status_code = this.reg.requestToServe();
         switch (status_code) {
             case 201:
@@ -54,7 +51,6 @@ public class RegisterController {
                 resultLabel.setText("An internal error has occurred");
                 break;
         }
-
     }
 
     void setRouter(final Router router) {
