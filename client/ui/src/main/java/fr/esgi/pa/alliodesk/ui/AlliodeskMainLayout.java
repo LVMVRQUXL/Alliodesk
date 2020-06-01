@@ -42,9 +42,8 @@ public class AlliodeskMainLayout extends Application {
 
     static void showToDoListLayout() throws IOException {
         ExtensionGetter eg = new ExtensionGetter();
-        eg.load();
-        FXMLLoader loader = new FXMLLoader(eg.url);
-        loader.setController(eg.controller);
+        FXMLLoader loader = new FXMLLoader(eg.getUrl());
+        loader.setController(eg.getController());
         SplitPane TodoOverview = loader.load();
         rootLayout.setCenter(TodoOverview);
     }
@@ -52,7 +51,7 @@ public class AlliodeskMainLayout extends Application {
     public static void showConnectionLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/ConnectionView.fxml"));
-        AnchorPane RegisterOverview = (AnchorPane) loader.load();
+        AnchorPane RegisterOverview = loader.load();
         rootLayout.setCenter(RegisterOverview);
     }
 
