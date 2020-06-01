@@ -6,3 +6,7 @@
 # Maven
 log/
 target/
+
+# Specific file
+todolist.json
+Token.txt

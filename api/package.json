@@ -1,11 +1,12 @@
 {
   "name": "alliodesk-api",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "API d'Alliodesk, le projet annuel de la filière 3AL à l'ESGI",
   "main": "./src/index.js",
   "scripts": {
     "start": "node ./src/index.js",
-    "test": "mocha"
+    "test": "mocha --exit",
+    "swagger-jsdoc": "./node_modules/.bin/swagger-jsdoc -d ./src/utils/swagger.util.js ./src/routes/*.router.js"
   },
   "keywords": [],
   "author": "LAMARQUE Loïc, KANTE Cheick, HUANG Hervé",
@@ -13,10 +14,18 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
+    "email-validator": "^2.0.4",
     "express": "^4.17.1",
-    "sequelize": "^5.21.5"
+    "pg": "^8.0.3",
+    "sequelize": "^5.21.5",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
-    "mocha": "^7.1.1"
+    "chai": "^4.2.0",
+    "mocha": "^7.1.1",
+    "proxyquire": "^2.1.3",
+    "sequelize-test-helpers": "^1.2.2",
+    "sinon": "^9.0.2"
   }
 }
