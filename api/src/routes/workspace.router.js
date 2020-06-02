@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 const WorkspaceController = require('../controllers').WorkspaceController;
+const UserMiddleware = require('../middlewares').UserMiddleware;
 
 const routes = {
     WorkspacesId: '/workspaces/:id',
@@ -190,6 +191,8 @@ module.exports = (app) => {
      *     description: Create a new workspace
      *     tags:
      *       - Workspaces
+     *     security:
+     *       - bearerToken: []
      *     produces:
      *       - application/json
      *     parameters:
@@ -213,10 +216,17 @@ module.exports = (app) => {
         try {
             const workspaceName = req.body.name;
             const workspaceDescription = req.body.description;
-            if (workspaceName && workspaceName !== "" && workspaceDescription && workspaceDescription !== "") {
-                const workspace = await WorkspaceController.createWorkspace(workspaceName, workspaceDescription);
+            const userToken = UserMiddleware.extractTokenFromHeaders(req.headers);
+            if (workspaceName && workspaceName !== ""
+                && workspaceDescription && workspaceDescription !== ""
+                && userToken && userToken !== "") {
+                const workspace = await WorkspaceController.createWorkspace(
+                    workspaceName, workspaceDescription, userToken
+                );
                 if (workspace) {
                     res.status(HttpCodeUtil.CREATED).json(workspace);
+                } else {
+                    res.status(HttpCodeUtil.UNAUTHORIZED).end();
                 }
             } else {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();

@@ -1,4 +1,5 @@
 const WorkspaceService = require('../services').WorkspaceService;
+const UserController = require('./user.controller');
 
 class WorkspaceController {
     /**
@@ -6,13 +7,20 @@ class WorkspaceController {
      *
      * @param name {string}
      * @param description {string}
+     * @param userToken {string}
      *
-     * @returns {Promise<WorkspaceDTO>}
+     * @returns {Promise<WorkspaceDTO|null>}
+     * TODO: update unit tests
      */
-    async createWorkspace(name, description) {
+    async createWorkspace(name, description, userToken) {
+        const user = await UserController.findOneUserFromToken(userToken);
+        if (!user) {
+            return null;
+        }
         const workspace = await WorkspaceService.create({
             name: name,
-            description: description
+            description: description,
+            user_id: user.id
         });
         return WorkspaceService.mapToDTO(workspace);
     }

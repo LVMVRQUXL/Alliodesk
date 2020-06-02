@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         Workspace.belongsTo(models.User, {
             foreignKey: {
                 name: 'user_id',
-                allowNull: true // TODO: put false when managing rights!
+                allowNull: false
             }
         });
 
