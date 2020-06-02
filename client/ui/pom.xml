@@ -54,6 +54,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <finalName>client-ui-shaded</finalName>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <transformers>
                                 <transformer
@@ -67,5 +68,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
