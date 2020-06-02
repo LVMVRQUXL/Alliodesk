@@ -23,7 +23,7 @@ class ExtensionGetter {
 
     private void load() {
         final JarClassLoader jcl = new JarClassLoader();
-        final String jarPath = "../services/ToDoList/target/ToDoList-0.1.0-SNAPSHOT.jar";
+        final String jarPath = "lib/services/ToDoList-1.0.0.jar";
         jcl.add(jarPath);
         final JclObjectFactory factory = JclObjectFactory.getInstance();
         controller = factory.create(jcl, "fr.esgi.pa.alliodesk.todolist.ToDoController");

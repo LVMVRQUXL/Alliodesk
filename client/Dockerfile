@@ -6,5 +6,5 @@ RUN mvn clean package
 
 ### STAGE 2: RUN ###
 FROM openjdk:11-jre-slim
-COPY --from=build ./usr/target/client.jar ./usr
-CMD ["java", "-cp", "usr/client.jar","fr.esgi.alliodesk.client.Main"]
+COPY --from=build ./usr/ui/target/client-ui-shaded.jar ./usr
+CMD ["java", "-cp", "usr/client-ui-shaded.jar","fr.esgi.pa.alliodesk.ui.Main"]
