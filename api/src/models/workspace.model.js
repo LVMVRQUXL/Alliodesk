@@ -24,11 +24,11 @@ module.exports = (sequelize, DataTypes) => {
         Workspace.belongsTo(models.User, {
             foreignKey: {
                 name: 'user_id',
-                allowNull: false
+                allowNull: true // TODO: put false when managing rights!
             }
         });
 
-        Workspace.belongsToMany(models.Service, { through: 'Workspace_contains_Service' });
+        Workspace.belongsToMany(models.Service, {through: 'Workspace_contains_Service'});
     };
 
     return Workspace;

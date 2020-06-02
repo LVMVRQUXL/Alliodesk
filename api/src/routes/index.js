@@ -5,6 +5,7 @@ module.exports = (app) => {
     require('./admin.router')(app);
     require('./service.router')(app);
     require('./user.router')(app);
+    require('./workspace.router')(app);
 
     app.use('/swagger', swaggerUi.serve, swaggerUi.setup(SwaggerSpec));
 };
