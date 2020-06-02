@@ -1,4 +1,4 @@
-const {ServiceService, UserService} = require('../services');
+const {ServiceService, UserService, WorkspaceService} = require('../services');
 const UserStatusController = require('./user_status.controller');
 const ServiceStatusController = require('./service_status.controller');
 const SecurityUtil = require('../utils').SecurityUtil;
@@ -74,6 +74,22 @@ class UserController {
     async findAllUsers() {
         let users = await UserService.findAll(await _getUserStatusId({}));
         return Promise.all(users.map(user => UserService.mapToDTO(user)));
+    }
+
+    /**
+     * Find all workspaces of one user from id
+     *
+     * @param userId {number}
+     *
+     * @returns {Promise<WorkspaceDTO[]|undefined>}
+     * TODO: unit tests
+     */
+    async findAllWorkspacesOfOneUserFromId(userId) {
+        const user = await UserService.findOne(await _getUserStatusId({id: userId}));
+        if (user) {
+            const workspaces = await user.getWorkspaces();
+            return workspaces.map(workspace => WorkspaceService.mapToDTO(workspace));
+        }
     }
 
     /**
