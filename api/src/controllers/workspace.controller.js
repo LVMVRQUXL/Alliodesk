@@ -49,13 +49,13 @@ class WorkspaceController {
     /**
      * Find all services of one workspace from id
      *
-     * @param workspaceId
+     * @param id {number}
      *
      * @returns {Promise<ServiceDTO[]|undefined>}
      * TODO: unit tests
      */
-    async findAllServicesOfOneWorkspaceFromId(workspaceId) {
-        const workspace = await WorkspaceService.findOne({id: workspaceId});
+    async findAllServicesOfOneWorkspaceFromId(id) {
+        const workspace = await WorkspaceService.findOne({id: id});
         if (workspace) {
             const services = await workspace.getServices();
             return services.map(service => ServiceService.mapToDTO(service));
@@ -82,6 +82,26 @@ class WorkspaceController {
     async findOneWorkspaceFromId(id) {
         const workspace = await WorkspaceService.findOne({id: id});
         return !workspace ? null : WorkspaceService.mapToDTO(workspace);
+    }
+
+    /**
+     * Remove one workspace's service from id
+     *
+     * @param workspaceId {number}
+     * @param serviceId {number}
+     *
+     * @returns {Promise<boolean|undefined>}
+     * TODO: unit tests
+     */
+    async removeOneServiceOfOneWorkspaceFromId(workspaceId, serviceId) {
+        const service = await ServiceController.findOneServiceFromId(serviceId);
+        if (service) {
+            const workspace = await WorkspaceService.findOne({id: workspaceId});
+            if (workspace) {
+                await workspace.removeService(serviceId);
+                return true;
+            }
+        }
     }
 
     /**

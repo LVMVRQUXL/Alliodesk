@@ -12,9 +12,53 @@ const routes = {
 };
 
 module.exports = (app) => {
-    // TODO: DELETE '/workspaces/{id}/services/{service_id}' ==> Remove one service from one workspace by id
+    /**
+     * @swagger
+     * TODO: add rights & integration tests
+     *
+     * '/workspaces/{id}/services/{service_id}':
+     *   delete:
+     *     description: Remove one service from one workspace by id
+     *     tags:
+     *       - Workspaces
+     *       - Services
+     *     parameters:
+     *       - name: id
+     *         description: Workspace's id
+     *         in: path
+     *         required: true
+     *       - name: service_id
+     *         description: Service's id
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid inputs
+     *       404:
+     *         description: Can't find workspace or service from id
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.delete(routes.WorkspacesIdServicesService_id, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+        try {
+            const workspaceId = parseInt(req.params.id);
+            const serviceId = parseInt(req.params.service_id);
+            if (!isNaN(workspaceId) && !isNaN(serviceId)) {
+                const result = await WorkspaceController.removeOneServiceOfOneWorkspaceFromId(workspaceId, serviceId);
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
