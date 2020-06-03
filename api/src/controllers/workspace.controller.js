@@ -51,12 +51,17 @@ class WorkspaceController {
      * Remove one workspace from id
      *
      * @param id {number}
+     * @param userToken {string}
      *
      * @returns {Promise<boolean>}
+     * TODO: update unit tests
      */
-    async removeOneWorkspaceFromId(id) {
-        const workspace = await this.findOneWorkspaceFromId(id);
-        return !workspace ? false : await WorkspaceService.destroy({id: id});
+    async removeOneWorkspaceFromId(id, userToken) {
+        const user = await UserController.findOneUserFromToken(userToken);
+        if (user) {
+            const workspace = await this.findOneWorkspaceFromId(id);
+            return !workspace ? false : await WorkspaceService.destroy({id: id});
+        }
     }
 
     /**

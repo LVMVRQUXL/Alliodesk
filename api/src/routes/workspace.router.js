@@ -62,6 +62,8 @@ module.exports = (app) => {
      *     description: Remove one workspace from id
      *     tags:
      *       - Workspaces
+     *     security:
+     *       bearerToken: []
      *     parameters:
      *       - name: id
      *         description: Workspace's id
@@ -80,8 +82,9 @@ module.exports = (app) => {
     app.delete(routes.WorkspacesId, async (req, res) => {
         try {
             const workspaceId = parseInt(req.params.id);
-            if (!isNaN(workspaceId)) {
-                const result = await WorkspaceController.removeOneWorkspaceFromId(workspaceId);
+            const userToken = UserMiddleware.extractTokenFromHeaders(req.headers);
+            if (!isNaN(workspaceId) && userToken && userToken !== "") {
+                const result = await WorkspaceController.removeOneWorkspaceFromId(workspaceId, userToken);
                 if (result) {
                     res.status(HttpCodeUtil.OK).end();
                 } else {
