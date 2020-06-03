@@ -17,14 +17,59 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
-    // TODO: GET '/workspaces/{id}/services' ==> Get all services of one workspace from id
+    /**
+     * @swagger
+     * TODO: add rights & integration tests
+     *
+     * '/workspaces/{id}/services':
+     *   get:
+     *     description: Get all services of one workspace from id
+     *     tags:
+     *       - Workspaces
+     *       - Services
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: id
+     *         description: Workspace's id
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       204:
+     *         description: No services to return
+     *       400:
+     *         description: Invalid workspace's id
+     *       404:
+     *         description: Can't find workspace from id
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.get(routes.WorkspacesIdServices, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+        try {
+            const workspaceId = parseInt(req.params.id);
+            if (!isNaN(workspaceId)) {
+                const services = await WorkspaceController.findAllServicesOfOneWorkspaceFromId(workspaceId);
+                if (services && services.length > 0) {
+                    res.status(HttpCodeUtil.OK).json(services);
+                } else if (services) {
+                    res.status(HttpCodeUtil.NO_CONTENT).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
      * @swagger
-     * TODO: integration tests
+     * TODO: add rights & integration tests
      *
      * '/workspaces/{id}/services':
      *   post:

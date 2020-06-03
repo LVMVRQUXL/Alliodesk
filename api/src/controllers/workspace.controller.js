@@ -1,4 +1,4 @@
-const WorkspaceService = require('../services').WorkspaceService;
+const {ServiceService, WorkspaceService} = require('../services');
 const UserController = require('./user.controller');
 const ServiceController = require('./service.controller');
 
@@ -44,6 +44,22 @@ class WorkspaceController {
             user_id: user.id
         });
         return WorkspaceService.mapToDTO(workspace);
+    }
+
+    /**
+     * Find all services of one workspace from id
+     *
+     * @param workspaceId
+     *
+     * @returns {Promise<ServiceDTO[]|undefined>}
+     * TODO: unit tests
+     */
+    async findAllServicesOfOneWorkspaceFromId(workspaceId) {
+        const workspace = await WorkspaceService.findOne({id: workspaceId});
+        if (workspace) {
+            const services = await workspace.getServices();
+            return services.map(service => ServiceService.mapToDTO(service));
+        }
     }
 
     /**
