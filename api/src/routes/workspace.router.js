@@ -22,9 +22,53 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
-    // TODO: POST '/workspaces/{id}/services' ==> Add a new service in one workspace from id
-    app.post(routes.WorkspacesIdServices, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     * TODO: integration tests
+     *
+     * '/workspaces/{id}/services':
+     *   post:
+     *     description: Add a new service in one workspace from id
+     *     tags:
+     *       - Workspaces
+     *       - Services
+     *     parameters:
+     *       - name: id
+     *         description: Workspace's id
+     *         in: path
+     *         required: true
+     *       - name: service_id
+     *         description: Service's id
+     *         in: body
+     *         required: true
+     *     responses:
+     *       201:
+     *         description: Service successfully added
+     *       400:
+     *         description: Invalid inputs
+     *       404:
+     *         description: Can't find service or workspace from ids
+     *       500:
+     *         description: An internal error has occurred
+     */
+    app.post(routes.WorkspacesIdServices, bodyParser.json(), async (req, res) => {
+        try {
+            const workspaceId = parseInt(req.params.id);
+            const serviceId = parseInt(req.body.service_id);
+            if (!isNaN(workspaceId) && !isNaN(serviceId)) {
+                const result = await WorkspaceController.addOneServiceInOneWorkspaceFromId(workspaceId, serviceId);
+                if (result) {
+                    res.status(HttpCodeUtil.CREATED).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**

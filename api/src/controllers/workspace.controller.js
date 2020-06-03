@@ -1,7 +1,28 @@
 const WorkspaceService = require('../services').WorkspaceService;
 const UserController = require('./user.controller');
+const ServiceController = require('./service.controller');
 
 class WorkspaceController {
+    /**
+     * Add one service in one workspace from id
+     *
+     * @param workspaceId {number}
+     * @param serviceId {number}
+     *
+     * @returns {Promise<boolean|undefined>}
+     * TODO: unit tests
+     */
+    async addOneServiceInOneWorkspaceFromId(workspaceId, serviceId) {
+        const service = await ServiceController.findOneServiceFromId(serviceId);
+        if (service) {
+            const workspace = await WorkspaceService.findOne({id: workspaceId});
+            if (workspace) {
+                workspace.addService(serviceId);
+                return true;
+            }
+        }
+    }
+
     /**
      * Create a new workspace
      *

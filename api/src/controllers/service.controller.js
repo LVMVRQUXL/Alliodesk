@@ -42,7 +42,7 @@ class ServiceController {
      *
      * @param id {number}
      *
-     * @returns {Promise<ServiceDTO>}
+     * @returns {Promise<ServiceDTO|null>}
      */
     async findOneServiceFromId(id) {
         const service = await ServiceService.findOne({id: id});
