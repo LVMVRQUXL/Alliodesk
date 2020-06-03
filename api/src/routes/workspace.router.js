@@ -63,7 +63,7 @@ module.exports = (app) => {
      *     tags:
      *       - Workspaces
      *     security:
-     *       bearerToken: []
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: Workspace's id
@@ -74,6 +74,8 @@ module.exports = (app) => {
      *         description: Ok
      *       400:
      *         description: Invalid workspace's id
+     *       401:
+     *         description: Can't find user from given token session
      *       404:
      *         description: Can't find workspace from given id
      *       500:
@@ -87,8 +89,10 @@ module.exports = (app) => {
                 const result = await WorkspaceController.removeOneWorkspaceFromId(workspaceId, userToken);
                 if (result) {
                     res.status(HttpCodeUtil.OK).end();
-                } else {
+                } else if (result === false) {
                     res.status(HttpCodeUtil.NOT_FOUND).end();
+                } else {
+                    res.status(HttpCodeUtil.UNAUTHORIZED).end();
                 }
             } else {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();
@@ -107,6 +111,8 @@ module.exports = (app) => {
      *     description: Update one workspace from id
      *     tags:
      *       - Workspaces
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: Workspace's id
@@ -125,6 +131,8 @@ module.exports = (app) => {
      *         description: Ok
      *       400:
      *         description: Invalid inputs
+     *       401:
+     *         description: Can't find user from given token session
      *       404:
      *         description: Can't find workspace from given id
      *       500:
@@ -135,15 +143,19 @@ module.exports = (app) => {
             const workspaceId = parseInt(req.params.id);
             const workspaceName = req.body.name;
             const workspaceDescription = req.body.description;
+            const userToken = UserMiddleware.extractTokenFromHeaders(req.headers);
             if (!isNaN(workspaceId)
-                && ((workspaceName && workspaceName !== "") || (workspaceDescription && workspaceDescription !== ""))) {
+                && ((workspaceName && workspaceName !== "") || (workspaceDescription && workspaceDescription !== ""))
+                && userToken && userToken !== "") {
                 const result = await WorkspaceController.updateOneWorkspaceFromId(
-                    workspaceId, workspaceName, workspaceDescription
+                    workspaceId, workspaceName, workspaceDescription, userToken
                 );
                 if (result) {
                     res.status(HttpCodeUtil.OK).end();
-                } else {
+                } else if (result === false) {
                     res.status(HttpCodeUtil.NOT_FOUND).end();
+                } else {
+                    res.status(HttpCodeUtil.UNAUTHORIZED).end();
                 }
             } else {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();

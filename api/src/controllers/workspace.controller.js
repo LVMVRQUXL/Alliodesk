@@ -53,14 +53,14 @@ class WorkspaceController {
      * @param id {number}
      * @param userToken {string}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<boolean|undefined>}
      * TODO: update unit tests
      */
     async removeOneWorkspaceFromId(id, userToken) {
         const user = await UserController.findOneUserFromToken(userToken);
         if (user) {
             const workspace = await this.findOneWorkspaceFromId(id);
-            return !workspace ? false : await WorkspaceService.destroy({id: id});
+            return !workspace || workspace.user_id !== user.id ? false : await WorkspaceService.destroy({id: id});
         }
     }
 
@@ -70,25 +70,30 @@ class WorkspaceController {
      * @param id {number}
      * @param name {string}
      * @param description {string}
+     * @param userToken {string}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<boolean|undefined>}
+     * TODO: update unit tests
      */
-    async updateOneWorkspaceFromId(id, name, description) {
-        if (name === "" && description === "") {
-            return false;
+    async updateOneWorkspaceFromId(id, name, description, userToken) {
+        const user = await UserController.findOneUserFromToken(userToken);
+        if (user) {
+            if (name === "" && description === "") {
+                return false;
+            }
+            const workspace = await this.findOneWorkspaceFromId(id);
+            if (!workspace || workspace.user_id !== user.id) {
+                return false;
+            }
+            const values = {};
+            if (name !== workspace.name) {
+                values.name = name;
+            }
+            if (description !== workspace.description) {
+                values.description = description;
+            }
+            return await WorkspaceService.update(values, {id: id});
         }
-        const workspace = await this.findOneWorkspaceFromId(id);
-        if (!workspace) {
-            return false;
-        }
-        const values = {};
-        if (name !== workspace.name) {
-            values.name = name;
-        }
-        if (description !== workspace.description) {
-            values.description = description;
-        }
-        return await WorkspaceService.update(values, {id: id});
     }
 }
 
