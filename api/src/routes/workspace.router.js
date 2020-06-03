@@ -5,11 +5,28 @@ const WorkspaceController = require('../controllers').WorkspaceController;
 const UserMiddleware = require('../middlewares').UserMiddleware;
 
 const routes = {
+    WorkspacesIdServicesService_id: '/workspaces/:id/services/:service_id',
+    WorkspacesIdServices: '/workspaces/:id/services',
     WorkspacesId: '/workspaces/:id',
     Workspaces: '/workspaces'
 };
 
 module.exports = (app) => {
+    // TODO: DELETE '/workspaces/{id}/services/{service_id}' ==> Remove one service from one workspace by id
+    app.delete(routes.WorkspacesIdServicesService_id, async (req, res) => {
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    });
+
+    // TODO: GET '/workspaces/{id}/services' ==> Get all services of one workspace from id
+    app.get(routes.WorkspacesIdServices, async (req, res) => {
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    });
+
+    // TODO: POST '/workspaces/{id}/services' ==> Add a new service in one workspace from id
+    app.post(routes.WorkspacesIdServices, async (req, res) => {
+        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    });
+
     /**
      * @swagger
      *
