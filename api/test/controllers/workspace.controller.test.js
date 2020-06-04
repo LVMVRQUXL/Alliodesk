@@ -3,6 +3,8 @@ const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const assert = require('assert');
 
+const SecurityUtil = require('../../src/utils/security.util');
+
 module.exports = () => {
     describe('WorkspaceController tests', () => {
         const MockDependencies = {
@@ -51,6 +53,7 @@ module.exports = () => {
             user_id: fakeUser.id,
             service_status_id: 1
         };
+        const fakeUserToken = async () => await SecurityUtil.randomToken();
 
         describe('#addOneServiceInOneWorkspaceFromId(workspaceId, serviceId)', () => {
             afterEach(() => MockDependencies.ServiceController.findOneServiceFromId.resetHistory());
@@ -113,17 +116,24 @@ module.exports = () => {
             });
         });
 
-        describe('#createWorkspace(name, description)', () => {
+        describe('#createWorkspace(name, description, userToken)', () => {
+            afterEach(() => MockDependencies.UserController.findOneUserFromToken.resetHistory());
+
+            const _setupUserController_findOneUserFromToken = (user) => {
+                MockDependencies.UserController.findOneUserFromToken.resolves(user);
+            };
+            const _call = async () => await WorkspaceController.createWorkspace(
+                fakeWorkspace.name, fakeWorkspace.description, fakeUserToken()
+            );
+
             it('should return the created workspace with valid inputs', async () => {
                 // SETUP
-                MockDependencies.UserController.findOneUserFromToken.resolves(fakeUser);
+                _setupUserController_findOneUserFromToken(fakeUser);
                 MockDependencies.Services.WorkspaceService.create.resolves(fakeWorkspace);
                 MockDependencies.Services.WorkspaceService.mapToDTO.resolves(fakeWorkspace);
 
                 // CALL
-                const workspace = await WorkspaceController.createWorkspace(
-                    fakeWorkspace.name, fakeWorkspace.description
-                );
+                const workspace = await _call();
 
                 // VERIFY
                 assert.deepEqual(workspace, fakeWorkspace);
@@ -132,6 +142,17 @@ module.exports = () => {
                 MockDependencies.UserController.findOneUserFromToken.resetHistory();
                 MockDependencies.Services.WorkspaceService.create.resetHistory();
                 MockDependencies.Services.WorkspaceService.mapToDTO.resetHistory();
+            });
+
+            it('should return null with invalid user token', async () => {
+                // SETUP
+                _setupUserController_findOneUserFromToken();
+
+                // CALL
+                const workspace = await _call();
+
+                // VERIFY
+                assert.equal(workspace, null);
             });
         });
 

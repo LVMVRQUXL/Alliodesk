@@ -30,7 +30,6 @@ class WorkspaceController {
      * @param userToken {string}
      *
      * @returns {Promise<WorkspaceDTO|null>}
-     * TODO: update unit tests
      */
     async createWorkspace(name, description, userToken) {
         const user = await UserController.findOneUserFromToken(userToken);
