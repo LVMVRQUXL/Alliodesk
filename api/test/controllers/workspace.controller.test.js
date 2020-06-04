@@ -9,7 +9,9 @@ module.exports = () => {
     describe('WorkspaceController tests', () => {
         const MockDependencies = {
             Services: {
-                ServiceService: {},
+                ServiceService: {
+                    mapToDTO: sinon.stub()
+                },
                 WorkspaceService: {
                     create: sinon.stub(),
                     destroy: sinon.stub(),
@@ -153,6 +155,64 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(workspace, null);
+            });
+        });
+
+        describe('#findAllServicesOfOneWorkspaceFromId(id)', () => {
+            afterEach(() => MockDependencies.Services.WorkspaceService.findOne.resetHistory());
+
+            const _setupWorkspaceService_findOne = (workspace) => {
+                MockDependencies.Services.WorkspaceService.findOne.resolves(workspace);
+            };
+            const _setupFakeWorkspace_getServices = (array) => {
+                fakeWorkspace.getServices = sinon.stub();
+                fakeWorkspace.getServices.resolves(array);
+            };
+            const _call = async () => await WorkspaceController.findAllServicesOfOneWorkspaceFromId(fakeWorkspace.id);
+            const _teardownFakeWorkspace_getServices = () => fakeWorkspace.getServices.resetHistory();
+
+            it('should return a singleton list of services with valid id', async () => {
+                // SETUP
+                _setupWorkspaceService_findOne(fakeWorkspace);
+                _setupFakeWorkspace_getServices([fakeService]);
+                MockDependencies.Services.ServiceService.mapToDTO.returns(fakeService);
+
+                // CALL
+                const services = await _call();
+
+                // VERIFY
+                assert.equal(services.length, 1);
+                assert.deepEqual(services[0], fakeService);
+
+                // TEARDOWN
+                _teardownFakeWorkspace_getServices();
+                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
+            });
+
+            it('should return an empty list of services with valid id', async () => {
+                // SETUP
+                _setupWorkspaceService_findOne(fakeWorkspace);
+                _setupFakeWorkspace_getServices([]);
+
+                // CALL
+                const services = await _call();
+
+                // VERIFY
+                assert.equal(services.length, 0);
+
+                // TEARDOWN
+                _teardownFakeWorkspace_getServices();
+            });
+
+            it('should return undefined with invalid id', async () => {
+                // SETUP
+                _setupWorkspaceService_findOne();
+
+                // CALL
+                const services = await _call();
+
+                // VERIFY
+                assert.equal(services, undefined);
             });
         });
 

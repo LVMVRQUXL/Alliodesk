@@ -50,7 +50,6 @@ class WorkspaceController {
      * @param id {number}
      *
      * @returns {Promise<ServiceDTO[]|undefined>}
-     * TODO: unit tests
      */
     async findAllServicesOfOneWorkspaceFromId(id) {
         const workspace = await WorkspaceService.findOne({id: id});
