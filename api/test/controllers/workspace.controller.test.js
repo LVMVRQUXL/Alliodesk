@@ -35,17 +35,17 @@ module.exports = () => {
             './service.controller': MockDependencies.ServiceController
         });
 
-        const fakeWorkspace = {
-            id: 1,
-            name: 'Test',
-            description: 'Something',
-            UserId: null
-        };
         const fakeUser = {
             id: 1,
             name: 'Test',
             email: 'test@gmail.com',
             login: 'test'
+        };
+        const fakeWorkspace = {
+            id: 1,
+            name: 'Test',
+            description: 'Something',
+            user_id: fakeUser.id
         };
         const fakeService = {
             id: 1,
@@ -349,16 +349,23 @@ module.exports = () => {
         });
 
         describe('#removeOneWorkspaceFromId(id)', () => {
-            afterEach(() => MockDependencies.Services.WorkspaceService.findOne.resetHistory());
+            afterEach(() => MockDependencies.UserController.findOneUserFromToken.resetHistory());
 
-            const _setupWorkspaceServiceFindOne = (workspace) => {
+            const _setupUserController_findOneUserFromToken = (user) => {
+                MockDependencies.UserController.findOneUserFromToken.resolves(user);
+            };
+            const _setupWorkspaceService_findOne = (workspace) => {
                 MockDependencies.Services.WorkspaceService.findOne.resolves(workspace);
             };
             const _call = async () => await WorkspaceController.removeOneWorkspaceFromId(fakeWorkspace.id);
+            const _teardownWorkspaceService_findOne = () => {
+                MockDependencies.Services.WorkspaceService.findOne.resetHistory();
+            };
 
             it('should return true with valid id', async () => {
                 // SETUP
-                _setupWorkspaceServiceFindOne(fakeWorkspace);
+                _setupUserController_findOneUserFromToken(fakeUser);
+                _setupWorkspaceService_findOne(fakeWorkspace);
                 MockDependencies.Services.WorkspaceService.mapToDTO.returns(fakeWorkspace);
                 MockDependencies.Services.WorkspaceService.destroy.resolves(true);
 
@@ -369,19 +376,32 @@ module.exports = () => {
                 assert.equal(result, true);
 
                 // TEARDOWN
+                _teardownWorkspaceService_findOne();
                 MockDependencies.Services.WorkspaceService.mapToDTO.resetHistory();
                 MockDependencies.Services.WorkspaceService.destroy.resetHistory();
             });
 
             it('should return false with invalid id', async () => {
                 // SETUP
-                _setupWorkspaceServiceFindOne();
+                _setupUserController_findOneUserFromToken(fakeUser);
+                _setupWorkspaceService_findOne();
 
                 // CALL
                 const result = await _call();
 
                 // VERIFY
                 assert.equal(result, false);
+            });
+
+            it('should return undefined with invalid user token', async () => {
+                // SETUP
+                _setupUserController_findOneUserFromToken();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, undefined);
             });
         });
 
