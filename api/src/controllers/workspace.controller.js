@@ -88,7 +88,6 @@ class WorkspaceController {
      * @param serviceId {number}
      *
      * @returns {Promise<boolean|undefined>}
-     * TODO: update unit tests
      */
     async removeOneServiceOfOneWorkspaceFromId(workspaceId, serviceId) {
         const service = await ServiceController.findOneServiceFromId(serviceId);

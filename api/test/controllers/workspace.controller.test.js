@@ -287,6 +287,67 @@ module.exports = () => {
             });
         });
 
+        describe('#removeOneServiceOfOneWorkspaceFromId(workspaceId, serviceId)', () => {
+            afterEach(() => MockDependencies.ServiceController.findOneServiceFromId.resetHistory());
+
+            const _setupServiceController_findOneServiceFromId = (service) => {
+                MockDependencies.ServiceController.findOneServiceFromId.resolves(service);
+            };
+            const _setupWorkspaceService_findOne = (workspace) => {
+                MockDependencies.Services.WorkspaceService.findOne.resolves(workspace);
+            };
+            const _call = async () => await WorkspaceController.removeOneServiceOfOneWorkspaceFromId(
+                fakeWorkspace.id, fakeService.id
+            );
+            const _teardownWorkspaceService_findOne = () => {
+                MockDependencies.Services.WorkspaceService.findOne.resetHistory();
+            };
+
+            it('should return true with valid inputs', async () => {
+                // SETUP
+                _setupServiceController_findOneServiceFromId(fakeService);
+                _setupWorkspaceService_findOne(fakeWorkspace);
+                fakeWorkspace.removeService = sinon.stub();
+                fakeWorkspace.removeService.resolves();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, true);
+
+                // TEARDOWN
+                _teardownWorkspaceService_findOne();
+                fakeWorkspace.removeService.resetHistory();
+            });
+
+            it('should return undefined with invalid service\'s id', async () => {
+                // SETUP
+                _setupServiceController_findOneServiceFromId();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, undefined);
+            });
+
+            it('should return undefined with invalid workspace\'s id', async () => {
+                // SETUP
+                _setupServiceController_findOneServiceFromId(fakeService);
+                _setupWorkspaceService_findOne();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, undefined);
+
+                // TEARDOWN
+                _teardownWorkspaceService_findOne();
+            });
+        });
+
         describe('#removeOneWorkspaceFromId(id)', () => {
             afterEach(() => MockDependencies.Services.WorkspaceService.findOne.resetHistory());
 
