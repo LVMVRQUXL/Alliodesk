@@ -7,6 +7,7 @@ module.exports = () => {
     describe('WorkspaceController tests', () => {
         const MockDependencies = {
             Services: {
+                ServiceService: {},
                 WorkspaceService: {
                     create: sinon.stub(),
                     destroy: sinon.stub(),
@@ -15,11 +16,19 @@ module.exports = () => {
                     mapToDTO: sinon.stub(),
                     update: sinon.stub()
                 }
+            },
+            UserController: {
+                findOneUserFromToken: sinon.stub()
+            },
+            ServiceController: {
+                findOneServiceFromId: sinon.stub()
             }
         };
 
         const WorkspaceController = proxyquire('../../src/controllers/workspace.controller', {
-            '../services': MockDependencies.Services
+            '../services': MockDependencies.Services,
+            './user.controller': MockDependencies.UserController,
+            './service.controller': MockDependencies.ServiceController
         });
 
         const fakeWorkspace = {
@@ -28,10 +37,86 @@ module.exports = () => {
             description: 'Something',
             UserId: null
         };
+        const fakeUser = {
+            id: 1,
+            name: 'Test',
+            email: 'test@gmail.com',
+            login: 'test'
+        };
+        const fakeService = {
+            id: 1,
+            name: 'Service',
+            version: '1.0.0',
+            source_url: 'https://www.google.fr',
+            user_id: fakeUser.id,
+            service_status_id: 1
+        };
+
+        describe('#addOneServiceInOneWorkspaceFromId(workspaceId, serviceId)', () => {
+            afterEach(() => MockDependencies.ServiceController.findOneServiceFromId.resetHistory());
+
+            const _setupServiceController_findOneServiceFromId = (service) => {
+                MockDependencies.ServiceController.findOneServiceFromId.resolves(service);
+            };
+            const _setupWorkspaceController_findOne = (workspace) => {
+                MockDependencies.Services.WorkspaceService.findOne.resolves(workspace);
+            };
+            const _call = async () => await WorkspaceController.addOneServiceInOneWorkspaceFromId(
+                fakeWorkspace.id, fakeService.id
+            );
+            const _teardownWorkspaceController_findOne = () => {
+                MockDependencies.Services.WorkspaceService.findOne.resetHistory();
+            };
+
+            it('should return true with valid inputs', async () => {
+                // SETUP
+                _setupServiceController_findOneServiceFromId(fakeService);
+                _setupWorkspaceController_findOne(fakeWorkspace);
+                fakeWorkspace.addService = sinon.stub();
+                fakeWorkspace.addService.resolves();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, true);
+
+                // TEARDOWN
+                _teardownWorkspaceController_findOne();
+                fakeWorkspace.addService.resetHistory();
+            });
+
+            it('should return undefined with invalid service\'s id', async () => {
+                // SETUP
+                _setupServiceController_findOneServiceFromId();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, undefined);
+            });
+
+            it('should return undefined with invalid workspace\'s id', async () => {
+                // SETUP
+                _setupServiceController_findOneServiceFromId(fakeService);
+                _setupWorkspaceController_findOne();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, undefined);
+
+                // TEARDOWN
+                _teardownWorkspaceController_findOne();
+            });
+        });
 
         describe('#createWorkspace(name, description)', () => {
             it('should return the created workspace with valid inputs', async () => {
                 // SETUP
+                MockDependencies.UserController.findOneUserFromToken.resolves(fakeUser);
                 MockDependencies.Services.WorkspaceService.create.resolves(fakeWorkspace);
                 MockDependencies.Services.WorkspaceService.mapToDTO.resolves(fakeWorkspace);
 
@@ -44,6 +129,7 @@ module.exports = () => {
                 assert.deepEqual(workspace, fakeWorkspace);
 
                 // TEARDOWN
+                MockDependencies.UserController.findOneUserFromToken.resetHistory();
                 MockDependencies.Services.WorkspaceService.create.resetHistory();
                 MockDependencies.Services.WorkspaceService.mapToDTO.resetHistory();
             });

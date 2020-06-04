@@ -10,14 +10,13 @@ class WorkspaceController {
      * @param serviceId {number}
      *
      * @returns {Promise<boolean|undefined>}
-     * TODO: unit tests
      */
     async addOneServiceInOneWorkspaceFromId(workspaceId, serviceId) {
         const service = await ServiceController.findOneServiceFromId(serviceId);
         if (service) {
             const workspace = await WorkspaceService.findOne({id: workspaceId});
             if (workspace) {
-                workspace.addService(serviceId);
+                await workspace.addService(serviceId);
                 return true;
             }
         }
@@ -91,7 +90,7 @@ class WorkspaceController {
      * @param serviceId {number}
      *
      * @returns {Promise<boolean|undefined>}
-     * TODO: unit tests
+     * TODO: update unit tests
      */
     async removeOneServiceOfOneWorkspaceFromId(workspaceId, serviceId) {
         const service = await ServiceController.findOneServiceFromId(serviceId);
