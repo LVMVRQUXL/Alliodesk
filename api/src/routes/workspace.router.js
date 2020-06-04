@@ -14,7 +14,6 @@ const routes = {
 module.exports = (app) => {
     /**
      * @swagger
-     * TODO: add rights & integration tests
      *
      * '/workspaces/{id}/services/{service_id}':
      *   delete:
@@ -63,7 +62,6 @@ module.exports = (app) => {
 
     /**
      * @swagger
-     * TODO: add rights & integration tests
      *
      * '/workspaces/{id}/services':
      *   get:
@@ -113,7 +111,6 @@ module.exports = (app) => {
 
     /**
      * @swagger
-     * TODO: add rights & integration tests
      *
      * '/workspaces/{id}/services':
      *   post:

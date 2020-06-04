@@ -125,7 +125,6 @@ class WorkspaceController {
      * @param userToken {string}
      *
      * @returns {Promise<boolean|undefined>}
-     * TODO: update unit tests
      */
     async updateOneWorkspaceFromId(id, name, description, userToken) {
         const user = await UserController.findOneUserFromToken(userToken);

@@ -348,7 +348,7 @@ module.exports = () => {
             });
         });
 
-        describe('#removeOneWorkspaceFromId(id)', () => {
+        describe('#removeOneWorkspaceFromId(id, userToken)', () => {
             afterEach(() => MockDependencies.UserController.findOneUserFromToken.resetHistory());
 
             const _setupUserController_findOneUserFromToken = (user) => {
@@ -405,7 +405,12 @@ module.exports = () => {
             });
         });
 
-        describe('#updateOneWorkspaceFromId(id, name, description)', () => {
+        describe('#updateOneWorkspaceFromId(id, name, description, userToken)', () => {
+            afterEach(() => MockDependencies.UserController.findOneUserFromToken.resetHistory());
+
+            const _setupUserController_findOneUserFromToken = (user) => {
+                MockDependencies.UserController.findOneUserFromToken.resolves(user);
+            };
             const _setupWorkspaceServiceFindOne = (workspace) => {
                 MockDependencies.Services.WorkspaceService.findOne.resolves(workspace);
             };
@@ -424,6 +429,7 @@ module.exports = () => {
 
             it('should return true with valid inputs', async () => {
                 // SETUP
+                _setupUserController_findOneUserFromToken(fakeUser);
                 _setupWorkspaceServiceFindOne(fakeWorkspace);
                 _setupWorkspaceServiceMapToDTO(fakeWorkspace);
                 MockDependencies.Services.WorkspaceService.update.resolves(true);
@@ -442,6 +448,7 @@ module.exports = () => {
 
             it('should return false with empty name and description', async () => {
                 // SETUP
+                _setupUserController_findOneUserFromToken(fakeUser);
                 const backupName = fakeWorkspace.name;
                 fakeWorkspace.name = '';
                 const backupDescription = fakeWorkspace.description;
@@ -460,6 +467,7 @@ module.exports = () => {
 
             it('should return false with empty invalid id', async () => {
                 // SETUP
+                _setupUserController_findOneUserFromToken(fakeUser);
                 _setupWorkspaceServiceFindOne();
 
                 // CALL
@@ -470,6 +478,17 @@ module.exports = () => {
 
                 // TEARDOWN
                 _teardownWorkspaceServiceFindOne();
+            });
+
+            it('should return undefined with invalid user token', async () => {
+                // SETUP
+                _setupUserController_findOneUserFromToken();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, undefined);
             });
         });
     });
