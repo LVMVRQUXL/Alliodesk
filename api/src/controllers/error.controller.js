@@ -41,7 +41,6 @@ class ErrorController {
      * @param id {number}
      *
      * @returns {Promise<boolean>}
-     * TODO: add unit tests
      */
     async removeOneErrorFromId(id) {
         return await this.findOneErrorFromId(id) ? await ErrorService.destroy({id: id}) : false;

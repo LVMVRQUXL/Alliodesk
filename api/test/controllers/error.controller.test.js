@@ -9,6 +9,7 @@ module.exports = () => {
             Services: {
                 ErrorService: {
                     create: sinon.stub(),
+                    destroy: sinon.stub(),
                     findAll: sinon.stub(),
                     findOne: sinon.stub(),
                     mapToDTO: sinon.stub()
@@ -28,11 +29,13 @@ module.exports = () => {
         };
 
         const _setup_ErrorService_create = (error) => MockDependencies.Services.ErrorService.create.resolves(error);
+        const _setup_ErrorService_destroy = (result) => MockDependencies.Services.ErrorService.destroy.resolves(result);
         const _setup_ErrorService_findAll = (array) => MockDependencies.Services.ErrorService.findAll.resolves(array);
         const _setup_ErrorService_findOne = (error) => MockDependencies.Services.ErrorService.findOne.resolves(error);
         const _setup_ErrorService_mapToDTO = (error) => MockDependencies.Services.ErrorService.mapToDTO.returns(error);
 
         const _teardown_ErrorService_create = () => MockDependencies.Services.ErrorService.create.resetHistory();
+        const _teardown_ErrorService_destroy = () => MockDependencies.Services.ErrorService.destroy.resetHistory();
         const _teardown_ErrorService_findAll = () => MockDependencies.Services.ErrorService.findAll.resetHistory();
         const _teardown_ErrorService_findOne = () => MockDependencies.Services.ErrorService.findOne.resetHistory();
         const _teardown_ErrorService_mapToDTO = () => MockDependencies.Services.ErrorService.mapToDTO.resetHistory();
@@ -119,6 +122,40 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(error, null);
+            });
+        });
+
+        describe('#removeOneErrorFromId(id)', () => {
+            afterEach(() => _teardown_ErrorService_findOne());
+
+            const _call = async () => await ErrorController.removeOneErrorFromId(fakeError.id);
+
+            it('should return true with valid id', async () => {
+                // SETUP
+                _setup_ErrorService_findOne(fakeError);
+                _setup_ErrorService_mapToDTO(fakeError);
+                _setup_ErrorService_destroy(true);
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, true);
+
+                // TEARDOWN
+                _teardown_ErrorService_mapToDTO();
+                _teardown_ErrorService_destroy();
+            });
+
+            it('should return false with invalid id', async () => {
+                // SETUP
+                _setup_ErrorService_findOne();
+
+                // CALL
+                const result = await _call();
+
+                // VERIFY
+                assert.equal(result, false);
             });
         });
     });
