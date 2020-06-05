@@ -1,4 +1,5 @@
 module.exports = {
+    ErrorService: require('./error.service'),
     ServiceService: require('./service.service'),
     ServiceStatusService: require('./service_status.service'),
     UserService: require('./user.service'),

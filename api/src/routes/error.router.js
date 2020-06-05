@@ -1,4 +1,7 @@
+const bodyParser = require('body-parser');
+
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
+const ErrorController = require('../controllers').ErrorController;
 
 const routes = {
     ErrorsId: '/errors/:id',
@@ -26,8 +29,47 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
-    // TODO: POST '/errors' => Create a new error
-    app.post(routes.Errors, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     *
+     * '/errors':
+     *   post:
+     *     description: Create a new error
+     *     tags:
+     *       - Errors
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: message
+     *         description: Error's message
+     *         in: body
+     *         required: true
+     *     responses:
+     *       201:
+     *         description: Error successfully created
+     *       400:
+     *         description: Invalid error's message
+     *       409:
+     *         description: Conflict encountered
+     *       500:
+     *         description: An internal error has occurred
+     */
+    app.post(routes.Errors, bodyParser.json(), async (req, res) => {
+        try {
+            const errorMessage = req.body.message;
+            if (errorMessage && errorMessage.length >= 3) {
+                const error = await ErrorController.createError(errorMessage);
+                if (error) {
+                    res.status(HttpCodeUtil.CREATED).json(error);
+                } else {
+                    res.status(HttpCodeUtil.CONFLICT).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 };
