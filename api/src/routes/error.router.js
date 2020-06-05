@@ -19,9 +19,48 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
-    // TODO: GET '/errors/:id' => Get one error from id
+    /**
+     * @swagger
+     *
+     * '/errors/{id}':
+     *   get:
+     *     description: Get one error from id
+     *     tags:
+     *       - Errors
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: id
+     *         description: Error's id
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       204:
+     *         description: No errors to return
+     *       400:
+     *         description: Invalid error's id
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.get(routes.ErrorsId, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+        try {
+            const errorId = parseInt(req.params.id);
+            if (errorId && errorId > 0) {
+                const error = await ErrorController.findOneErrorFromId(errorId);
+                if (error) {
+                    res.status(HttpCodeUtil.OK).json(error);
+                } else {
+                    res.status(HttpCodeUtil.NO_CONTENT).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**

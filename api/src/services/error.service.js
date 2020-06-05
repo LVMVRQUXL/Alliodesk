@@ -22,6 +22,17 @@ class ErrorService {
     }
 
     /**
+     * Find one error corresponding to where clause
+     *
+     * @param where {object}
+     *
+     * @returns {Promise<Error|null>}
+     */
+    async findOne(where) {
+        return Error.findOne({where: where});
+    }
+
+    /**
      * Map given error to DTO
      *
      * @param error {Error}
