@@ -54,6 +54,19 @@ class ErrorService {
     mapToDTO(error) {
         return new ErrorDTO(error.id, error.message, error.user_id, error.service_id);
     }
+
+    /**
+     * Update one error corresponding to where clause
+     *
+     * @param values {object}
+     * @param where {object}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async update(values, where) {
+        await Error.update(values, {where: where});
+        return true;
+    }
 }
 
 class ErrorDTO {

@@ -9,9 +9,51 @@ const routes = {
 };
 
 module.exports = (app) => {
-    // TODO: PUT '/errors/:id' => Update one error from id
-    app.put(routes.ErrorsId, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+    /**
+     * @swagger
+     *
+     * '/errors/{id}':
+     *   put:
+     *     description: Update one error from id
+     *     tags:
+     *       - Errors
+     *     parameters:
+     *       - name: id
+     *         description: Error's id
+     *         in: path
+     *         required: true
+     *       - name: message
+     *         description: New error's message
+     *         in: body
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid inputs
+     *       404:
+     *         description: Can't find error from id
+     *       500:
+     *         description: An internal error has occurred
+     */
+    app.put(routes.ErrorsId, bodyParser.json(), async (req, res) => {
+        try {
+            const errorId = parseInt(req.params.id);
+            const errorMessage = req.body.message;
+            if (errorId && errorId > 0 && errorMessage && errorMessage.length >= 3) {
+                const result = await ErrorController.updateOneErrorFromId(errorId, errorMessage);
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**

@@ -49,6 +49,21 @@ class ErrorController {
     async removeOneErrorFromId(id) {
         return await this.findOneErrorFromId(id) ? await ErrorService.destroy({id: id}) : false;
     }
+
+    /**
+     * Update one error from id
+     *
+     * @param id {number}
+     * @param message {string}
+     *
+     * @returns {Promise<boolean>}
+     * TODO: add unit tests
+     */
+    async updateOneErrorFromId(id, message) {
+        const error = await this.findOneErrorFromId(id);
+        return error && error.message !== message ?
+            await ErrorService.update({message: message}, {id: id}) : false;
+    }
 }
 
 module.exports = new ErrorController();
