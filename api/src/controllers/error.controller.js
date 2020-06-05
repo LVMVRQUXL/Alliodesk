@@ -53,7 +53,6 @@ class ErrorController {
      * @param message {string}
      *
      * @returns {Promise<boolean>}
-     * TODO: add unit tests
      */
     async updateOneErrorFromId(id, message) {
         const error = await this.findOneErrorFromId(id);
