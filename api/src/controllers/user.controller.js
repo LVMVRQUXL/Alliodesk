@@ -82,7 +82,6 @@ class UserController {
      * @param userId {number}
      *
      * @returns {Promise<WorkspaceDTO[]|undefined>}
-     * TODO: unit tests
      */
     async findAllWorkspacesOfOneUserFromId(userId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
