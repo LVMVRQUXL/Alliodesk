@@ -13,6 +13,18 @@ class ErrorService {
     }
 
     /**
+     * Remove one error corresponding to where clause
+     *
+     * @param where {object}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async destroy(where) {
+        await Error.destroy({where: where});
+        return true;
+    }
+
+    /**
      * Find all errors
      *
      * @returns {Promise<Error[]>}

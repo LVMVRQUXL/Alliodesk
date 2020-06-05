@@ -14,9 +14,46 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
-    // TODO: DELETE '/errors/:id' => Remove one error from id
+    /**
+     * @swagger
+     *
+     * '/errors/{id}':
+     *   delete:
+     *     description: Remove one error from id
+     *     tags:
+     *       - Errors
+     *     parameters:
+     *       - name: id
+     *         description: Error's id
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid error's id
+     *       404:
+     *         description: Can't find error from id
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.delete(routes.ErrorsId, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+        try {
+            const errorId = parseInt(req.params.id);
+            if (errorId && errorId > 0) {
+                const result = await ErrorController.removeOneErrorFromId(errorId);
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
@@ -41,6 +78,8 @@ module.exports = (app) => {
      *         description: No errors to return
      *       400:
      *         description: Invalid error's id
+     *       404:
+     *         description: Can't find error from id
      *       500:
      *         description: An internal error has occurred
      */
@@ -52,7 +91,7 @@ module.exports = (app) => {
                 if (error) {
                     res.status(HttpCodeUtil.OK).json(error);
                 } else {
-                    res.status(HttpCodeUtil.NO_CONTENT).end();
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
                 }
             } else {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();

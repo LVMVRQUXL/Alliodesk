@@ -37,6 +37,18 @@ class ErrorController {
         const error = await ErrorService.findOne({id: id});
         return error ? ErrorService.mapToDTO(error) : null;
     }
+
+    /**
+     * Remove one error from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<boolean>}
+     * TODO: add unit tests
+     */
+    async removeOneErrorFromId(id) {
+        return await this.findOneErrorFromId(id) ? await ErrorService.destroy({id: id}) : false;
+    }
 }
 
 module.exports = new ErrorController();
