@@ -17,7 +17,6 @@ class ErrorController {
      * Find all errors
      *
      * @returns {Promise<ErrorDTO[]>}
-     * TODO: add unit tests
      */
     async findAllErrors() {
         const errors = await ErrorService.findAll();

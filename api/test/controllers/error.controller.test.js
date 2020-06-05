@@ -9,7 +9,8 @@ module.exports = () => {
             Services: {
                 ErrorService: {
                     create: sinon.stub(),
-                    mapToDTO: sinon.stub()
+                    mapToDTO: sinon.stub(),
+                    findAll: sinon.stub()
                 }
             }
         };
@@ -41,6 +42,50 @@ module.exports = () => {
                 // TEARDOWN
                 MockDependencies.Services.ErrorService.create.resetHistory();
                 MockDependencies.Services.ErrorService.mapToDTO.resetHistory();
+            });
+        });
+
+        describe('#findAllErrors()', () => {
+            afterEach(() => MockDependencies.Services.ErrorService.findAll.resetHistory());
+
+            const _setup_ErrorService_findAll = (array) => {
+                MockDependencies.Services.ErrorService.findAll.resolves(array);
+            };
+            const _setup_ErrorService_mapToDTO = (error) => {
+                MockDependencies.Services.ErrorService.mapToDTO.returns(error);
+            };
+
+            const _call = async () => await ErrorController.findAllErrors();
+
+            const _teardown_ErrorService_mapToDTO = () => {
+                MockDependencies.Services.ErrorService.mapToDTO.resetHistory();
+            };
+
+            it('should return a singleton list of errors', async () => {
+                // SETUP
+                _setup_ErrorService_findAll([fakeError]);
+                _setup_ErrorService_mapToDTO(fakeError);
+
+                // CALL
+                const errors = await _call();
+
+                // VERIFY
+                assert.equal(errors.length, 1);
+                assert.deepEqual(errors[0], fakeError);
+
+                // TEARDOWN
+                _teardown_ErrorService_mapToDTO();
+            });
+
+            it('should return an empty list of errors', async () => {
+                // SETUP
+                _setup_ErrorService_findAll([]);
+
+                // CALL
+                const errors = await _call();
+
+                // VERIFY
+                assert.equal(errors.length, 0);
             });
         });
     });
