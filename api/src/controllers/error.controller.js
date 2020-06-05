@@ -7,7 +7,6 @@ class ErrorController {
      * @param message {string}
      *
      * @returns {Promise<Error|null>}
-     * TODO: add unit tests
      */
     async createError(message) {
         const error = await ErrorService.create({message: message});
