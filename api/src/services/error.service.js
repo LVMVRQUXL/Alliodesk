@@ -13,6 +13,15 @@ class ErrorService {
     }
 
     /**
+     * Find all errors
+     *
+     * @returns {Promise<Error[]>}
+     */
+    async findAll() {
+        return Error.findAll();
+    }
+
+    /**
      * Map given error to DTO
      *
      * @param error {Error}

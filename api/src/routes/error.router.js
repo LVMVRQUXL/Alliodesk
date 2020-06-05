@@ -24,9 +24,36 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
-    // TODO: GET '/errors' => Get all errors
+    /**
+     * @swagger
+     *
+     * '/errors':
+     *   get:
+     *     description: Get all errors
+     *     tags:
+     *       - Errors
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       204:
+     *         description: No errors to return
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.get(routes.Errors, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+        try {
+            const errors = await ErrorController.findAllErrors();
+            if (errors && errors.length > 0) {
+                res.status(HttpCodeUtil.OK).json(errors);
+            } else {
+                res.status(HttpCodeUtil.NO_CONTENT).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     /**
