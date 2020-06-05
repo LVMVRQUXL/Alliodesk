@@ -9,8 +9,9 @@ module.exports = () => {
             Services: {
                 ErrorService: {
                     create: sinon.stub(),
-                    mapToDTO: sinon.stub(),
-                    findAll: sinon.stub()
+                    findAll: sinon.stub(),
+                    findOne: sinon.stub(),
+                    mapToDTO: sinon.stub()
                 }
             }
         };
@@ -26,10 +27,20 @@ module.exports = () => {
             service_id: null
         };
 
+        const _setup_ErrorService_create = (error) => MockDependencies.Services.ErrorService.create.resolves(error);
+        const _setup_ErrorService_findAll = (array) => MockDependencies.Services.ErrorService.findAll.resolves(array);
+        const _setup_ErrorService_findOne = (error) => MockDependencies.Services.ErrorService.findOne.resolves(error);
+        const _setup_ErrorService_mapToDTO = (error) => MockDependencies.Services.ErrorService.mapToDTO.returns(error);
+
+        const _teardown_ErrorService_create = () => MockDependencies.Services.ErrorService.create.resetHistory();
+        const _teardown_ErrorService_findAll = () => MockDependencies.Services.ErrorService.findAll.resetHistory();
+        const _teardown_ErrorService_findOne = () => MockDependencies.Services.ErrorService.findOne.resetHistory();
+        const _teardown_ErrorService_mapToDTO = () => MockDependencies.Services.ErrorService.mapToDTO.resetHistory();
+
         describe('#createError(message)', () => {
             it('should return the created error with inputs', async () => {
                 // SETUP
-                MockDependencies.Services.ErrorService.create.resolves(fakeError);
+                _setup_ErrorService_create(fakeError);
                 MockDependencies.Services.ErrorService.mapToDTO.returns(fakeError);
 
                 // CALL
@@ -40,26 +51,15 @@ module.exports = () => {
                 assert.deepEqual(error, fakeError);
 
                 // TEARDOWN
-                MockDependencies.Services.ErrorService.create.resetHistory();
-                MockDependencies.Services.ErrorService.mapToDTO.resetHistory();
+                _teardown_ErrorService_create();
+                _teardown_ErrorService_mapToDTO();
             });
         });
 
         describe('#findAllErrors()', () => {
-            afterEach(() => MockDependencies.Services.ErrorService.findAll.resetHistory());
-
-            const _setup_ErrorService_findAll = (array) => {
-                MockDependencies.Services.ErrorService.findAll.resolves(array);
-            };
-            const _setup_ErrorService_mapToDTO = (error) => {
-                MockDependencies.Services.ErrorService.mapToDTO.returns(error);
-            };
+            afterEach(() => _teardown_ErrorService_findAll());
 
             const _call = async () => await ErrorController.findAllErrors();
-
-            const _teardown_ErrorService_mapToDTO = () => {
-                MockDependencies.Services.ErrorService.mapToDTO.resetHistory();
-            };
 
             it('should return a singleton list of errors', async () => {
                 // SETUP
@@ -86,6 +86,39 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(errors.length, 0);
+            });
+        });
+
+        describe('#findOneErrorFromId(id)', () => {
+            afterEach(() => _teardown_ErrorService_findOne());
+
+            const _call = async () => await ErrorController.findOneErrorFromId(fakeError.id);
+
+            it('should return one error with valid id', async () => {
+                // SETUP
+                _setup_ErrorService_findOne(fakeError);
+                _setup_ErrorService_mapToDTO(fakeError);
+
+                // CALL
+                const error = await _call();
+
+                // VERIFY
+                assert.notEqual(error, null);
+                assert.deepEqual(error, fakeError);
+
+                // TEARDOWN
+                _teardown_ErrorService_mapToDTO();
+            });
+
+            it('should return null with invalid id', async () => {
+                // SETUP
+                _setup_ErrorService_findOne();
+
+                // CALL
+                const error = await _call();
+
+                // VERIFY
+                assert.equal(error, null);
             });
         });
     });

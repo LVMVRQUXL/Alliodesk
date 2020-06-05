@@ -29,7 +29,6 @@ class ErrorController {
      * @param id {number}
      *
      * @returns {Promise<ErrorDTO|null>}
-     * TODO: add unit tests
      */
     async findOneErrorFromId(id) {
         const error = await ErrorService.findOne({id: id});
