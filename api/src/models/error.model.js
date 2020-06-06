@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         Error.belongsTo(models.User, {
             foreignKey: {
                 name: 'user_id',
-                allowNull: true // TODO: update to 'false' when implementing logic between User, Error and Service
+                allowNull: false
             }
         });
         Error.belongsTo(models.Service, {

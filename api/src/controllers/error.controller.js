@@ -1,15 +1,25 @@
 const ErrorService = require('../services').ErrorService;
+const UserController = require('./user.controller');
 
 class ErrorController {
     /**
      * Create a new error
      *
      * @param message {string}
+     * @param userToken {string}
      *
      * @returns {Promise<Error|null>}
+     * TODO: update unit tests
      */
-    async createError(message) {
-        const error = await ErrorService.create({message: message});
+    async createError(message, userToken) {
+        const user = await UserController.findOneUserFromToken(userToken);
+        if (!user) {
+            return null;
+        }
+        const error = await ErrorService.create({
+            message: message,
+            user_id: user.id
+        });
         return error ? ErrorService.mapToDTO(error) : null;
     }
 

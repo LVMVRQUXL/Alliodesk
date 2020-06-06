@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 const ErrorController = require('../controllers').ErrorController;
+const UserMiddleware = require('../middlewares').UserMiddleware;
 
 const routes = {
     ErrorsId: '/errors/:id',
@@ -184,6 +185,8 @@ module.exports = (app) => {
      *     description: Create a new error
      *     tags:
      *       - Errors
+     *     security:
+     *       - bearerToken: []
      *     produces:
      *       - application/json
      *     parameters:
@@ -196,20 +199,22 @@ module.exports = (app) => {
      *         description: Error successfully created
      *       400:
      *         description: Invalid error's message
-     *       409:
-     *         description: Conflict encountered
+     *       401:
+     *         description: Can't find user from given token session
      *       500:
      *         description: An internal error has occurred
      */
     app.post(routes.Errors, bodyParser.json(), async (req, res) => {
         try {
             const errorMessage = req.body.message;
-            if (errorMessage && errorMessage.length >= 3) {
-                const error = await ErrorController.createError(errorMessage);
+            const userToken = UserMiddleware.extractTokenFromHeaders(req.headers);
+            if (errorMessage && errorMessage.length >= 3
+                && userToken && userToken !== '') {
+                const error = await ErrorController.createError(errorMessage, userToken);
                 if (error) {
                     res.status(HttpCodeUtil.CREATED).json(error);
                 } else {
-                    res.status(HttpCodeUtil.CONFLICT).end();
+                    res.status(HttpCodeUtil.UNAUTHORIZED).end();
                 }
             } else {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();
