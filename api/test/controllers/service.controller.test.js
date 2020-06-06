@@ -218,6 +218,39 @@ module.exports = () => {
             });
         });
 
+        describe('#findOneServiceFromName(name)', () => {
+            afterEach(() => _teardown_ServiceService_findOne());
+
+            const _call = async () => await ServiceController.findOneServiceFromName(fakeServiceName);
+
+            it('should return one service with valid name', async () => {
+                // SETUP
+                _setup_ServiceService_findOne(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
+
+                // CALL
+                const service = await _call();
+
+                // VERIFY
+                assert.notEqual(service, null);
+                assert.deepEqual(service, fakeService);
+
+                // TEARDOWN
+                _teardown_ServiceService_mapToDTO();
+            });
+
+            it('should return null with invalid name', async () => {
+                // SETUP
+                _setup_ServiceService_findOne();
+
+                // CALL
+                const service = await _call();
+
+                // VERIFY
+                assert.equal(service, null);
+            });
+        });
+
         describe('#rejectOneServiceFromId(id)', () => {
             beforeEach(() => {
                 _setup_ServiceStatusController_findServiceStatusFromValue(fakeServicePendingStatus);

@@ -52,19 +52,6 @@ class ServiceController {
     }
 
     /**
-     * Find one service from name
-     *
-     * @param name {string}
-     *
-     * @returns {Promise<ServiceDTO|null>}
-     * TODO: add unit tests
-     */
-    async findOneServiceFromName(name) {
-        const service = await ServiceService.findOne({name: name});
-        return !service ? null : ServiceService.mapToDTO(service);
-    }
-
-    /**
      * Reject one service from id
      *
      * @param id {number}
@@ -78,6 +65,18 @@ class ServiceController {
             const status = await _getRejectedStatusId({});
             return await ServiceService.update({service_status_id: status.service_status_id}, {id: id});
         }
+    }
+
+    /**
+     * Find one service from name
+     *
+     * @param name {string}
+     *
+     * @returns {Promise<ServiceDTO|null>}
+     */
+    async findOneServiceFromName(name) {
+        const service = await ServiceService.findOne({name: name});
+        return !service ? null : ServiceService.mapToDTO(service);
     }
 
     /**
