@@ -2,7 +2,7 @@ const bodyParser = require('body-parser');
 
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 const ErrorController = require('../controllers').ErrorController;
-const UserMiddleware = require('../middlewares').UserMiddleware;
+const {AdminMiddleware, UserMiddleware} = require('../middlewares');
 
 const routes = {
     ErrorsId: '/errors/:id',
@@ -153,6 +153,8 @@ module.exports = (app) => {
      *     description: Get all errors
      *     tags:
      *       - Errors
+     *     security:
+     *       - bearerToken: []
      *     produces:
      *       - application/json
      *     responses:
@@ -160,10 +162,14 @@ module.exports = (app) => {
      *         description: Ok
      *       204:
      *         description: No errors to return
+     *       400:
+     *         description: Invalid administrator's token session
+     *       401:
+     *         description: Unauthorized operation
      *       500:
      *         description: An internal error has occurred
      */
-    app.get(routes.Errors, async (req, res) => {
+    app.get(routes.Errors, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const errors = await ErrorController.findAllErrors();
             if (errors && errors.length > 0) {
