@@ -11,7 +11,7 @@ public class PluginGuetter {
     public static void load() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         PluginLoader<PluginInterface> loader = new PluginLoader<>();
         pluginList = new PluginInterface[]{};
-        pluginList = loader.LoadClass(jarPath, "testPlugin", PluginInterface.class);
+        pluginList = loader.LoadClass(jarPath, "Plugin", PluginInterface.class);
         System.out.println("Plugin loaded !");
     }
 }
