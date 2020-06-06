@@ -11,7 +11,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+
 
 
 
@@ -44,7 +44,7 @@ public class AlliodeskMainLayoutController {
         }
     }
     @FXML
-    void loadPlugin(ActionEvent event) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    void loadPlugin(ActionEvent event) throws ReflectiveOperationException {
         PluginGuetter.load();
         addPluginInMenuBar(PluginGuetter.pluginList);
     }

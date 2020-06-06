@@ -4,7 +4,6 @@ package fr.esgi.pa.alliodesk.ui.plugin;
 import interfacetest.PluginInterface;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -14,7 +13,7 @@ public class PluginLoader<C> {
     private ArrayList classPluginInterface = new ArrayList();
 
 
-    public PluginInterface[] LoadClass(String directory, String classpath, Class<C> parentClass) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public PluginInterface[] LoadClass(String directory, String classpath, Class<C> parentClass) throws ReflectiveOperationException {
         File pluginsDir = new File(System.getProperty("user.dir") + directory);
         System.out.println(pluginsDir.listFiles().length);
         for (File jar : pluginsDir.listFiles()) {
