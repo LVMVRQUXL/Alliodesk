@@ -2,15 +2,14 @@ package fr.esgi.pa.alliodesk.ui;
 
 import fr.esgi.pa.alliodesk.ui.plugin.PluginGuetter;
 import interfacetest.PluginInterface;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 

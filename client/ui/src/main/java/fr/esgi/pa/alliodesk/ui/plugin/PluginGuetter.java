@@ -6,7 +6,7 @@ import interfacetest.PluginInterface;
 import java.lang.reflect.InvocationTargetException;
 
 public class PluginGuetter {
-    final static String jarPath = "/lib/plugins";
+    final static String jarPath = "/ui/lib/plugins";
     public static PluginInterface[] pluginList;
     public static void load() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         PluginLoader<PluginInterface> loader = new PluginLoader<>();
