@@ -1,5 +1,6 @@
 package fr.esgi.pa.alliodesk.ui;
 
+import fr.esgi.pa.alliodesk.ui.service.ExtensionGetter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
