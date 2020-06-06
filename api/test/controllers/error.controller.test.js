@@ -1,7 +1,9 @@
-const {describe, it, before, beforeEach, afterEach, after} = require('mocha');
+const {describe, it, afterEach} = require('mocha');
 const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
+
+const SecurityUtil = require('../../src/utils/security.util');
 
 module.exports = () => {
     describe('ErrorController tests', () => {
@@ -14,17 +16,28 @@ module.exports = () => {
                     findOne: sinon.stub(),
                     mapToDTO: sinon.stub()
                 }
+            },
+            UserController: {
+                findOneUserFromToken: sinon.stub()
             }
         };
 
         const ErrorController = proxyquire('../../src/controllers/error.controller', {
-            '../services': MockDependencies.Services
+            '../services': MockDependencies.Services,
+            './user.controller': MockDependencies.UserController
         });
 
+        const fakeUserDTO = {
+            id: 1,
+            name: 'Fake user',
+            email: 'fake.user@gmail.com',
+            login: 'fakeUser',
+            token_session: async () => await SecurityUtil.randomToken()
+        };
         const fakeError = {
             id: 1,
             message: 'New error',
-            user_id: null,
+            user_id: fakeUserDTO.id,
             service_id: null
         };
 
@@ -33,21 +46,32 @@ module.exports = () => {
         const _setup_ErrorService_findAll = (array) => MockDependencies.Services.ErrorService.findAll.resolves(array);
         const _setup_ErrorService_findOne = (error) => MockDependencies.Services.ErrorService.findOne.resolves(error);
         const _setup_ErrorService_mapToDTO = (error) => MockDependencies.Services.ErrorService.mapToDTO.returns(error);
+        const _setup_UserController_findOneUserFromToken = (user) => {
+            MockDependencies.UserController.findOneUserFromToken.resolves(user);
+        };
 
         const _teardown_ErrorService_create = () => MockDependencies.Services.ErrorService.create.resetHistory();
         const _teardown_ErrorService_destroy = () => MockDependencies.Services.ErrorService.destroy.resetHistory();
         const _teardown_ErrorService_findAll = () => MockDependencies.Services.ErrorService.findAll.resetHistory();
         const _teardown_ErrorService_findOne = () => MockDependencies.Services.ErrorService.findOne.resetHistory();
         const _teardown_ErrorService_mapToDTO = () => MockDependencies.Services.ErrorService.mapToDTO.resetHistory();
+        const _teardown_UserController_findOneUserFromToken = () => {
+            MockDependencies.UserController.findOneUserFromToken.resetHistory();
+        };
 
-        describe('#createError(message)', () => {
+        describe('#createError(message, userToken)', () => {
+            afterEach(() => _teardown_UserController_findOneUserFromToken());
+
+            const _call = async () => await ErrorController.createError(fakeError.message, fakeUserDTO.token_session());
+
             it('should return the created error with inputs', async () => {
                 // SETUP
+                _setup_UserController_findOneUserFromToken(fakeUserDTO);
                 _setup_ErrorService_create(fakeError);
-                MockDependencies.Services.ErrorService.mapToDTO.returns(fakeError);
+                _setup_ErrorService_mapToDTO(fakeError);
 
                 // CALL
-                const error = await ErrorController.createError(fakeError.message);
+                const error = await _call();
 
                 // VERIFY
                 assert.notEqual(error, null);
@@ -56,6 +80,17 @@ module.exports = () => {
                 // TEARDOWN
                 _teardown_ErrorService_create();
                 _teardown_ErrorService_mapToDTO();
+            });
+
+            it('should return null with invalid user\'s token session', async () => {
+                // SETUP
+                _setup_UserController_findOneUserFromToken();
+
+                // CALL
+                const error = await _call();
+
+                // VERIFY
+                assert.equal(error, null);
             });
         });
 

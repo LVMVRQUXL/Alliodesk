@@ -9,7 +9,6 @@ class ErrorController {
      * @param userToken {string}
      *
      * @returns {Promise<Error|null>}
-     * TODO: update unit tests
      */
     async createError(message, userToken) {
         const user = await UserController.findOneUserFromToken(userToken);
