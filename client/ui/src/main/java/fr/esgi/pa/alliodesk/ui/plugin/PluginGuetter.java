@@ -12,9 +12,6 @@ public class PluginGuetter {
         PluginLoader<PluginInterface> loader = new PluginLoader<>();
         pluginList = new PluginInterface[]{};
         pluginList = loader.LoadClass(jarPath, "testPlugin", PluginInterface.class);
-
-        for( PluginInterface pi : pluginList){
-            pi.Print();
-        }
+        System.out.println("Plugin loaded !");
     }
 }
