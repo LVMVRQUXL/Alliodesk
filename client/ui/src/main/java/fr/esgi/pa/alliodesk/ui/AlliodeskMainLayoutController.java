@@ -38,7 +38,7 @@ public class AlliodeskMainLayoutController {
         for( PluginInterface plugin: pi){
             MenuItem mi = new MenuItem(plugin.getName());
             int finalIndex = index;
-            mi.setOnAction(event -> PluginGuetter.pluginList[finalIndex].Print());
+            mi.setOnAction(event -> PluginGuetter.pluginList[finalIndex].start());
             pluginMenu.getItems().add(mi);
             index++;
         }
