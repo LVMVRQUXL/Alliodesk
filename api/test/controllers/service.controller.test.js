@@ -3,6 +3,8 @@ const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
+const SecurityUtil = require('../../src/utils/security.util');
+
 module.exports = () => {
     describe('ServiceController tests', () => {
         const MockDependencies = {
@@ -47,8 +49,12 @@ module.exports = () => {
             service_status_id: fakeServicePendingStatus.id
         };
         const fakeUser = {
-            id: 1
+            id: 1,
+            name: 'Fake user',
+            email: 'fake.user@gmail.com',
+            login: 'fakeUser'
         };
+        const fakeUserTokenSession = async () => await SecurityUtil.randomToken();
 
         const _setup_ServiceService_create = (service) => {
             MockDependencies.Services.ServiceService.create.resolves(service);
@@ -90,16 +96,17 @@ module.exports = () => {
             MockDependencies.UserController.findOneUserFromToken.resetHistory();
         };
 
-        describe('#createService(name, version, sourceUrl)', () => {
+        describe('#createService(name, version, sourceUrl, userToken)', () => {
             afterEach(() => _teardown_UserController_findOneUserFromToken());
 
             const _call = async () => await ServiceController.createService(
-                fakeServiceName, fakeServiceVersion, fakeServiceSourceUrl
+                fakeServiceName, fakeServiceVersion, fakeServiceSourceUrl, fakeUserTokenSession()
             );
 
             it('should return the created service with valid inputs', async () => {
                 // SETUP
                 _setup_UserController_findOneUserFromToken(fakeUser);
+                _setup_ServiceService_findOne();
                 _setup_ServiceStatusController_findServiceStatusFromValue(fakeServicePendingStatus);
                 _setup_ServiceService_create(fakeService);
                 _setup_ServiceService_mapToDTO(fakeService);
@@ -111,12 +118,13 @@ module.exports = () => {
                 assert.equal(service, fakeService);
 
                 // TEARDOWN
+                _teardown_ServiceService_findOne();
                 _teardown_ServiceStatusController_findServiceStatusFromValue();
                 _teardown_ServiceService_create();
                 _teardown_ServiceService_mapToDTO();
             });
 
-            it('should return false with invalid user\'s token session', async () => {
+            it('should return null with invalid user\'s token session', async () => {
                 // SETUP
                 _setup_UserController_findOneUserFromToken();
 
@@ -125,6 +133,23 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(service, null);
+            });
+
+            it('should return false with name already use', async () => {
+                // SETUP
+                _setup_UserController_findOneUserFromToken(fakeUser);
+                _setup_ServiceService_findOne(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
+
+                // CALL
+                const service = await _call();
+
+                // VERIFY
+                assert.equal(service, false);
+
+                // TEARDOWN
+                _teardown_ServiceService_findOne();
+                _teardown_ServiceService_mapToDTO();
             });
         });
 

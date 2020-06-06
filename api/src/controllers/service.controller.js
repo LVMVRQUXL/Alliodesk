@@ -12,7 +12,6 @@ class ServiceController {
      * @param userToken {string}
      *
      * @returns {Promise<ServiceDTO|null|boolean>}
-     * TODO: update unit tests
      */
     async createService(name, version, sourceUrl, userToken) {
         const user = await UserController.findOneUserFromToken(userToken);
