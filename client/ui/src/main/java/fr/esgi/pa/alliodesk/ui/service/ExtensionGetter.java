@@ -1,23 +1,23 @@
-package fr.esgi.pa.alliodesk.ui;
+package fr.esgi.pa.alliodesk.ui.service;
 
 import org.xeustechnologies.jcl.JarClassLoader;
 import org.xeustechnologies.jcl.JclObjectFactory;
 
 import java.net.URL;
 
-class ExtensionGetter {
+public class ExtensionGetter {
     private URL url;
     private Object controller;
 
-    ExtensionGetter() {
+    public ExtensionGetter() {
         this.load();
     }
 
-    URL getUrl() {
+    public URL getUrl() {
         return this.url;
     }
 
-    Object getController() {
+    public Object getController() {
         return this.controller;
     }
 
