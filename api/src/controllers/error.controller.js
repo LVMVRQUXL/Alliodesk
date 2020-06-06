@@ -1,6 +1,6 @@
 const ErrorService = require('../services').ErrorService;
-const UserController = require('./user.controller');
 const ServiceController = require('./service.controller');
+const UserController = require('./user.controller');
 
 class ErrorController {
     /**
@@ -11,7 +11,6 @@ class ErrorController {
      * @param serviceName {string}
      *
      * @returns {Promise<Error|null>}
-     * TODO: update unit tests
      */
     async createError(message, userToken, serviceName) {
         const user = await UserController.findOneUserFromToken(userToken);
