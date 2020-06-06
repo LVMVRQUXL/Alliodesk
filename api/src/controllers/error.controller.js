@@ -1,5 +1,6 @@
 const ErrorService = require('../services').ErrorService;
 const UserController = require('./user.controller');
+const ServiceController = require('./service.controller');
 
 class ErrorController {
     /**
@@ -7,18 +8,24 @@ class ErrorController {
      *
      * @param message {string}
      * @param userToken {string}
+     * @param serviceName {string}
      *
      * @returns {Promise<Error|null>}
+     * TODO: update unit tests
      */
-    async createError(message, userToken) {
+    async createError(message, userToken, serviceName) {
         const user = await UserController.findOneUserFromToken(userToken);
-        if (!user) {
+        const service = serviceName && serviceName !== '' ?
+            await ServiceController.findOneServiceFromName(serviceName) : null;
+        if (!user || (serviceName && serviceName !== '' && !service)) {
             return null;
         }
-        const error = await ErrorService.create({
+        const values = {
             message: message,
             user_id: user.id
-        });
+        };
+        values.service_id = service ? service.id : null;
+        const error = await ErrorService.create(values);
         return error ? ErrorService.mapToDTO(error) : null;
     }
 

@@ -161,27 +161,33 @@ module.exports = (app) => {
      *         description: Error's message
      *         in: body
      *         required: true
+     *       - name: service_name
+     *         description: Target service's name
+     *         in: body
+     *         required: false
      *     responses:
      *       201:
      *         description: Error successfully created
      *       400:
-     *         description: Invalid error's message
-     *       401:
-     *         description: Can't find user from given token session
+     *         description: Invalid error's message or target service's name
+     *       404:
+     *         description: Can't find user from token session or service from name
      *       500:
      *         description: An internal error has occurred
      */
     app.post(routes.Errors, bodyParser.json(), async (req, res) => {
         try {
             const errorMessage = req.body.message;
+            const serviceName = req.body.service_name;
             const userToken = UserMiddleware.extractTokenFromHeaders(req.headers);
             if (errorMessage && errorMessage.length >= 3
-                && userToken && userToken !== '') {
-                const error = await ErrorController.createError(errorMessage, userToken);
+                && userToken && userToken !== ''
+                && ((serviceName && serviceName !== '') || !serviceName)) {
+                const error = await ErrorController.createError(errorMessage, userToken, serviceName);
                 if (error) {
                     res.status(HttpCodeUtil.CREATED).json(error);
                 } else {
-                    res.status(HttpCodeUtil.UNAUTHORIZED).end();
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
                 }
             } else {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();
