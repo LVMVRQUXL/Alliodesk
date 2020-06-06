@@ -18,7 +18,7 @@
             <groupId>PluginCreator-1.0-SNAPSHOT</groupId>
             <artifactId>PluginCreator-1.0-SNAPSHOT</artifactId>
             <scope>system</scope>
-            <systemPath>${basedir}\lib\pluginInterface\PluginCreator-1.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${basedir}/lib/pluginInterface/PluginCreator-1.0-SNAPSHOT.jar</systemPath>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
