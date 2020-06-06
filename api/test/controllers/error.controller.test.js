@@ -12,8 +12,7 @@ module.exports = () => {
                     destroy: sinon.stub(),
                     findAll: sinon.stub(),
                     findOne: sinon.stub(),
-                    mapToDTO: sinon.stub(),
-                    update: sinon.stub()
+                    mapToDTO: sinon.stub()
                 }
             }
         };
@@ -34,14 +33,12 @@ module.exports = () => {
         const _setup_ErrorService_findAll = (array) => MockDependencies.Services.ErrorService.findAll.resolves(array);
         const _setup_ErrorService_findOne = (error) => MockDependencies.Services.ErrorService.findOne.resolves(error);
         const _setup_ErrorService_mapToDTO = (error) => MockDependencies.Services.ErrorService.mapToDTO.returns(error);
-        const _setup_ErrorService_update = (result) => MockDependencies.Services.ErrorService.update.resolves(true);
 
         const _teardown_ErrorService_create = () => MockDependencies.Services.ErrorService.create.resetHistory();
         const _teardown_ErrorService_destroy = () => MockDependencies.Services.ErrorService.destroy.resetHistory();
         const _teardown_ErrorService_findAll = () => MockDependencies.Services.ErrorService.findAll.resetHistory();
         const _teardown_ErrorService_findOne = () => MockDependencies.Services.ErrorService.findOne.resetHistory();
         const _teardown_ErrorService_mapToDTO = () => MockDependencies.Services.ErrorService.mapToDTO.resetHistory();
-        const _teardown_ErrorService_update = () => MockDependencies.Services.ErrorService.update.resetHistory();
 
         describe('#createError(message)', () => {
             it('should return the created error with inputs', async () => {
@@ -159,61 +156,6 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(result, false);
-            });
-        });
-
-        describe('#updateOneErrorFromId(id, message)', () => {
-            afterEach(() => _teardown_ErrorService_findOne());
-
-            const _call = async () => await ErrorController.updateOneErrorFromId(fakeError.id, fakeError.message);
-
-            it('should return true with valid inputs', async () => {
-                // SETUP
-                const oldFakeError = {
-                    id: fakeError.id,
-                    message: 'Old message',
-                    user_id: fakeError.user_id,
-                    service_id: fakeError.service_id
-                };
-                _setup_ErrorService_findOne(oldFakeError);
-                _setup_ErrorService_mapToDTO(oldFakeError);
-                _setup_ErrorService_update(true);
-
-                // CALL
-                const result = await _call();
-
-                // VERIFY
-                assert.equal(result, true);
-
-                // TEARDOWN
-                _teardown_ErrorService_mapToDTO();
-                _teardown_ErrorService_update();
-            });
-
-            it('should return false with invalid id', async () => {
-                // SETUP
-                _setup_ErrorService_findOne();
-
-                // CALL
-                const result = await _call();
-
-                // VERIFY
-                assert.equal(result, false);
-            });
-
-            it('should return false with same message', async () => {
-                // SETUP
-                _setup_ErrorService_findOne(fakeError);
-                _setup_ErrorService_mapToDTO(fakeError);
-
-                // CALL
-                const result = await _call();
-
-                // VERIFY
-                assert.equal(result, false);
-
-                // TEARDOWN
-                _teardown_ErrorService_mapToDTO();
             });
         });
     });
