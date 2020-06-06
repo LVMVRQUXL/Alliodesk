@@ -107,6 +107,8 @@ module.exports = (app) => {
      *     description: Get one error from id
      *     tags:
      *       - Errors
+     *     security:
+     *       - bearerToken: []
      *     produces:
      *       - application/json
      *     parameters:
@@ -120,13 +122,15 @@ module.exports = (app) => {
      *       204:
      *         description: No errors to return
      *       400:
-     *         description: Invalid error's id
+     *         description: Invalid error's id or administrator's token session
+     *       401:
+     *         description: Unauthorized operation
      *       404:
      *         description: Can't find error from id
      *       500:
      *         description: An internal error has occurred
      */
-    app.get(routes.ErrorsId, async (req, res) => {
+    app.get(routes.ErrorsId, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const errorId = parseInt(req.params.id);
             if (errorId && errorId > 0) {
