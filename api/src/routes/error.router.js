@@ -65,6 +65,8 @@ module.exports = (app) => {
      *     description: Remove one error from id
      *     tags:
      *       - Errors
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: Error's id
@@ -74,13 +76,15 @@ module.exports = (app) => {
      *       200:
      *         description: Ok
      *       400:
-     *         description: Invalid error's id
+     *         description: Invalid error's id or administrator's token session
+     *       401:
+     *         description: Unauthorized operation
      *       404:
      *         description: Can't find error from id
      *       500:
      *         description: An internal error has occurred
      */
-    app.delete(routes.ErrorsId, async (req, res) => {
+    app.delete(routes.ErrorsId, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const errorId = parseInt(req.params.id);
             if (errorId && errorId > 0) {
