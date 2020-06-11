@@ -6,6 +6,7 @@ const {UserStatusMiddleware, UserMiddleware} = require('../middlewares');
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 
 const routes = {
+    UsersMeInfos: '/users/me/infos',
     UsersLogin: '/users/login',
     UsersIdWorkspaces: '/users/:id/workspaces',
     UsersIdServicesService_id: '/users/:id/services/:service_id',
@@ -18,6 +19,47 @@ const routes = {
 module.exports = (app) => {
 
     app.use(UserStatusMiddleware.checkStatusForUsers());
+
+    /**
+     * @swagger
+     *
+     * '/users/me/infos':
+     *   get:
+     *     description: Get information of the user currently logged in
+     *     tags:
+     *       - Users
+     *     security:
+     *       - bearerToken: []
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid token session
+     *       401:
+     *         description: Unauthorized operation
+     *       500:
+     *         description: An internal error has occurred
+     */
+    app.get(routes.UsersMeInfos, async (req, res) => {
+        try {
+            const userToken = UserMiddleware.extractTokenFromHeaders(req.headers);
+            if (userToken && userToken !== '') {
+                const user = await UserController.findOneUserFromToken(userToken);
+                if (user) {
+                    res.status(HttpCodeUtil.OK).json(user);
+                } else {
+                    res.status(HttpCodeUtil.UNAUTHORIZED).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
+    });
 
     /**
      * @swagger
