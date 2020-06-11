@@ -1,15 +1,30 @@
 const ErrorService = require('../services').ErrorService;
+const ServiceController = require('./service.controller');
+const UserController = require('./user.controller');
 
 class ErrorController {
     /**
      * Create a new error
      *
      * @param message {string}
+     * @param userToken {string}
+     * @param serviceName {string}
      *
      * @returns {Promise<Error|null>}
      */
-    async createError(message) {
-        const error = await ErrorService.create({message: message});
+    async createError(message, userToken, serviceName) {
+        const user = await UserController.findOneUserFromToken(userToken);
+        const service = serviceName && serviceName !== '' ?
+            await ServiceController.findOneServiceFromName(serviceName) : null;
+        if (!user || (serviceName && serviceName !== '' && !service)) {
+            return null;
+        }
+        const values = {
+            message: message,
+            user_id: user.id
+        };
+        values.service_id = service ? service.id : null;
+        const error = await ErrorService.create(values);
         return error ? ErrorService.mapToDTO(error) : null;
     }
 
@@ -44,20 +59,6 @@ class ErrorController {
      */
     async removeOneErrorFromId(id) {
         return await this.findOneErrorFromId(id) ? await ErrorService.destroy({id: id}) : false;
-    }
-
-    /**
-     * Update one error from id
-     *
-     * @param id {number}
-     * @param message {string}
-     *
-     * @returns {Promise<boolean>}
-     */
-    async updateOneErrorFromId(id, message) {
-        const error = await this.findOneErrorFromId(id);
-        return error && error.message !== message ?
-            await ErrorService.update({message: message}, {id: id}) : false;
     }
 }
 

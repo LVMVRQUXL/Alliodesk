@@ -1,7 +1,9 @@
-const {describe, it, before, beforeEach, afterEach, after} = require('mocha');
+const {describe, it, beforeEach, afterEach} = require('mocha');
 const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
+
+const SecurityUtil = require('../../src/utils/security.util');
 
 module.exports = () => {
     describe('ServiceController tests', () => {
@@ -47,25 +49,67 @@ module.exports = () => {
             service_status_id: fakeServicePendingStatus.id
         };
         const fakeUser = {
-            id: 1
+            id: 1,
+            name: 'Fake user',
+            email: 'fake.user@gmail.com',
+            login: 'fakeUser'
+        };
+        const fakeUserTokenSession = async () => await SecurityUtil.randomToken();
+
+        const _setup_ServiceService_create = (service) => {
+            MockDependencies.Services.ServiceService.create.resolves(service);
+        };
+        const _setup_ServiceService_destroy = (result) => {
+            MockDependencies.Services.ServiceService.destroy.resolves(result);
+        };
+        const _setup_ServiceService_findAll = (array) => {
+            MockDependencies.Services.ServiceService.findAll.resolves(array);
+        };
+        const _setup_ServiceService_findOne = (service) => {
+            MockDependencies.Services.ServiceService.findOne.resolves(service);
+        };
+        const _setup_ServiceService_mapToDTO = (service) => {
+            MockDependencies.Services.ServiceService.mapToDTO.returns(service);
+        };
+        const _setup_ServiceService_update = (result) => {
+            MockDependencies.Services.ServiceService.update.resolves(result);
+        };
+        const _setup_ServiceStatusController_findServiceStatusFromValue = (serviceStatus) => {
+            MockDependencies.ServiceStatusController.findServiceStatusFromValue.resolves(serviceStatus);
+        };
+        const _setup_UserController_findOneUserFromToken = (user) => {
+            MockDependencies.UserController.findOneUserFromToken.resolves(user);
         };
 
-        describe('#createService(name, version, sourceUrl)', () => {
-            afterEach(() => MockDependencies.UserController.findOneUserFromToken.resetHistory());
+        const _teardown_ServiceService_create = () => MockDependencies.Services.ServiceService.create.resetHistory();
+        const _teardown_ServiceService_destroy = () => MockDependencies.Services.ServiceService.destroy.resetHistory();
+        const _teardown_ServiceService_findAll = () => MockDependencies.Services.ServiceService.findAll.resetHistory();
+        const _teardown_ServiceService_findOne = () => MockDependencies.Services.ServiceService.findOne.resetHistory();
+        const _teardown_ServiceService_mapToDTO = () => {
+            MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
+        };
+        const _teardown_ServiceService_update = () => MockDependencies.Services.ServiceService.update.resetHistory();
+        const _teardown_ServiceStatusController_findServiceStatusFromValue = () => {
+            MockDependencies.ServiceStatusController.findServiceStatusFromValue.resetHistory();
+        };
+        const _teardown_UserController_findOneUserFromToken = () => {
+            MockDependencies.UserController.findOneUserFromToken.resetHistory();
+        };
 
-            const _setupUserControllerFindOneUserFromToken = (user) => {
-                MockDependencies.UserController.findOneUserFromToken.resolves(user);
-            };
+        describe('#createService(name, version, sourceUrl, userToken)', () => {
+            afterEach(() => _teardown_UserController_findOneUserFromToken());
+
             const _call = async () => await ServiceController.createService(
-                fakeServiceName, fakeServiceVersion, fakeServiceSourceUrl
+                fakeServiceName, fakeServiceVersion, fakeServiceSourceUrl, fakeUserTokenSession()
             );
 
             it('should return the created service with valid inputs', async () => {
                 // SETUP
-                _setupUserControllerFindOneUserFromToken(fakeUser);
-                MockDependencies.ServiceStatusController.findServiceStatusFromValue.resolves(fakeServicePendingStatus);
-                MockDependencies.Services.ServiceService.create.resolves(fakeService);
-                MockDependencies.Services.ServiceService.mapToDTO.returns(fakeService);
+                _setup_UserController_findOneUserFromToken(fakeUser);
+                _setup_ServiceService_findOne();
+                _setup_ServiceStatusController_findServiceStatusFromValue(fakeServicePendingStatus);
+                _setup_ServiceService_create(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
 
                 // CALL
                 const service = await _call();
@@ -74,14 +118,15 @@ module.exports = () => {
                 assert.equal(service, fakeService);
 
                 // TEARDOWN
-                MockDependencies.ServiceStatusController.findServiceStatusFromValue.resetHistory();
-                MockDependencies.Services.ServiceService.create.resetHistory();
-                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
+                _teardown_ServiceService_findOne();
+                _teardown_ServiceStatusController_findServiceStatusFromValue();
+                _teardown_ServiceService_create();
+                _teardown_ServiceService_mapToDTO();
             });
 
-            it('should return false with invalid user\'s token session', async () => {
+            it('should return null with invalid user\'s token session', async () => {
                 // SETUP
-                _setupUserControllerFindOneUserFromToken();
+                _setup_UserController_findOneUserFromToken();
 
                 // CALL
                 const service = await _call();
@@ -89,20 +134,34 @@ module.exports = () => {
                 // VERIFY
                 assert.equal(service, null);
             });
+
+            it('should return false with name already use', async () => {
+                // SETUP
+                _setup_UserController_findOneUserFromToken(fakeUser);
+                _setup_ServiceService_findOne(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
+
+                // CALL
+                const service = await _call();
+
+                // VERIFY
+                assert.equal(service, false);
+
+                // TEARDOWN
+                _teardown_ServiceService_findOne();
+                _teardown_ServiceService_mapToDTO();
+            });
         });
 
         describe('#findAllServices()', () => {
-            afterEach(() => MockDependencies.Services.ServiceService.findAll.resetHistory());
+            afterEach(() => _teardown_ServiceService_findAll());
 
-            const _setupServiceServiceFindAll = (array) => {
-                MockDependencies.Services.ServiceService.findAll.resolves(array);
-            };
             const _call = async () => await ServiceController.findAllServices();
 
             it('should return a singleton list of services', async () => {
                 // SETUP
-                _setupServiceServiceFindAll([fakeService]);
-                MockDependencies.Services.ServiceService.mapToDTO.returns(fakeService);
+                _setup_ServiceService_findAll([fakeService]);
+                _setup_ServiceService_mapToDTO(fakeService);
 
                 // CALL
                 const services = await _call();
@@ -112,12 +171,12 @@ module.exports = () => {
                 assert.deepEqual(services[0], fakeService);
 
                 // TEARDOWN
-                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
+                _teardown_ServiceService_mapToDTO();
             });
 
             it('should return an empty list of services', async () => {
                 // SETUP
-                _setupServiceServiceFindAll([]);
+                _setup_ServiceService_findAll([]);
 
                 // CALL
                 const services = await _call();
@@ -128,17 +187,14 @@ module.exports = () => {
         });
 
         describe('#findOneServiceFromId(id)', () => {
-            afterEach(() => MockDependencies.Services.ServiceService.findOne.resetHistory());
+            afterEach(() =>_teardown_ServiceService_findOne());
 
-            const _setupServiceServiceFindOne = (service) => {
-                MockDependencies.Services.ServiceService.findOne.resolves(service);
-            };
             const _call = async () => await ServiceController.findOneServiceFromId(fakeServiceId);
 
             it('should return a service with valid id', async () => {
                 // SETUP
-                _setupServiceServiceFindOne(fakeService);
-                MockDependencies.Services.ServiceService.mapToDTO.returns(fakeService);
+                _setup_ServiceService_findOne(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
 
                 // CALL
                 const service = await _call();
@@ -147,12 +203,45 @@ module.exports = () => {
                 assert.deepEqual(service, fakeService);
 
                 // TEARDOWN
-                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
+                _teardown_ServiceService_mapToDTO();
             });
 
             it('should return null with invalid id', async () => {
                 // SETUP
-                _setupServiceServiceFindOne();
+                _setup_ServiceService_findOne();
+
+                // CALL
+                const service = await _call();
+
+                // VERIFY
+                assert.equal(service, null);
+            });
+        });
+
+        describe('#findOneServiceFromName(name)', () => {
+            afterEach(() => _teardown_ServiceService_findOne());
+
+            const _call = async () => await ServiceController.findOneServiceFromName(fakeServiceName);
+
+            it('should return one service with valid name', async () => {
+                // SETUP
+                _setup_ServiceService_findOne(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
+
+                // CALL
+                const service = await _call();
+
+                // VERIFY
+                assert.notEqual(service, null);
+                assert.deepEqual(service, fakeService);
+
+                // TEARDOWN
+                _teardown_ServiceService_mapToDTO();
+            });
+
+            it('should return null with invalid name', async () => {
+                // SETUP
+                _setup_ServiceService_findOne();
 
                 // CALL
                 const service = await _call();
@@ -164,29 +253,20 @@ module.exports = () => {
 
         describe('#rejectOneServiceFromId(id)', () => {
             beforeEach(() => {
-                MockDependencies.ServiceStatusController.findServiceStatusFromValue.resolves(fakeServicePendingStatus);
+                _setup_ServiceStatusController_findServiceStatusFromValue(fakeServicePendingStatus);
             });
             afterEach(() => {
-                MockDependencies.ServiceStatusController.findServiceStatusFromValue.resetHistory();
-                MockDependencies.Services.ServiceService.findOne.resetHistory();
+                _teardown_ServiceStatusController_findServiceStatusFromValue();
+                _teardown_ServiceService_findOne();
             });
 
-            const _setupServiceServiceFindOne = (service) => {
-                MockDependencies.Services.ServiceService.findOne.resolves(service);
-            };
-            const _setupServiceServiceMapToDTO = () => {
-                MockDependencies.Services.ServiceService.mapToDTO.resolves(fakeService);
-            };
             const _call = async () => await ServiceController.rejectOneServiceFromId(fakeServiceId);
-            const _teardownServiceServiceMapToDTO = () => {
-                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
-            };
 
             it('should return true with valid id', async () => {
                 // SETUP
-                _setupServiceServiceFindOne(fakeService);
-                _setupServiceServiceMapToDTO();
-                MockDependencies.Services.ServiceService.update.resolves(true);
+                _setup_ServiceService_findOne(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
+                _setup_ServiceService_update(true);
 
                 // CALL
                 const result = await _call();
@@ -195,13 +275,12 @@ module.exports = () => {
                 assert.equal(result, true);
 
                 // TEARDOWN
-                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
-                _teardownServiceServiceMapToDTO();
+                _teardown_ServiceService_mapToDTO();
             });
 
             it('should return null with invalid id', async () => {
                 // SETUP
-                _setupServiceServiceFindOne();
+                _setup_ServiceService_findOne();
 
                 // CALL
                 const result = await _call();
@@ -213,8 +292,8 @@ module.exports = () => {
             it('should return null with valid id but not a pending service', async () => {
                 // SETUP
                 fakeService.service_status_id = 3;
-                _setupServiceServiceFindOne(fakeService);
-                _setupServiceServiceMapToDTO();
+                _setup_ServiceService_findOne(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
 
                 // CALL
                 const result = await _call();
@@ -224,23 +303,19 @@ module.exports = () => {
 
                 // TEARDOWN
                 fakeService.service_status_id = fakeServicePendingStatus.id;
-                _teardownServiceServiceMapToDTO();
+                _teardown_ServiceService_mapToDTO();
             });
         });
 
         describe('#removeOneServiceFromId(id)', () => {
-            afterEach(() => MockDependencies.Services.ServiceService.findOne.resetHistory());
-
-            const _setupServiceServiceFindOne = (service) => {
-                MockDependencies.Services.ServiceService.findOne.resolves(service);
-            };
+            afterEach(() => _teardown_ServiceService_findOne());
             const _call = async () => await ServiceController.removeOneServiceFromId(fakeServiceId);
 
             it('should return true with valid inputs', async () => {
                 // SETUP
-                _setupServiceServiceFindOne(fakeService);
-                MockDependencies.Services.ServiceService.mapToDTO.returns(fakeService);
-                MockDependencies.Services.ServiceService.destroy.resolves(true);
+                _setup_ServiceService_findOne(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
+                _setup_ServiceService_destroy(true);
 
                 // CALL
                 const result = await _call();
@@ -249,13 +324,13 @@ module.exports = () => {
                 assert.equal(result, true);
 
                 // TEARDOWN
-                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
-                MockDependencies.Services.ServiceService.destroy.resetHistory();
+                _teardown_ServiceService_mapToDTO();
+                _teardown_ServiceService_destroy();
             });
 
             it('should return false with invalid id', async () => {
                 // SETUP
-                _setupServiceServiceFindOne();
+                _setup_ServiceService_findOne();
 
                 // CALL
                 const result = await _call();
@@ -266,21 +341,15 @@ module.exports = () => {
         });
 
         describe('#updateOneServiceFromId(id, name, version, sourceUrl)', () => {
-            const _setupServiceServiceFindOne = (service) => {
-                MockDependencies.Services.ServiceService.findOne.resolves(service);
-            };
-            const _call = async (id, name, version, sourceUrl) => {
-                return await ServiceController.updateOneServiceFromId(id, name, version, sourceUrl);
-            };
-            const _teardownServiceServiceFindOne = () => {
-                MockDependencies.Services.ServiceService.findOne.resetHistory();
-            };
+            const _call = async (id, name, version, sourceUrl) => await ServiceController.updateOneServiceFromId(
+                id, name, version, sourceUrl
+            );
 
             it('should return true with valid inputs', async () => {
                 // SETUP
-                _setupServiceServiceFindOne(fakeService);
-                MockDependencies.Services.ServiceService.mapToDTO.returns(fakeService);
-                MockDependencies.Services.ServiceService.update.resolves(true);
+                _setup_ServiceService_findOne(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
+                _setup_ServiceService_update(true);
 
                 // CALL
                 const result = await _call(fakeServiceId, fakeServiceName, fakeServiceVersion, fakeServiceSourceUrl);
@@ -289,9 +358,9 @@ module.exports = () => {
                 assert.equal(result, true);
 
                 // TEARDOWN
-                _teardownServiceServiceFindOne();
-                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
-                MockDependencies.Services.ServiceService.update.resetHistory();
+                _teardown_ServiceService_findOne();
+                _teardown_ServiceService_mapToDTO();
+                _teardown_ServiceService_update();
             });
 
             it('should return false with invalid name, version and sourceUrl inputs', async () => {
@@ -304,7 +373,7 @@ module.exports = () => {
 
             it('should return false with invalid id', async () => {
                 // SETUP
-                _setupServiceServiceFindOne();
+                _setup_ServiceService_findOne();
 
                 // CALL
                 const result = await _call(fakeServiceId, fakeServiceName, fakeServiceVersion, fakeServiceSourceUrl);
@@ -316,29 +385,20 @@ module.exports = () => {
 
         describe('#validateOneServiceFromId(id)', () => {
             beforeEach(() => {
-                MockDependencies.ServiceStatusController.findServiceStatusFromValue.resolves(fakeServicePendingStatus);
+                _setup_ServiceStatusController_findServiceStatusFromValue(fakeServicePendingStatus);
             });
             afterEach(() => {
-                MockDependencies.ServiceStatusController.findServiceStatusFromValue.resetHistory();
-                MockDependencies.Services.ServiceService.findOne.resetHistory();
+                _teardown_ServiceStatusController_findServiceStatusFromValue();
+                _teardown_ServiceService_findOne();
             });
 
-            const _setupServiceServiceFindOne = (service) => {
-                MockDependencies.Services.ServiceService.findOne.resolves(service);
-            };
-            const _setupServiceServiceMapToDTO = () => {
-                MockDependencies.Services.ServiceService.mapToDTO.resolves(fakeService);
-            };
             const _call = async () => await ServiceController.validateOneServiceFromId(fakeServiceId);
-            const _teardownServiceServiceMapToDTO = () => {
-                MockDependencies.Services.ServiceService.mapToDTO.resetHistory();
-            };
 
             it('should return true with valid inputs', async () => {
                 // SETUP
-                _setupServiceServiceFindOne(fakeService);
-                _setupServiceServiceMapToDTO();
-                MockDependencies.Services.ServiceService.update.resolves(true);
+                _setup_ServiceService_findOne(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
+                _setup_ServiceService_update(true);
 
                 // CALL
                 const result = await _call();
@@ -347,13 +407,13 @@ module.exports = () => {
                 assert.equal(result, true);
 
                 // TEARDOWN
-                _teardownServiceServiceMapToDTO();
-                MockDependencies.Services.ServiceService.update.resetHistory();
+                _teardown_ServiceService_mapToDTO();
+                _teardown_ServiceService_update();
             });
 
             it('should return false with invalid id', async () => {
                 // SETUP
-                _setupServiceServiceFindOne();
+                _setup_ServiceService_findOne();
 
                 // CALL
                 const result = await _call();
@@ -365,8 +425,8 @@ module.exports = () => {
             it('should return false with valid id but not pending service', async () => {
                 // SETUP
                 fakeService.service_status_id = 3;
-                _setupServiceServiceFindOne(fakeService);
-                _setupServiceServiceMapToDTO();
+                _setup_ServiceService_findOne(fakeService);
+                _setup_ServiceService_mapToDTO(fakeService);
 
                 // CALL
                 const result = await _call();
@@ -376,7 +436,7 @@ module.exports = () => {
 
                 // TEARDOWN
                 fakeService.service_status_id = fakeServicePendingStatus.id;
-                _teardownServiceServiceMapToDTO();
+                _teardown_ServiceService_mapToDTO();
             });
         });
     });
