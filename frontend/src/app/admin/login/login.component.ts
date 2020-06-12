@@ -20,6 +20,11 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Initializes the login form.
+   *
+   * @param formBuilder {FormBuilder}
+   */
   private initLoginForm(formBuilder: FormBuilder): void {
     this.loginInputControl = formBuilder.control(
       this.loginInputInitialValue, Validators.required
@@ -34,11 +39,19 @@ export class LoginComponent implements OnInit {
     });
   }
 
-
+  /**
+   * Submits the inputs to the API for login submission.
+   * It currently logs the login inputs, but this will change in future commits.
+   *
+   * TODO: link with dedicated service!
+   */
   private loginSubmission(): void {
     console.log((this.loginForm.valid) ? this.loginForm.value : 'Invalid inputs!');
   }
 
+  /**
+   * Resets the inputs to their initial values.
+   */
   private resetInputs(): void {
     this.loginInputControl.setValue(this.loginInputInitialValue);
     this.passwordInputControl.setValue(this.passwordInputInitialValue);
