@@ -1,29 +1,29 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
+import {AdminService} from "../../shared/services/admin.service";
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   loginForm: FormGroup;
   private loginInputControl: FormControl;
   private passwordInputControl: FormControl;
   private loginInputInitialValue = '';
   private passwordInputInitialValue = '';
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private adminService: AdminService) {
     this.initLoginForm(formBuilder);
-  }
-
-  ngOnInit(): void {
   }
 
   /**
    * Initializes the login form.
    *
-   * @param formBuilder {FormBuilder}
+   * @param formBuilder {FormBuilder} The form builder service
    */
   private initLoginForm(formBuilder: FormBuilder): void {
     this.loginInputControl = formBuilder.control(
@@ -41,12 +41,15 @@ export class LoginComponent implements OnInit {
 
   /**
    * Submits the inputs to the API for login submission.
-   * It currently logs the login inputs, but this will change in future commits.
-   *
-   * TODO: link with dedicated service!
    */
   loginSubmission(): void {
-    console.log((this.loginForm.valid) ? this.loginForm.value : 'Invalid inputs!');
+    if (!this.loginForm.valid) console.log('Invalid inputs!');
+    else {
+      this.adminService.loginAdmin({
+        login: this.loginInputControl.value,
+        password: this.passwordInputControl.value
+      }).subscribe(token => console.log(token));
+    }
   }
 
   /**
