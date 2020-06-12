@@ -7,7 +7,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private loginForm: FormGroup;
+  loginForm: FormGroup;
   private loginInputControl: FormControl;
   private passwordInputControl: FormControl;
   private loginInputInitialValue = '';
@@ -45,14 +45,14 @@ export class LoginComponent implements OnInit {
    *
    * TODO: link with dedicated service!
    */
-  private loginSubmission(): void {
+  loginSubmission(): void {
     console.log((this.loginForm.valid) ? this.loginForm.value : 'Invalid inputs!');
   }
 
   /**
    * Resets the inputs to their initial values.
    */
-  private resetInputs(): void {
+  resetInputs(): void {
     this.loginInputControl.setValue(this.loginInputInitialValue);
     this.passwordInputControl.setValue(this.passwordInputInitialValue);
   }
