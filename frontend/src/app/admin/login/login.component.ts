@@ -10,6 +10,8 @@ export class LoginComponent implements OnInit {
   private loginForm: FormGroup;
   private loginInputControl: FormControl;
   private passwordInputControl: FormControl;
+  private loginInputInitialValue = '';
+  private passwordInputInitialValue = '';
 
   constructor(private formBuilder: FormBuilder) {
     this.initLoginForm(formBuilder);
@@ -18,9 +20,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  private initLoginForm(formBuilder: FormBuilder) {
-    this.loginInputControl = formBuilder.control('', Validators.required);
-    this.passwordInputControl = formBuilder.control('', Validators.required);
+  private initLoginForm(formBuilder: FormBuilder): void {
+    this.loginInputControl = formBuilder.control(
+      this.loginInputInitialValue, Validators.required
+    );
+    this.passwordInputControl = formBuilder.control(
+      this.passwordInputInitialValue, Validators.required
+    );
 
     this.loginForm = formBuilder.group({
       login: this.loginInputControl,
@@ -28,14 +34,14 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private loginSubmission() {
-    if (this.loginForm.valid) console.log(this.loginForm.value);
-    else console.log('Invalid inputs!');
+
+  private loginSubmission(): void {
+    console.log((this.loginForm.valid) ? this.loginForm.value : 'Invalid inputs!');
   }
 
-  private resetInputs() {
-    this.loginInputControl.setValue('');
-    this.passwordInputControl.setValue('');
+  private resetInputs(): void {
+    this.loginInputControl.setValue(this.loginInputInitialValue);
+    this.passwordInputControl.setValue(this.passwordInputInitialValue);
   }
 
 }
