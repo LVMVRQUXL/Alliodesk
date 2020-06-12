@@ -1,0 +1,20 @@
+<mat-card>
+  <form [formGroup]="loginForm" (ngSubmit)="loginSubmission()" (reset)="resetInputs()">
+    <mat-form-field appearance="fill">
+      <mat-label>Login</mat-label>
+      <!--suppress HtmlFormInputWithoutLabel -->
+      <input matInput id="login" formControlName="login">
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <!--suppress HtmlFormInputWithoutLabel -->
+      <input matInput type="password" formControlName="password">
+    </mat-form-field>
+    <br>
+
+    <button mat-raised-button color="primary" type="submit">Send</button>
+    <button mat-raised-button color="warn" type="reset">Reset</button>
+  </form>
+</mat-card>
