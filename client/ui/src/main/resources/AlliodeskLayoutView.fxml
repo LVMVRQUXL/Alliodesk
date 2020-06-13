@@ -26,6 +26,7 @@
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
                         <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" onAction="#ShowError" text="Send Error" />
                     </items>
                 </Menu>
                 <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins" />
