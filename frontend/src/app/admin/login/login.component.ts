@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {CookieService} from "ngx-cookie-service";
 
 import {AdminService} from "../../shared/services/admin.service";
 
@@ -14,9 +15,11 @@ export class LoginComponent {
   private passwordInputControl: FormControl;
   private loginInputInitialValue = '';
   private passwordInputInitialValue = '';
+  private cookieTokenName = 'TOKEN_SESSION';
 
   constructor(private formBuilder: FormBuilder,
-              private adminService: AdminService) {
+              private adminService: AdminService,
+              private cookieService: CookieService) {
     this.initLoginForm(formBuilder);
   }
 
@@ -26,12 +29,8 @@ export class LoginComponent {
    * @param formBuilder {FormBuilder} The form builder service
    */
   private initLoginForm(formBuilder: FormBuilder): void {
-    this.loginInputControl = formBuilder.control(
-      this.loginInputInitialValue, Validators.required
-    );
-    this.passwordInputControl = formBuilder.control(
-      this.passwordInputInitialValue, Validators.required
-    );
+    this.loginInputControl = formBuilder.control(this.loginInputInitialValue, Validators.required);
+    this.passwordInputControl = formBuilder.control(this.passwordInputInitialValue, Validators.required);
 
     this.loginForm = formBuilder.group({
       login: this.loginInputControl,
@@ -48,7 +47,10 @@ export class LoginComponent {
       this.adminService.loginAdmin({
         login: this.loginInputControl.value,
         password: this.passwordInputControl.value
-      }).subscribe(token => console.log(token));
+      }).subscribe(token => {
+        this.cookieService.set(this.cookieTokenName, token.token_session, 1, '/');
+        console.log('Administrator successfully logged in!');
+      });
     }
   }
 
