@@ -7,6 +7,7 @@ import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 
+import {AppRoutingModule} from "./app-routing.module";
 import {SharedModule} from "../shared/shared.module";
 import {AdminComponent} from './admin.component';
 import {LoginComponent} from './login/login.component';
@@ -18,11 +19,12 @@ import {LoginComponent} from './login/login.component';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    AppRoutingModule,
     SharedModule
   ],
   declarations: [AdminComponent, LoginComponent],
   providers: [CookieService],
-  exports: [AdminComponent]
+  exports: [AppRoutingModule, AdminComponent]
 })
 export class AdminModule {
 }
