@@ -41,7 +41,10 @@ public class AlliodeskMainLayoutController {
     void showRegisterEvent(ActionEvent event) throws IOException {
         AlliodeskMainLayout.showRegisterLayout();
     }
-
+    @FXML
+    void ShowError(ActionEvent event) throws IOException {
+        AlliodeskMainLayout.showErrorLayout();
+    }
     @FXML
     void addPluginInMenuBar(PluginInterface[] pi) {
         int index = 0;
