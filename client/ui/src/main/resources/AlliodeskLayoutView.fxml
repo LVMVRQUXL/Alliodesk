@@ -29,7 +29,14 @@
                     </items>
                 </Menu>
                 <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins" />
-            </menus>
+            <Menu mnemonicParsing="false" text="Workspaces Manager" fx:id="workspacesManager" >
+                <items>
+                    <MenuItem mnemonicParsing="false" text="Init My Workspaces" onAction="#addWS" />
+                </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="My Workspaces" fx:id="workspaces" >
+            </Menu>
+        </menus>
         </MenuBar>
     </top>
     <left>
