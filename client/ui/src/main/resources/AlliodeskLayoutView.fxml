@@ -27,6 +27,13 @@
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Workspaces Manager" fx:id="workspacesManager" >
+                <items>
+                    <MenuItem mnemonicParsing="false" text="Init My Workspaces" onAction="#addWS" />
+                </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="My Workspaces" fx:id="workspaces" >
+            </Menu>
         </menus>
       </MenuBar>
    </top>
