@@ -35,7 +35,7 @@ public class WSDelete {
     @FXML
     public void deleteWSUsingId(ActionEvent actionEvent) {
         actionEvent.consume();
-        WorkspaceManager wSM = new WorkspaceManager("removeWSFormId",""+wSList.getValue().getId(),null);
+        WorkspaceManager wSM = new WorkspaceManager("removeWSFormId",null,null,""+wSList.getValue().getId());
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:

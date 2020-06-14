@@ -131,34 +131,38 @@ public class AlliodeskMainLayoutController {
 // Setvisible false workspace wiill changing  -> set visible load ws -> set visible workspace ->when quite
     }
     public void fillWS(ArrayList<String[]> yourList){
-        this.myList = yourList;
-        ObservableList<MenuItem> currentList = this.workspaces.getItems();
-        currentList.remove(0,currentList.size());
-        for (String[] ws: yourList
-             ) {
-            MenuItem test = new MenuItem(ws[1]);
-            test.setId(ws[0]);
-            test.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    System.out.printf("id = %s name = %s%n", test.getId(), test.getText());
-                }
-            });
-            currentList.add(test);
-            this.workspacesManager.getItems().get(1).setVisible(false);
+        if (yourList!=null) {
+            this.myList = yourList;
+            ObservableList<MenuItem> currentList = this.workspaces.getItems();
+            currentList.remove(0, currentList.size());
+            for (String[] ws : yourList
+            ) {
+                MenuItem test = new MenuItem(ws[1]);
+                test.setId(ws[0]);
+                test.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        System.out.printf("id = %s name = %s%n", test.getId(), test.getText());
+                    }
+                });
+                currentList.add(test);
+            }
         }
+        afterLoading();
     }
     public void forceLoading(){
         workspacesManager.getItems().get(0).setVisible(false);
         workspacesManager.getItems().get(2).setVisible(false);
         workspacesManager.getItems().get(3).setVisible(false);
         workspacesManager.getItems().get(1).setVisible(true);
+        workspaces.setDisable(true);
     }
     public void afterLoading(){
         workspacesManager.getItems().get(0).setVisible(true);
         workspacesManager.getItems().get(2).setVisible(true);
         workspacesManager.getItems().get(3).setVisible(true);
         workspacesManager.getItems().get(1).setVisible(false);
+        workspaces.setDisable(false);
     }
 
 

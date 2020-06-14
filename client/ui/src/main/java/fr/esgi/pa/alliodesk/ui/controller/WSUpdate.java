@@ -37,8 +37,8 @@ public class WSUpdate {
     @FXML
     public void updateWS(ActionEvent actionEvent) {
         actionEvent.consume();
-        WorkspaceManager wSM = new WorkspaceManager("updateWS",name.getText(),description.getText());
-
+        System.out.println(wSList.getValue().getId());
+        WorkspaceManager wSM = new WorkspaceManager("updateWS",name.getText(),description.getText(),""+wSList.getValue().getId());
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
