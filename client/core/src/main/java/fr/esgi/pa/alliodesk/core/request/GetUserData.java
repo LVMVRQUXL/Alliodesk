@@ -7,7 +7,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
-public class GetUserId extends ApiRequest {
+public class GetUserData extends ApiRequest {
     private UserData userInfo;
     private String id="";
 

@@ -3,20 +3,15 @@ package fr.esgi.pa.alliodesk.ui.controller;
 import java.util.ArrayList;
 
 import fr.esgi.pa.alliodesk.core.request.WorkspaceManager;
-import fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController;
 import fr.esgi.pa.alliodesk.ui.ChoiceBoxItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 
 public class WSDelete {
-    AlliodeskMainLayoutController alliodeskMainLayoutController = new AlliodeskMainLayoutController();
     private ArrayList<String[]> myList;
-    @FXML
-    public Label resultLabel;
     @FXML
     public ChoiceBox<ChoiceBoxItem> wSList;
 

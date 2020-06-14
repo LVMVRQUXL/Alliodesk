@@ -1,7 +1,6 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
 import fr.esgi.pa.alliodesk.core.request.WorkspaceManager;
-import fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 

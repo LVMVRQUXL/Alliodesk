@@ -24,8 +24,6 @@ public class WorkspaceManager extends ApiRequest{
                 .withId(id);
     }
 
-    //POST JSON
-
     @Override
     public int requestToServe() {
         switch (this.functionCall) {
@@ -44,7 +42,7 @@ public class WorkspaceManager extends ApiRequest{
             case "findAllUserWS":
                 try {
                     String temp_id = "-1";
-                    GetUserId myid = new GetUserId();
+                    GetUserData myid = new GetUserData();
                     myid.requestToServe();
                     if(myid.idNotEmpty()){temp_id=myid.getId();}
                     final CloseableHttpResponse response = super.request(
@@ -56,10 +54,8 @@ public class WorkspaceManager extends ApiRequest{
 
                     if (statusCode == 200) {
                         final String responseContent = EntityUtils.toString(response.getEntity());
-                        System.out.println(responseContent);
                         WS[] yourList = new Gson().fromJson(responseContent,WS[].class);
                         for (WS a : yourList){
-                            System.out.println(a);
                             existedWS.add(a.getUsableData());
                         }
                     }
