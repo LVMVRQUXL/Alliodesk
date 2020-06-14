@@ -1,13 +1,14 @@
 package fr.esgi.pa.alliodesk.core;
 
 public class InfoInForm {
-    private String name, email, login, password;
+    private String name, email, login, password,description;
 
     private InfoInForm() {
         this.name = null;
         this.email = null;
         this.login = null;
         this.password = null;
+        this.description=null;
     }
 
     public static InfoInForm build() {
@@ -34,9 +35,18 @@ public class InfoInForm {
         return this;
     }
 
+    public InfoInForm withDescription(final String desc){
+        this.description=desc;
+        return this;
+    }
+
     @Override
     public String toString() {
         return String.format("InfoInForm(name: %s, email: %s, login: %s, password: %s)",
                 this.name, this.email, this.login, this.password);
+    }
+
+    public String getName() {
+        return name;
     }
 }
