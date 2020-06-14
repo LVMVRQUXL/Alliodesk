@@ -16,11 +16,12 @@ public class WorkspaceManager extends ApiRequest{
         return existedWS;
     }
 
-    public WorkspaceManager(String functionCall, String name, String description) {
+    public WorkspaceManager(String functionCall, String name, String description,String id) {
         this.functionCall = functionCall;
         this.wSFrom = InfoInForm.build()
                 .withName(name)
-                .withDescription(description);
+                .withDescription(description)
+                .withId(id);
     }
 
     //POST JSON
@@ -42,9 +43,12 @@ public class WorkspaceManager extends ApiRequest{
                 }
             case "findAllUserWS":
                 try {
-                    int n = 1;
+                    String temp_id = "-1";
+                    GetUserId myid = new GetUserId();
+                    myid.requestToServe();
+                    if(myid.idNotEmpty()){temp_id=myid.getId();}
                     final CloseableHttpResponse response = super.request(
-                            "/users/"+n+"/workspaces",
+                            "/users/"+temp_id+"/workspaces",
                             new HttpGet(),
                             this.wSFrom
                     );
@@ -68,7 +72,7 @@ public class WorkspaceManager extends ApiRequest{
             case "removeWSFormId":
                 try {
                     final CloseableHttpResponse response = super.request(
-                            "/workspaces/"+this.wSFrom.getName(),
+                            "/workspaces/"+this.wSFrom.getId(),
                             new HttpDelete(),
                             this.wSFrom
                     );
@@ -81,9 +85,8 @@ public class WorkspaceManager extends ApiRequest{
 
             case "updateWS":
                 try {
-                    int n = 3;
                     final CloseableHttpResponse response = super.request(
-                            "/workspaces/"+n,
+                            "/workspaces/"+this.wSFrom.getId(),
                             new HttpPut(),
                             this.wSFrom
                     );

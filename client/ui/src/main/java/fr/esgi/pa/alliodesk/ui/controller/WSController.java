@@ -24,7 +24,7 @@ public class WSController {
 
     @FXML
     public void createWS(ActionEvent actionEvent) {
-        WorkspaceManager wSM = new WorkspaceManager("create",name.getText(),description.getText());
+        WorkspaceManager wSM = new WorkspaceManager("create",name.getText(),description.getText(),null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 201:
@@ -45,7 +45,7 @@ public class WSController {
         }
     }
     public ArrayList<String[]> findAllUserWS() {
-        WorkspaceManager wSM = new WorkspaceManager("findAllUserWS",null,null);
+        WorkspaceManager wSM = new WorkspaceManager("findAllUserWS",null,null,null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
@@ -66,24 +66,6 @@ public class WSController {
             default:
                 System.out.println("status code = " + status_code);
                 return null;
-        }
-    }
-    public void removeWSFromId(){
-        WorkspaceManager wSM = new WorkspaceManager("removeWSFormId",null,null);
-        int status_code = wSM.requestToServe();
-        switch (status_code) {
-            case 200:
-                System.out.println("Ok");
-            case 204:
-                System.out.println("No workspaces to return");
-            case 400:
-                System.out.println("Invalid user's id");
-            case 404:
-                System.out.println("Can't find user from id");
-            case 500:
-                System.out.println("An internal error has occurred");
-            default:
-                System.out.println("status code = " + status_code);
         }
     }
 }
