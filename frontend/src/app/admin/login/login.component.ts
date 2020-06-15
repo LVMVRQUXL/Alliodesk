@@ -1,8 +1,10 @@
 import {Component} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatDialog} from "@angular/material/dialog";
 
 import {AdminService} from "../../shared/services/admin.service";
+import {ErrorDialogComponent} from "./error-dialog/error-dialog.component";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +21,8 @@ export class LoginComponent {
 
   constructor(private formBuilder: FormBuilder,
               private adminService: AdminService,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private dialog: MatDialog) {
     this.initLoginForm(formBuilder);
   }
 
@@ -43,15 +46,17 @@ export class LoginComponent {
    */
   loginSubmission(): void {
     if (!this.loginForm.valid) console.log('Invalid inputs!');
-    else {
-      this.adminService.loginAdmin({
-        login: this.loginInputControl.value,
-        password: this.passwordInputControl.value
-      }).subscribe(token => {
-        this.cookieService.set(this.cookieTokenName, token.token_session, 1, '/');
-        console.log('Administrator successfully logged in!');
-      });
-    }
+    else this.adminService.loginAdmin({
+      login: this.loginInputControl.value,
+      password: this.passwordInputControl.value
+    }).subscribe(token => {
+      this.cookieService.set(this.cookieTokenName, token.token_session, 1, '/');
+      console.log('Administrator successfully logged in!');
+    }, error => this.dialog.open(ErrorDialogComponent, {
+      data: {
+        statusCode: error.status
+      }
+    }));
   }
 
   /**
@@ -61,5 +66,4 @@ export class LoginComponent {
     this.loginInputControl.setValue(this.loginInputInitialValue);
     this.passwordInputControl.setValue(this.passwordInputInitialValue);
   }
-
 }
