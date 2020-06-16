@@ -9,9 +9,9 @@ import java.io.IOException;
 
 public class GetUserData extends ApiRequest {
     private UserData userInfo;
-    private String id="";
+    private String id = "";
 
-    public boolean idNotEmpty(){
+    public boolean idNotEmpty() {
         return !id.equals("");
     }
 
@@ -27,11 +27,11 @@ public class GetUserData extends ApiRequest {
                     new HttpGet(),
                     null
             );
-            int statusCode =  response.getStatusLine().getStatusCode();
+            int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode == 200) {
                 final String responseContent = EntityUtils.toString(response.getEntity());
                 System.out.println(responseContent);
-                this.userInfo = new Gson().fromJson(responseContent,UserData.class);
+                this.userInfo = new Gson().fromJson(responseContent, UserData.class);
                 this.id = userInfo.getId();
                 System.out.println(userInfo);
             }
@@ -43,8 +43,8 @@ public class GetUserData extends ApiRequest {
         }
     }
 
-    class UserData{
-        private String id,name,email,login;
+    class UserData {
+        private String id, name, email, login;
 
         @Override
         public String toString() {

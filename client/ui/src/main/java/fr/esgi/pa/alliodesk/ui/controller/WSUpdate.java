@@ -21,12 +21,12 @@ public class WSUpdate {
     public ChoiceBox<ChoiceBoxItem> wSList;
 
     @FXML
-    public void initialize(){
+    public void initialize() {
         WSController wSC = new WSController();
         this.myList = wSC.findAllUserWS();
         ObservableList<ChoiceBoxItem> allMyWS = FXCollections.observableArrayList();
-        for (String[] tab: this.myList) {
-            ChoiceBoxItem item = new ChoiceBoxItem(Integer.parseInt(tab[0]),tab[1]);
+        for (String[] tab : this.myList) {
+            ChoiceBoxItem item = new ChoiceBoxItem(Integer.parseInt(tab[0]), tab[1]);
             allMyWS.add(item);
         }
         this.wSList.setItems(allMyWS);
@@ -36,15 +36,15 @@ public class WSUpdate {
     public void updateWS(ActionEvent actionEvent) {
         actionEvent.consume();
         System.out.println(wSList.getValue().getId());
-        WorkspaceManager wSM = new WorkspaceManager("updateWS",name.getText(),description.getText(),""+wSList.getValue().getId());
+        WorkspaceManager wSM = new WorkspaceManager("updateWS", name.getText(), description.getText(), "" + wSList.getValue().getId());
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
                 System.out.println("Ok");
                 ObservableList<ChoiceBoxItem> items = wSList.getItems();
                 int index = items.indexOf(wSList.getValue());
-                ChoiceBoxItem a = new ChoiceBoxItem(items.get(index).getId(),name.getText());
-                items.set(index,a);
+                ChoiceBoxItem a = new ChoiceBoxItem(items.get(index).getId(), name.getText());
+                items.set(index, a);
                 break;
             case 400:
                 System.out.println("Invalid inputs");
@@ -52,7 +52,7 @@ public class WSUpdate {
             case 401:
                 System.out.println("Can't find user from given token session");
                 break;
-            case 404 :
+            case 404:
                 System.out.println("Can't find workspace from given id");
                 break;
             case 500:

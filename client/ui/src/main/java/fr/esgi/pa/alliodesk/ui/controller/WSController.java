@@ -16,14 +16,14 @@ public class WSController {
     @FXML
     private TextField description;
 
-    public void  resetFields(ActionEvent actionEvent) {
+    public void resetFields(ActionEvent actionEvent) {
         this.name.setText("");
         this.description.setText("");
     }
 
     @FXML
     public void createWS(ActionEvent actionEvent) {
-        WorkspaceManager wSM = new WorkspaceManager("create",name.getText(),description.getText(),null);
+        WorkspaceManager wSM = new WorkspaceManager("create", name.getText(), description.getText(), null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 201:
@@ -43,8 +43,9 @@ public class WSController {
                 break;
         }
     }
+
     public ArrayList<String[]> findAllUserWS() {
-        WorkspaceManager wSM = new WorkspaceManager("findAllUserWS",null,null,null);
+        WorkspaceManager wSM = new WorkspaceManager("findAllUserWS", null, null, null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
@@ -52,7 +53,7 @@ public class WSController {
                 return wSM.getExistedWS();
             case 204:
                 System.out.println("No workspaces to return");
-                return new ArrayList<String[]>();
+                return new ArrayList<>();
             case 400:
                 System.out.println("Invalid user's id");
                 return null;

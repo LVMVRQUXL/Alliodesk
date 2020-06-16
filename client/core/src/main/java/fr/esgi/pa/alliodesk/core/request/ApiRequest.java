@@ -16,7 +16,7 @@ import java.net.URI;
 import java.util.Scanner;
 
 abstract class ApiRequest {
-    private String token="";
+    private String token = "";
     private final Dotenv dotenv = Dotenv.load();
     private final String apiUrl = String.format("http://%s:%s", dotenv.get("API_HOST"), dotenv.get("API_PORT"));
 
@@ -30,28 +30,27 @@ abstract class ApiRequest {
         final String uri = this.apiUrl + endpoint;
         final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         requestType.setURI(URI.create(uri));
-        if(requestType.getMethod()=="POST" || requestType.getMethod()=="PUT" || requestType.getMethod()=="PATCH"){
+        if (requestType.getMethod().equals("POST") || requestType.getMethod().equals("PUT") || requestType.getMethod().equals("PATCH")) {
             final Gson gson = new Gson();
             final StringEntity entity = new StringEntity(gson.toJson(form));
-            ((HttpEntityEnclosingRequestBase)requestType).setEntity(entity);
+            ((HttpEntityEnclosingRequestBase) requestType).setEntity(entity);
         }
         requestType.setHeader("Content-type", "application/json");
         initToken();
-        requestType.setHeader("Authorization","Bearer "+ this.token );
+        requestType.setHeader("Authorization", "Bearer " + this.token);
         return httpClient.execute(requestType);
     }
 
-    private void initToken(){
+    private void initToken() {
         try {
             File myObj = new File("Token.txt");
 
             boolean exists = myObj.exists();
-            if(exists){
+            if (exists) {
                 Scanner myReader = new Scanner(myObj);
-                String data = myReader.nextLine();
-                this.token=data;
+                this.token = myReader.nextLine();
                 myReader.close();
-            }else{
+            } else {
                 token = "Won'tMatchAnyway";
             }
         } catch (IOException e) {

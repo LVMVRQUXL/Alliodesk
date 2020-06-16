@@ -17,12 +17,12 @@ public class WSDelete {
     public ChoiceBox<ChoiceBoxItem> wSList;
 
     @FXML
-    public void initialize(){
+    public void initialize() {
         WSController wSC = new WSController();
         this.myList = wSC.findAllUserWS();
         ObservableList<ChoiceBoxItem> allMyWS = FXCollections.observableArrayList();
-        for (String[] tab: this.myList) {
-            ChoiceBoxItem item = new ChoiceBoxItem(Integer.parseInt(tab[0]),tab[1]);
+        for (String[] tab : this.myList) {
+            ChoiceBoxItem item = new ChoiceBoxItem(Integer.parseInt(tab[0]), tab[1]);
             allMyWS.add(item);
         }
         this.wSList.setItems(allMyWS);
@@ -31,13 +31,13 @@ public class WSDelete {
     @FXML
     public void deleteWSUsingId(ActionEvent actionEvent) {
         actionEvent.consume();
-        WorkspaceManager wSM = new WorkspaceManager("removeWSFormId",null,null,""+wSList.getValue().getId());
+        WorkspaceManager wSM = new WorkspaceManager("removeWSFormId", null, null, "" + wSList.getValue().getId());
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
                 System.out.println("OK");
-                ObservableList<ChoiceBoxItem> items  = wSList.getItems();
-                items.remove(items.indexOf(wSList.getValue()));
+                ObservableList<ChoiceBoxItem> items = wSList.getItems();
+                items.remove(wSList.getValue());
                 break;
             case 404:
                 System.out.println("Can't find workspace from given id");
