@@ -56,6 +56,27 @@ public class AlliodeskMainLayout extends Application {
         rootLayout.setCenter(RegisterOverview);
     }
 
+    public static void showCreateWSLayout() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/WSCreationView.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+
+    public static void showUpdateWSLayout() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/WSUpdate.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+
+    public static void showDeleteWSLayout() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/WSDelete.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
