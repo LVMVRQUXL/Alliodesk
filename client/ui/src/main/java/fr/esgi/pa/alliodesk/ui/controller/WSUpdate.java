@@ -41,6 +41,10 @@ public class WSUpdate {
         switch (status_code) {
             case 200:
                 System.out.println("Ok");
+                ObservableList<ChoiceBoxItem> items = wSList.getItems();
+                int index = items.indexOf(wSList.getValue());
+                ChoiceBoxItem a = new ChoiceBoxItem(items.get(index).getId(),name.getText());
+                items.set(index,a);
                 break;
             case 400:
                 System.out.println("Invalid inputs");

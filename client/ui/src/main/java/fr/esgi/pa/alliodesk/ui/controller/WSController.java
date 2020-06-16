@@ -52,7 +52,7 @@ public class WSController {
                 return wSM.getExistedWS();
             case 204:
                 System.out.println("No workspaces to return");
-                return null;
+                return new ArrayList<String[]>();
             case 400:
                 System.out.println("Invalid user's id");
                 return null;

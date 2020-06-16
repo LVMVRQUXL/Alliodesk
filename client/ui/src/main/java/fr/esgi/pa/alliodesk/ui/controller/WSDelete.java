@@ -1,5 +1,6 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import fr.esgi.pa.alliodesk.core.request.WorkspaceManager;
@@ -35,6 +36,8 @@ public class WSDelete {
         switch (status_code) {
             case 200:
                 System.out.println("OK");
+                ObservableList<ChoiceBoxItem> items  = wSList.getItems();
+                items.remove(items.indexOf(wSList.getValue()));
                 break;
             case 404:
                 System.out.println("Can't find workspace from given id");
