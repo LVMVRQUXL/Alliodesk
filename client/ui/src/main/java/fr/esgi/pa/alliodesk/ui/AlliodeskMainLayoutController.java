@@ -70,7 +70,7 @@ public class AlliodeskMainLayoutController {
     void addWS() {
         ObservableList<MenuItem> itemsWSManager = workspacesManager.getItems();
         ObservableList<MenuItem> itemsWS = workspaces.getItems();
-        MenuItem laod = new MenuItem("LoadMyWS");
+        MenuItem load = new MenuItem("LoadMyWS");
         MenuItem delete = new MenuItem("Delete a WS");
         MenuItem update = new MenuItem("Update a WS");
         itemsWSManager.get(0).setText("add a WS");
@@ -84,7 +84,7 @@ public class AlliodeskMainLayoutController {
             }
         });
         WSController wSC = new WSController();
-        laod.setOnAction(actionEvent -> {
+        load.setOnAction(actionEvent -> {
             fillWS(wSC.findAllUserWS());
             if (!workspaces.isVisible()) workspaces.setVisible(true);
             workspaces.setDisable(false);
@@ -114,7 +114,7 @@ public class AlliodeskMainLayoutController {
                 e.printStackTrace();
             }
         });
-        itemsWSManager.add(laod);
+        itemsWSManager.add(load);
         itemsWSManager.add(update);
         itemsWSManager.add(delete);
         forceLoading();
