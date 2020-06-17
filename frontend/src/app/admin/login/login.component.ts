@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {CookieService} from "ngx-cookie-service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
+import {Router} from "@angular/router";
 
 import {AdminService} from "../../shared/services/admin.service";
 import {ErrorDialogComponent} from "./error-dialog/error-dialog.component";
@@ -22,7 +23,8 @@ export class LoginComponent {
   constructor(private formBuilder: FormBuilder,
               private adminService: AdminService,
               private cookieService: CookieService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private router: Router) {
     this.initLoginForm(formBuilder);
   }
 
@@ -52,6 +54,8 @@ export class LoginComponent {
     }).subscribe(token => {
       this.cookieService.set(this.cookieTokenName, token.token_session, 1, '/');
       console.log('Administrator successfully logged in!');
+      this.router.navigate(['/errors'])
+        .then(r => console.log(r ? 'Successfully redirected' : 'An error has occurred during redirection'));
     }, error => this.dialog.open(ErrorDialogComponent, {
       data: {
         statusCode: error.status

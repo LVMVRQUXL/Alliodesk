@@ -1,0 +1,27 @@
+<button mat-raised-button color="primary" (click)="refreshErrorsList()">
+  Refresh
+</button>
+<table mat-table [dataSource]="errorList">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>Id</th>
+    <td mat-cell *matCellDef="let error">{{error.id}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="message">
+    <th mat-header-cell *matHeaderCellDef>Message</th>
+    <td mat-cell *matCellDef="let error">{{error.message}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="user_id">
+    <th mat-header-cell *matHeaderCellDef>User id</th>
+    <td mat-cell *matCellDef="let error">{{error.user_id}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="service_id">
+    <th mat-header-cell *matHeaderCellDef>Service id</th>
+    <td mat-cell *matCellDef="let error">{{error.service_id}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay, sticky: true"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+</table>
