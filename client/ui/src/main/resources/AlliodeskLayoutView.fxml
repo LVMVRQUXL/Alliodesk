@@ -4,9 +4,11 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController">
     <top>
@@ -83,8 +85,16 @@
    <left>
       <Pane prefHeight="800.0" prefWidth="129.0" style="-fx-background-color: #393C42;" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="todolistButton" layoutX="2.0" mnemonicParsing="false" onAction="#showTodoEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="ToDoList" />
-            <Button fx:id="RegisterButton" layoutX="2.0" layoutY="44.0" mnemonicParsing="false" onAction="#showRegisterEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="Register" />
+            <ScrollPane prefHeight="801.0" prefWidth="131.0">
+               <content>
+                  <VBox>
+                     <children>
+                        <Button fx:id="todolistButton" mnemonicParsing="false" onAction="#showTodoEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="ToDoList" />
+                        <Button fx:id="RegisterButton" mnemonicParsing="false" onAction="#showRegisterEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="Register" />
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
          </children>
       </Pane>
    </left>
