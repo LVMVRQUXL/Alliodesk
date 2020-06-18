@@ -135,7 +135,10 @@ public class AlliodeskMainLayoutController {
             ) {
                 MenuItem test = new MenuItem(ws[1]);
                 test.setId(ws[0]);
-                test.setOnAction(actionEvent -> System.out.printf("id = %s name = %s%n", test.getId(), test.getText()));
+                test.setOnAction(actionEvent -> {
+                            fillServiceInWorkspace(WSController.findAllServiceWorkspace(ws[0]));
+                            System.out.printf("id = %s name = %s%n", test.getId(), test.getText());
+                });
                 currentList.add(test);
             }
         }
@@ -146,7 +149,7 @@ public class AlliodeskMainLayoutController {
             this.myServiceList = yourList;
             for(ServiceRequest.Service s: myServiceList){
                 Button b = new Button(s.getName());
-                b.setOnAction(actionEvent -> s.toString());
+                b.setOnAction(actionEvent -> System.out.println(s.toString()));
                 servicesVBox.getChildren().add(b);
             }
         }
