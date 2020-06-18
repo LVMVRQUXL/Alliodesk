@@ -1,5 +1,6 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
+import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
 import fr.esgi.pa.alliodesk.core.request.WorkspaceManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -51,6 +52,30 @@ public class WSController {
             case 200:
                 System.out.println("Ok");
                 return wSM.getExistedWS();
+            case 204:
+                System.out.println("No workspaces to return");
+                return new ArrayList<>();
+            case 400:
+                System.out.println("Invalid user's id");
+                return null;
+            case 404:
+                System.out.println("Can't find user from id");
+                return null;
+            case 500:
+                System.out.println("An internal error has occurred");
+                return null;
+            default:
+                System.out.println("status code = " + status_code);
+                return null;
+        }
+    }
+    public static ArrayList<ServiceRequest.Service> findAllServiceWorkspace(String id){
+        WorkspaceManager wSM = new WorkspaceManager("getWorkspaceServices", null, null, id,null);
+        int status_code = wSM.requestToServe();
+        switch (status_code) {
+            case 200:
+                System.out.println("Ok");
+                return wSM.getExistedService();
             case 204:
                 System.out.println("No workspaces to return");
                 return new ArrayList<>();
