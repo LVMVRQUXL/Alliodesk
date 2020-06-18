@@ -1,22 +1,20 @@
-import {Injectable} from "@angular/core";
+import {Injectable} from '@angular/core';
 
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import {environment} from "../../../environments/environment";
+import {environment} from '../../../environments/environment';
 
 interface AdminCredentialsModel {
-  login: string,
-  password: string
+  login: string;
+  password: string;
 }
 
 interface TokenSessionModel {
-  token_session: string
+  token_session: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class AdminService {
   private baseUrl = `${environment.apiUrl}/admins`;
 
@@ -26,9 +24,9 @@ export class AdminService {
   /**
    * Requests the API for administrator's login submission.
    *
-   * @param credentials {AdminCredentialsModel} The administrator's credentials
+   * @param credentials The administrator's credentials
    *
-   * @returns {TokenSessionModel} Administrator's token session
+   * @returns Administrator's token session
    */
   loginAdmin(credentials: AdminCredentialsModel): Observable<TokenSessionModel> {
     return this.httpClient.put<TokenSessionModel>(`${this.baseUrl}/login`, credentials);

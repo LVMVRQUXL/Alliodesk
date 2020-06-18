@@ -1,11 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-
-interface Error {
-  id: number,
-  message: string,
-  user_id: number,
-  service_id: number
-}
+import {ErrorModel, ErrorsService} from '../../shared/services/errors.service';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-errors-table',
@@ -13,29 +8,29 @@ interface Error {
   styleUrls: ['./errors-table.component.css']
 })
 export class ErrorsTableComponent implements OnInit {
-  errorList: Error[];
+  errorList: ErrorModel[];
   columnsToDisplay = ['id', 'message', 'user_id', 'service_id'];
 
-  constructor() {
+  constructor(private errorsService: ErrorsService,
+              private cookieService: CookieService) {
   }
 
-  private static generateFakeErrors(limit: number): Error[] {
-    const errors = [];
-    for (let i = 1; i <= limit; i++)
-      errors.push({
-        id: i,
-        message: 'test',
-        user_id: i,
-        service_id: i
-      });
-    return errors;
+  /**
+   * Get all errors from API
+   */
+  private _getErrorsFromAPI(): void {
+    const tokenSession = `Bearer ${this.cookieService.get('TOKEN_SESSION')}`;
+    this.errorsService.getAllErrors(tokenSession).subscribe(
+      result => this.errorList = (result === null) ? [] : result,
+      error => console.error(error)
+    );
   }
 
   ngOnInit(): void {
-    this.errorList = ErrorsTableComponent.generateFakeErrors(20);
+    this._getErrorsFromAPI();
   }
 
   refreshErrorsList(): void {
-    this.errorList = ErrorsTableComponent.generateFakeErrors(30);
+    this._getErrorsFromAPI();
   }
 }
