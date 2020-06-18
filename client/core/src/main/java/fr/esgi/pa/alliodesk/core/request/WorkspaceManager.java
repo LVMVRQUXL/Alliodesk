@@ -13,8 +13,14 @@ public class WorkspaceManager extends ApiRequest {
     private final String functionCall;
     private ArrayList<String[]> existedWS = new ArrayList<>();
 
+    private ArrayList<ServiceRequest.Service> existedService = new ArrayList<>();
+
     public ArrayList<String[]> getExistedWS() {
         return existedWS;
+    }
+
+    public ArrayList<ServiceRequest.Service> getExistedService() {
+        return existedService;
     }
 
     public WorkspaceManager(String functionCall, String name, String description, String id, String service_id) {
@@ -102,8 +108,8 @@ public class WorkspaceManager extends ApiRequest {
                             new HttpDelete(),
                             this.wSForm
                     );
-
-                }catch (IOException e) {
+                    return response.getStatusLine().getStatusCode();
+                } catch (IOException e) {
                     e.printStackTrace();
                     return 2;
                 }
@@ -115,8 +121,16 @@ public class WorkspaceManager extends ApiRequest {
                             new HttpGet(),
                             this.wSForm
                     );
-
-                }catch (IOException e) {
+                    final int statusCode = response.getStatusLine().getStatusCode();
+                    if (statusCode == 200) {
+                        final String responseContent = EntityUtils.toString(response.getEntity());
+                        ServiceRequest.Service[] yourList = new Gson().fromJson(responseContent, ServiceRequest.Service[].class);
+                        for (ServiceRequest.Service a : yourList) {
+                            existedService.add(a);
+                        }
+                    }
+                    return statusCode;
+                } catch (IOException e) {
                     e.printStackTrace();
                     return 2;
                 }
