@@ -1,5 +1,6 @@
 package fr.esgi.pa.alliodesk.ui;
 
+import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
 import fr.esgi.pa.alliodesk.ui.plugin.PluginGuetter;
 import interfacetest.PluginInterface;
 import fr.esgi.pa.alliodesk.ui.controller.WSController;
@@ -11,6 +12,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,12 +21,14 @@ import java.util.ArrayList;
 public class AlliodeskMainLayoutController {
 
     private ArrayList<String[]> myList;
+    private ArrayList<ServiceRequest.Service> myServiceList;
     private AlliodeskMainLayoutController alliodeskMainLayoutController;
     @FXML
     private Menu workspaces;
     @FXML
     private Menu workspacesManager;
-
+    @FXML
+    private VBox servicesVBox;
     @FXML
     private BorderPane rootLayout;
     @FXML
@@ -137,7 +141,16 @@ public class AlliodeskMainLayoutController {
         }
         afterLoading();
     }
-
+    public void fillServiceInWorkspace(ArrayList<ServiceRequest.Service> yourList){
+        if (yourList != null){
+            this.myServiceList = yourList;
+            for(ServiceRequest.Service s: myServiceList){
+                Button b = new Button(s.getName());
+                b.setOnAction(actionEvent -> s.toString());
+                servicesVBox.getChildren().add(b);
+            }
+        }
+    }
     public void forceLoading() {
         workspacesManager.getItems().get(0).setVisible(false);
         workspacesManager.getItems().get(2).setVisible(false);
