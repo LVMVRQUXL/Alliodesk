@@ -3,7 +3,9 @@ package fr.esgi.pa.alliodesk.core.request;
 import com.google.gson.Gson;
 import fr.esgi.pa.alliodesk.core.InfoInForm;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
@@ -28,8 +30,20 @@ public class ServiceRequest extends ApiRequest {
 
     @Override
     public int requestToServe() {
+        // TODO: put global try...catch
         switch (this.functionCall) {
-
+            case "create":
+                try {
+                    final CloseableHttpResponse request = super.request(
+                            "/services",
+                            new HttpPost(),
+                            this.srFrom
+                    );
+                    return request.getStatusLine().getStatusCode();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return 500;
+                }
             case "findUserAllServices":
                 try {
                     String temp_id = "-1";
@@ -54,6 +68,18 @@ public class ServiceRequest extends ApiRequest {
                 } catch (IOException e) {
                     e.printStackTrace();
                     return 500;
+                }
+            case "deleteService":
+                try {
+                    final CloseableHttpResponse response = super.request(
+                            "/services/" + this.srFrom.getId(),
+                            new HttpDelete(),
+                            this.srFrom
+                    );
+                    return response.getStatusLine().getStatusCode();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return 2; // TODO: change to 500
                 }
         }
         return 0;
