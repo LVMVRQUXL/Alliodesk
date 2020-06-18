@@ -23,7 +23,7 @@ public class WorkspaceManager extends ApiRequest {
                 .withName(name)
                 .withDescription(description)
                 .withId(id)
-                .whithServiceId(service_id);
+                .withServiceId(service_id);
     }
 
     @Override

@@ -67,8 +67,7 @@ public class InfoInForm {
         return this;
     }
 
-    // TODO: change name to withServiceId
-    public InfoInForm whithServiceId(final String service_id) {
+    public InfoInForm withServiceId(final String service_id) {
         this.service_id = service_id;
         return this;
     }
