@@ -36,7 +36,7 @@ public class WSUpdate {
     public void updateWS(ActionEvent actionEvent) {
         actionEvent.consume();
         System.out.println(wSList.getValue().getId());
-        WorkspaceManager wSM = new WorkspaceManager("updateWS", name.getText(), description.getText(), "" + wSList.getValue().getId());
+        WorkspaceManager wSM = new WorkspaceManager("updateWS", name.getText(), description.getText(), "" + wSList.getValue().getId(),null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:

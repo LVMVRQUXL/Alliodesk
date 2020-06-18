@@ -23,7 +23,7 @@ public class WSController {
 
     @FXML
     public void createWS(ActionEvent actionEvent) {
-        WorkspaceManager wSM = new WorkspaceManager("create", name.getText(), description.getText(), null);
+        WorkspaceManager wSM = new WorkspaceManager("create", name.getText(), description.getText(), null,null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 201:
@@ -45,7 +45,7 @@ public class WSController {
     }
 
     public ArrayList<String[]> findAllUserWS() {
-        WorkspaceManager wSM = new WorkspaceManager("findAllUserWS", null, null, null);
+        WorkspaceManager wSM = new WorkspaceManager("findAllUserWS", null, null, null,null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
