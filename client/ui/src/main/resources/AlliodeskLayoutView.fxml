@@ -87,7 +87,7 @@
          <children>
             <ScrollPane prefHeight="801.0" prefWidth="131.0">
                <content>
-                  <VBox>
+                  <VBox fx:id="servicesVBox">
                      <children>
                         <Button fx:id="todolistButton" mnemonicParsing="false" onAction="#showTodoEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="ToDoList" />
                         <Button fx:id="RegisterButton" mnemonicParsing="false" onAction="#showRegisterEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="Register" />
