@@ -105,7 +105,7 @@ public class WorkspaceManager extends ApiRequest {
                 try {
 
                     final CloseableHttpResponse response = super.request(
-                            "/workspaces/" + this.wSForm.getService_id() + "/services/" + this.wSForm.getId(),
+                            "/workspaces/" + this.wSForm.getId() + "/services/" + this.wSForm.getService_id(),
                             new HttpDelete(),
                             this.wSForm
                     );
