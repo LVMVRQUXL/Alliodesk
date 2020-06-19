@@ -20,7 +20,9 @@ public class ServiceAddToWS{
     @FXML
     void initialize() {
         System.out.println(currentID);
-        ArrayList<ServiceRequest.Service> myServices = WSController.findAllServiceWorkspace(currentID);
+        ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices",null);
+        serviceRequest.requestToServe();
+        ArrayList<ServiceRequest.Service> myServices = serviceRequest.getExistedService();
         ObservableList<ChoiceBoxItem> allMyWS = FXCollections.observableArrayList();
         for (ServiceRequest.Service tab : myServices) {
             ChoiceBoxItem item = new ChoiceBoxItem(tab.getId(), tab.getName());

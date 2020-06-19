@@ -28,6 +28,10 @@ public class ServiceRequest extends ApiRequest {
                 .withId(id);
     }
 
+    public ArrayList<Service> getExistedService() {
+        return existedService;
+    }
+
     @Override
     public int requestToServe() {
         // TODO: put global try...catch
