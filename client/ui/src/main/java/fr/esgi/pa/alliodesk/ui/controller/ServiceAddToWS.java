@@ -15,7 +15,7 @@ public class ServiceAddToWS{
     @FXML
     private ChoiceBox<ChoiceBoxItem> serviceList;
 
-    private String currentID = AlliodeskMainLayoutController.getIdTest();
+    private String currentID = AlliodeskMainLayoutController.getWorkspaceId();
 
     @FXML
     void initialize() {
@@ -31,7 +31,7 @@ public class ServiceAddToWS{
 
     public void addService(){
         System.out.println("currentID = "+currentID);
-        System.out.println("currentID = "+AlliodeskMainLayoutController.getIdTest() );
+        System.out.println("currentID = "+AlliodeskMainLayoutController.getWorkspaceId() );
         WorkspaceManager wSM = new WorkspaceManager("addServiceToWS",null,null,currentID,serviceList.getValue().getId());
         int status_code = wSM.requestToServe();
         switch (status_code) {
