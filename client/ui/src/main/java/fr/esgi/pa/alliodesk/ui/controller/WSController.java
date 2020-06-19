@@ -69,8 +69,8 @@ public class WSController {
                 return null;
         }
     }
-    public static ArrayList<ServiceRequest.Service> findAllServiceWorkspace(String id){
-        WorkspaceManager wSM = new WorkspaceManager("getWorkspaceServices", null, null, id,null);
+    public static ArrayList<ServiceRequest.Service> findAllServiceWorkspace(String workspaceId){
+        WorkspaceManager wSM = new WorkspaceManager("getWorkspaceServices", null, null, workspaceId,null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
