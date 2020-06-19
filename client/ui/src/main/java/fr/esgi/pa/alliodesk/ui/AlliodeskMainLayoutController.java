@@ -79,6 +79,11 @@ public class AlliodeskMainLayoutController {
     }
 
     @FXML
+    void deleteServiceInWS(ActionEvent event) throws IOException {
+        AlliodeskMainLayout.showDeleteServiceIntoWS();
+    }
+
+    @FXML
     void addWS() {
         ObservableList<MenuItem> itemsWSManager = workspacesManager.getItems();
         ObservableList<MenuItem> itemsWS = workspaces.getItems();
@@ -157,6 +162,7 @@ public class AlliodeskMainLayoutController {
     }
 
     public void fillServiceInWorkspace(ArrayList<ServiceRequest.Service> yourList){
+        servicesVBox.getChildren().clear();
         if (yourList != null){
             this.myServiceList = yourList;
             for(ServiceRequest.Service s: myServiceList){
