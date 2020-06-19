@@ -2,6 +2,7 @@ package fr.esgi.pa.alliodesk.ui.controller;
 
 import fr.esgi.pa.alliodesk.core.request.AllioErrorRequest;
 import fr.esgi.pa.alliodesk.core.request.ServiceErrorRequest;
+import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,12 +11,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
+import java.util.ArrayList;
+
 import static javafx.scene.paint.Color.WHITE;
 
 public class ErrorController {
-    ObservableList list = FXCollections.observableArrayList();
-    ServiceErrorRequest er;
-    AllioErrorRequest ar;
+    private ObservableList<ServiceRequest.Service> list = FXCollections.observableArrayList();
     @FXML
     private TextArea textError;
 
@@ -30,30 +31,31 @@ public class ErrorController {
         loadServices();
     }
 
-// Ajout des String des services en dur pour le moment
-// Plus tard, on pourra utiliser directement une liste qui
-// sera renvoyée par l'api pour avoir les noms exacts des service en base
 
     @FXML
     public void loadServices() {
         list.clear();
-        String allio = "Alliodesk";
-        String todo = "ToDo";
-        list.addAll(allio, todo);
-        servicesChoice.getItems().addAll(list);
-        servicesChoice.setValue(allio);
+        list.addAll(findAllServiceWorkspace());
+        if (list.size() > 0) {
+            for (ServiceRequest.Service service : list) {
+                servicesChoice.getItems().add(service.getName());
+            }
+            servicesChoice.setValue(servicesChoice.getItems().get(0));
+        } else {
+            servicesChoice.setValue("Aucun service trouvé");
+        }
     }
 
     @FXML
     void submitError(ActionEvent event) {
         event.consume();
         if (servicesChoice.getValue().equals("Alliodesk")) {
-            ar = new AllioErrorRequest(textError.getText());
-            int status_code = this.ar.requestToServe();
+            AllioErrorRequest allioErrorRequest = new AllioErrorRequest(textError.getText());
+            int status_code = allioErrorRequest.requestToServe();
             statusResponse(status_code);
         } else {
-            er = new ServiceErrorRequest(servicesChoice.getValue(), textError.getText());
-            int status_code = this.er.requestToServe();
+            ServiceErrorRequest serviceErrorRequest = new ServiceErrorRequest(servicesChoice.getValue(), textError.getText());
+            int status_code = serviceErrorRequest.requestToServe();
             statusResponse(status_code);
         }
 
@@ -77,6 +79,31 @@ public class ErrorController {
                 responseLabel.setTextFill(WHITE);
                 responseLabel.setText("An internal error has occurred");
                 break;
+        }
+    }
+
+    public static ArrayList<ServiceRequest.Service> findAllServiceWorkspace() {
+        ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices", null);
+        int status_code = serviceRequest.requestToServe();
+        switch (status_code) {
+            case 200:
+                System.out.println("Ok");
+                return serviceRequest.getExistedService();
+            case 204:
+                System.out.println("No services to return");
+                return new ArrayList<ServiceRequest.Service>();
+            case 400:
+                System.out.println("Invalid workspace id");
+                return null;
+            case 404:
+                System.out.println("Can't find workspace from id");
+                return null;
+            case 500:
+                System.out.println("An internal error has occurred");
+                return null;
+            default:
+                System.out.println("status code = " + status_code);
+                return null;
         }
     }
 
