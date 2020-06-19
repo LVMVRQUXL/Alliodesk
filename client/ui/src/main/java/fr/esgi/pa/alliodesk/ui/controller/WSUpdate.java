@@ -26,7 +26,7 @@ public class WSUpdate {
         this.myList = wSC.findAllUserWS();
         ObservableList<ChoiceBoxItem> allMyWS = FXCollections.observableArrayList();
         for (String[] tab : this.myList) {
-            ChoiceBoxItem item = new ChoiceBoxItem(Integer.parseInt(tab[0]), tab[1]);
+            ChoiceBoxItem item = new ChoiceBoxItem(tab[0], tab[1]);
             allMyWS.add(item);
         }
         this.wSList.setItems(allMyWS);
@@ -36,7 +36,7 @@ public class WSUpdate {
     public void updateWS(ActionEvent actionEvent) {
         actionEvent.consume();
         System.out.println(wSList.getValue().getId());
-        WorkspaceManager wSM = new WorkspaceManager("updateWS", name.getText(), description.getText(), "" + wSList.getValue().getId(),null);
+        WorkspaceManager wSM = new WorkspaceManager("updateWS", name.getText(), description.getText(), wSList.getValue().getId(),null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:

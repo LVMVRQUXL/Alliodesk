@@ -22,7 +22,7 @@ public class WSDelete {
         this.myList = wSC.findAllUserWS();
         ObservableList<ChoiceBoxItem> allMyWS = FXCollections.observableArrayList();
         for (String[] tab : this.myList) {
-            ChoiceBoxItem item = new ChoiceBoxItem(Integer.parseInt(tab[0]), tab[1]);
+            ChoiceBoxItem item = new ChoiceBoxItem(tab[0], tab[1]);
             allMyWS.add(item);
         }
         this.wSList.setItems(allMyWS);
@@ -31,7 +31,7 @@ public class WSDelete {
     @FXML
     public void deleteWSUsingId(ActionEvent actionEvent) {
         actionEvent.consume();
-        WorkspaceManager wSM = new WorkspaceManager("removeWSFormId", null, null, "" + wSList.getValue().getId(),null);
+        WorkspaceManager wSM = new WorkspaceManager("removeWSFormId", null, null, wSList.getValue().getId(),null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
