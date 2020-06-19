@@ -10,5 +10,6 @@
       <Button layoutX="127.0" layoutY="174.0" mnemonicParsing="false" onAction="#deleteWorkspaceServiceUsingId" text="Delete" />
       <ChoiceBox fx:id="servicesList" layoutX="55.0" layoutY="94.0" prefHeight="25.0" prefWidth="241.0" style="-fx-background-color: #3D3D3D;" />
       <Label layoutX="82.0" layoutY="41.0" text="Delete a workspace service" />
+      <Label fx:id="deleteLabel" layoutX="154.0" layoutY="73.0" />
    </children>
 </AnchorPane>
