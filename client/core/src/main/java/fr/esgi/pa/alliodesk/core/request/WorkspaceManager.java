@@ -134,6 +134,20 @@ public class WorkspaceManager extends ApiRequest {
                     e.printStackTrace();
                     return 2;
                 }
+            case "addServiceToWS":
+                try {
+                    final CloseableHttpResponse response = super.request(
+                            "/workspaces/" + this.wSForm.getId()+"services",
+                            new HttpPost(),
+                            this.wSForm
+                    );
+                    return response.getStatusLine().getStatusCode();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return 500;
+                }
+
+
             default:
                 return 2;
         }
