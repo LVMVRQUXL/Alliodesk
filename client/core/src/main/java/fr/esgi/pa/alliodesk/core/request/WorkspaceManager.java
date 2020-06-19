@@ -7,6 +7,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class WorkspaceManager extends ApiRequest {
     private final InfoInForm wSForm;
@@ -100,7 +101,7 @@ public class WorkspaceManager extends ApiRequest {
                     e.printStackTrace();
                     return 500;
                 }
-            case "deleteSoHoonFromWorkpace":
+            case "deleteServiceFromWorkspace":
                 try {
 
                     final CloseableHttpResponse response = super.request(
@@ -125,9 +126,7 @@ public class WorkspaceManager extends ApiRequest {
                     if (statusCode == 200) {
                         final String responseContent = EntityUtils.toString(response.getEntity());
                         ServiceRequest.Service[] yourList = new Gson().fromJson(responseContent, ServiceRequest.Service[].class);
-                        for (ServiceRequest.Service a : yourList) {
-                            existedService.add(a);
-                        }
+                        existedService.addAll(Arrays.asList(yourList));
                     }
                     return statusCode;
                 } catch (IOException e) {
