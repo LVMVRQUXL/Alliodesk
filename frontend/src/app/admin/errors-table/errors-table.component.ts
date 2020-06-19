@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ErrorModel, ErrorsService} from '../../shared/services/errors.service';
 import {CookieService} from 'ngx-cookie-service';
+
+import {ErrorsService} from '../../shared/services/errors.service';
+import {ErrorModel} from '../../shared/models/error.model';
 
 @Component({
   selector: 'app-errors-table',

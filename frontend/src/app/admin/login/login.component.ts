@@ -49,19 +49,22 @@ export class LoginComponent {
   loginSubmission(): void {
     if (!this.loginForm.valid) {
       console.log('Invalid inputs!');
-    } else { this.adminService.loginAdmin({
-      login: this.loginInputControl.value,
-      password: this.passwordInputControl.value
-    }).subscribe(token => {
-      this.cookieService.set(this.cookieTokenName, token.token_session, 1, '/');
-      console.log('Administrator successfully logged in!');
-      this.router.navigate(['/errors'])
-        .then(res => console.log(res ? 'Successfully redirected' : 'An error has occurred during redirection'));
-    }, error => this.dialog.open(ErrorDialogComponent, {
-      data: {
-        statusCode: error.status
-      }
-    }));
+    } else {
+      this.adminService.loginAdmin({
+        login: this.loginInputControl.value,
+        password: this.passwordInputControl.value
+      }).subscribe(
+        token => {
+          this.cookieService.set(this.cookieTokenName, token.token_session, 1, '/');
+          console.log('Administrator successfully logged in!');
+          this.router.navigate(['/errors'])
+            .then(res => console.log(res ? 'Successfully redirected' : 'An error has occurred during redirection'));
+        }, error => this.dialog.open(ErrorDialogComponent, {
+          data: {
+            statusCode: error.status
+          }
+        })
+      );
     }
   }
 

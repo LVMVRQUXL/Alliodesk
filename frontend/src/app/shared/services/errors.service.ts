@@ -1,16 +1,9 @@
 import {Injectable} from '@angular/core';
-
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 import {environment} from '../../../environments/environment';
-
-export interface ErrorModel {
-  id: number;
-  message: string;
-  user_id: number;
-  service_id: number;
-}
+import {ErrorModel} from '../models/error.model';
 
 @Injectable({providedIn: 'root'})
 export class ErrorsService {

@@ -1,18 +1,11 @@
 import {Injectable} from '@angular/core';
-
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 import {environment} from '../../../environments/environment';
+import {CredentialsModel} from '../models/credentials.model';
+import {TokenSessionModel} from '../models/token-session.model';
 
-interface AdminCredentialsModel {
-  login: string;
-  password: string;
-}
-
-interface TokenSessionModel {
-  token_session: string;
-}
 
 @Injectable({providedIn: 'root'})
 export class AdminService {
@@ -28,7 +21,7 @@ export class AdminService {
    *
    * @returns Administrator's token session
    */
-  loginAdmin(credentials: AdminCredentialsModel): Observable<TokenSessionModel> {
+  loginAdmin(credentials: CredentialsModel): Observable<TokenSessionModel> {
     return this.httpClient.put<TokenSessionModel>(`${this.baseUrl}/login`, credentials);
   }
 }

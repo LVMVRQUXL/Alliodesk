@@ -1,10 +1,7 @@
 import {Component, Inject} from '@angular/core';
-
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
-interface ErrorData {
-  statusCode: number;
-}
+import {ErrorDialogDataModel} from '../../../shared/models/error-dialog-data.model';
 
 @Component({
   selector: 'app-error-dialog',
@@ -13,7 +10,7 @@ interface ErrorData {
 })
 export class ErrorDialogComponent {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ErrorData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ErrorDialogDataModel) {
   }
 
 }
