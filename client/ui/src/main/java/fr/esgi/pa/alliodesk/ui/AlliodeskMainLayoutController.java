@@ -5,7 +5,6 @@ import interfacetest.PluginInterface;
 import fr.esgi.pa.alliodesk.ui.controller.WSController;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
@@ -42,7 +41,7 @@ public class AlliodeskMainLayoutController {
         AlliodeskMainLayout.showRegisterLayout();
     }
     @FXML
-    void ShowError(ActionEvent event) throws IOException {
+    void showError(ActionEvent event) throws IOException {
         AlliodeskMainLayout.showErrorLayout();
     }
     @FXML
