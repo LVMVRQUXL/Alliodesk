@@ -90,6 +90,12 @@ public class AlliodeskMainLayout extends Application {
         AnchorPane RegisterOverview = loader.load();
         rootLayout.setCenter(RegisterOverview);
     }
+    public static void showDeleteServiceIntoWS() throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/WSServiceDelete.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
 
     public static void main(String[] args) {
         launch(args);
