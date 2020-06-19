@@ -85,7 +85,7 @@
    <left>
       <Pane prefHeight="800.0" prefWidth="129.0" style="-fx-background-color: #393C42;" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane prefHeight="801.0" prefWidth="131.0">
+            <ScrollPane prefHeight="733.0" prefWidth="131.0">
                <content>
                   <VBox fx:id="servicesVBox">
                      <children>
@@ -95,6 +95,7 @@
                   </VBox>
                </content>
             </ScrollPane>
+            <Button layoutY="733.0" mnemonicParsing="false" text="ajout" onAction="#addToWS" />
          </children>
       </Pane>
    </left>
