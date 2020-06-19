@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {CookieService} from "ngx-cookie-service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {MatDialog} from "@angular/material/dialog";
-import {Router} from "@angular/router";
+import {CookieService} from 'ngx-cookie-service';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
 
-import {AdminService} from "../../shared/services/admin.service";
-import {ErrorDialogComponent} from "./error-dialog/error-dialog.component";
+import {AdminService} from '../../shared/services/admin.service';
+import {ErrorDialogComponent} from './error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +31,7 @@ export class LoginComponent {
   /**
    * Initializes the login form.
    *
-   * @param formBuilder {FormBuilder} The form builder service
+   * @param formBuilder The form builder service
    */
   private initLoginForm(formBuilder: FormBuilder): void {
     this.loginInputControl = formBuilder.control(this.loginInputInitialValue, Validators.required);
@@ -47,20 +47,22 @@ export class LoginComponent {
    * Submits the inputs to the API for login submission.
    */
   loginSubmission(): void {
-    if (!this.loginForm.valid) console.log('Invalid inputs!');
-    else this.adminService.loginAdmin({
+    if (!this.loginForm.valid) {
+      console.log('Invalid inputs!');
+    } else { this.adminService.loginAdmin({
       login: this.loginInputControl.value,
       password: this.passwordInputControl.value
     }).subscribe(token => {
       this.cookieService.set(this.cookieTokenName, token.token_session, 1, '/');
       console.log('Administrator successfully logged in!');
       this.router.navigate(['/errors'])
-        .then(r => console.log(r ? 'Successfully redirected' : 'An error has occurred during redirection'));
+        .then(res => console.log(res ? 'Successfully redirected' : 'An error has occurred during redirection'));
     }, error => this.dialog.open(ErrorDialogComponent, {
       data: {
         statusCode: error.status
       }
     }));
+    }
   }
 
   /**
