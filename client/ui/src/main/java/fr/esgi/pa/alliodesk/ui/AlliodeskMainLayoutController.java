@@ -23,6 +23,12 @@ public class AlliodeskMainLayoutController {
     private ArrayList<String[]> myList;
     private ArrayList<ServiceRequest.Service> myServiceList;
     private AlliodeskMainLayoutController alliodeskMainLayoutController;
+    static String idTest="";
+
+    public static String getIdTest() {
+        return idTest;
+    }
+
     @FXML
     private Menu workspaces;
     @FXML
@@ -137,6 +143,7 @@ public class AlliodeskMainLayoutController {
                 test.setId(ws[0]);
                 test.setOnAction(actionEvent -> {
                             fillServiceInWorkspace(WSController.findAllServiceWorkspace(ws[0]));
+                            idTest = test.getId();
                             System.out.printf("id = %s name = %s%n", test.getId(), test.getText());
                 });
                 currentList.add(test);
@@ -144,6 +151,11 @@ public class AlliodeskMainLayoutController {
         }
         afterLoading();
     }
+
+    public void  addToWS() throws IOException {
+        AlliodeskMainLayout.showAddServiceIntoWS();
+    }
+
     public void fillServiceInWorkspace(ArrayList<ServiceRequest.Service> yourList){
         if (yourList != null){
             this.myServiceList = yourList;
@@ -169,5 +181,6 @@ public class AlliodeskMainLayoutController {
         workspacesManager.getItems().get(1).setVisible(false);
         workspaces.setDisable(false);
     }
+
 }
 

@@ -77,13 +77,13 @@ public class WSController {
                 System.out.println("Ok");
                 return wSM.getExistedService();
             case 204:
-                System.out.println("No workspaces to return");
+                System.out.println("No services to return");
                 return new ArrayList<>();
             case 400:
-                System.out.println("Invalid user's id");
+                System.out.println("Invalid workspace's id");
                 return null;
             case 404:
-                System.out.println("Can't find user from id");
+                System.out.println("Can't find workspace from id");
                 return null;
             case 500:
                 System.out.println("An internal error has occurred");
