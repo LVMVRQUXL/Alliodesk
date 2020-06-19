@@ -23,10 +23,10 @@ public class AlliodeskMainLayoutController {
     private ArrayList<String[]> myList;
     private ArrayList<ServiceRequest.Service> myServiceList;
     private AlliodeskMainLayoutController alliodeskMainLayoutController;
-    static String idTest="";
+    private static String workspaceId ="";
 
-    public static String getIdTest() {
-        return idTest;
+    public static String getWorkspaceId() {
+        return workspaceId;
     }
 
     @FXML
@@ -144,14 +144,14 @@ public class AlliodeskMainLayoutController {
             currentList.remove(0, currentList.size());
             for (String[] ws : yourList
             ) {
-                MenuItem test = new MenuItem(ws[1]);
-                test.setId(ws[0]);
-                test.setOnAction(actionEvent -> {
+                MenuItem item = new MenuItem(ws[1]);
+                item.setId(ws[0]);
+                item.setOnAction(actionEvent -> {
                             fillServiceInWorkspace(WSController.findAllServiceWorkspace(ws[0]));
-                            idTest = test.getId();
-                            System.out.printf("id = %s name = %s%n", test.getId(), test.getText());
+                            workspaceId = item.getId();
+                            System.out.printf("id = %s name = %s%n", item.getId(), item.getText());
                 });
-                currentList.add(test);
+                currentList.add(item);
             }
         }
         afterLoading();
