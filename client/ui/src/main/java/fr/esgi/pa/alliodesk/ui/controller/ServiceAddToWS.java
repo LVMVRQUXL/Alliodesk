@@ -39,12 +39,16 @@ public class ServiceAddToWS{
         switch (status_code) {
             case 201:
                 System.out.println("Service successfully added");
+                break;
             case 400:
                 System.out.println("Invalid inputs");
+                break;
             case 404:
                 System.out.println("Can't find service or workspace from ids");
+                break;
             case 500:
                 System.out.println("An internal error has occurred");
+                break;
             default:
                 System.out.println("status code = " + status_code);
         }
