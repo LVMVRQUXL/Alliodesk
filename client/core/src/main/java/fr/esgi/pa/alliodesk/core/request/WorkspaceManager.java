@@ -136,7 +136,7 @@ public class WorkspaceManager extends ApiRequest {
             case "addServiceToWS":
                 try {
                     final CloseableHttpResponse response = super.request(
-                            "/workspaces/" + this.wSForm.getId()+"services",
+                            "/workspaces/" + this.wSForm.getId()+"/services",
                             new HttpPost(),
                             this.wSForm
                     );
