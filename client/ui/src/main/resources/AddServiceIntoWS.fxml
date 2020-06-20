@@ -9,6 +9,6 @@
    <children>
       <Button layoutX="239.0" layoutY="248.0" mnemonicParsing="false" onAction="#addService" text="Add service" />
       <ChoiceBox fx:id="serviceList" layoutX="187.0" layoutY="130.0" prefWidth="241.0" style="-fx-background-color: #3D3D3D;" />
-      <Label layoutX="252.0" layoutY="54.0" text="Add a servicce" />
+      <Label layoutX="252.0" layoutY="54.0" text="Add a service" />
    </children>
 </AnchorPane>
