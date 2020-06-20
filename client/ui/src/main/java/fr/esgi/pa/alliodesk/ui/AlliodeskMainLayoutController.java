@@ -45,6 +45,8 @@ public class AlliodeskMainLayoutController {
     private Button RegisterButton;
     @FXML
     private Menu pluginMenu;
+    @FXML
+    private Button refreshServiceListButton;
 
     @FXML
     void showRegisterEvent(ActionEvent event) throws IOException {
@@ -80,7 +82,14 @@ public class AlliodeskMainLayoutController {
 
     @FXML
     void deleteServiceInWS(ActionEvent event) throws IOException {
+        refreshServiceListButton.setDisable(false);
         AlliodeskMainLayout.showDeleteServiceIntoWS();
+    }
+
+    @FXML
+    public void addToWS() throws IOException {
+        refreshServiceListButton.setDisable(false);
+        AlliodeskMainLayout.showAddServiceIntoWS();
     }
 
     @FXML
@@ -172,6 +181,12 @@ public class AlliodeskMainLayoutController {
             }
         }
     }
+
+    @FXML
+    void refreshServiceList(ActionEvent event) {
+        fillServiceInWorkspace(WSController.findAllServiceWorkspace(workspaceId));
+    }
+
     public void forceLoading() {
         workspacesManager.getItems().get(0).setVisible(false);
         workspacesManager.getItems().get(2).setVisible(false);
