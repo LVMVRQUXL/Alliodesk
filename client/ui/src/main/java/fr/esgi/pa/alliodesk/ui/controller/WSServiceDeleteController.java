@@ -40,8 +40,8 @@ public class WSServiceDeleteController {
 
     @FXML
     void deleteWorkspaceServiceUsingId(ActionEvent event) {
-        String debug = servicesList.getValue().getId();
-        WorkspaceManager wSM = new WorkspaceManager("deleteServiceFromWorkspace", null, null, workspaceId, debug );
+        String serviceId = servicesList.getValue().getId();
+        WorkspaceManager wSM = new WorkspaceManager("deleteServiceFromWorkspace", null, null, workspaceId, serviceId);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
