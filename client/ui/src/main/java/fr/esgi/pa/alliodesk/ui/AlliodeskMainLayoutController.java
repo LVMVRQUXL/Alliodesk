@@ -23,7 +23,7 @@ public class AlliodeskMainLayoutController {
     private ArrayList<String[]> myList;
     private ArrayList<ServiceRequest.Service> myServiceList;
     private AlliodeskMainLayoutController alliodeskMainLayoutController;
-    private static String workspaceId ="";
+    private static String workspaceId = "";
 
     public static String getWorkspaceId() {
         return workspaceId;
@@ -156,9 +156,9 @@ public class AlliodeskMainLayoutController {
                 MenuItem item = new MenuItem(ws[1]);
                 item.setId(ws[0]);
                 item.setOnAction(actionEvent -> {
-                            fillServiceInWorkspace(WSController.findAllServiceWorkspace(ws[0]));
-                            workspaceId = item.getId();
-                            System.out.printf("id = %s name = %s%n", item.getId(), item.getText());
+                    fillServiceInWorkspace(WSController.findAllServiceWorkspace(ws[0]));
+                    workspaceId = item.getId();
+                    System.out.printf("id = %s name = %s%n", item.getId(), item.getText());
                 });
                 currentList.add(item);
             }
@@ -166,15 +166,12 @@ public class AlliodeskMainLayoutController {
         afterLoading();
     }
 
-    public void  addToWS() throws IOException {
-        AlliodeskMainLayout.showAddServiceIntoWS();
-    }
 
-    public void fillServiceInWorkspace(ArrayList<ServiceRequest.Service> yourList){
+    public void fillServiceInWorkspace(ArrayList<ServiceRequest.Service> yourList) {
         servicesVBox.getChildren().clear();
-        if (yourList != null){
+        if (yourList != null) {
             this.myServiceList = yourList;
-            for(ServiceRequest.Service s: myServiceList){
+            for (ServiceRequest.Service s : myServiceList) {
                 Button b = new Button(s.getName());
                 b.setOnAction(actionEvent -> System.out.println(s.toString()));
                 servicesVBox.getChildren().add(b);
