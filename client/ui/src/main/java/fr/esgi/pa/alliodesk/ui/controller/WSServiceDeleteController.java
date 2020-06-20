@@ -10,7 +10,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+
 import static javafx.scene.paint.Color.*;
+
 import java.util.ArrayList;
 
 public class WSServiceDeleteController {
@@ -21,10 +23,14 @@ public class WSServiceDeleteController {
     public ChoiceBox<ChoiceBoxItem> servicesList;
     @FXML
     private Label deleteLabel;
+
     @FXML
     public void initialize() {
-        ArrayList<ServiceRequest.Service> myServices = WSController.findAllServiceWorkspace(workspaceId);
+        WorkspaceManager workspaceManager = new WorkspaceManager("getWorkspaceServices", null, null, workspaceId, null);
+        workspaceManager.requestToServe();
+        ArrayList<ServiceRequest.Service> myServices = workspaceManager.getExistedService();
         ObservableList<ChoiceBoxItem> allMyWS = FXCollections.observableArrayList();
+
         for (ServiceRequest.Service tab : myServices) {
             ChoiceBoxItem item = new ChoiceBoxItem(tab.getId(), tab.getName());
             allMyWS.add(item);
