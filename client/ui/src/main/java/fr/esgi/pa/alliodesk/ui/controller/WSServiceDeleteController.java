@@ -30,12 +30,14 @@ public class WSServiceDeleteController {
         workspaceManager.requestToServe();
         ArrayList<ServiceRequest.Service> myServices = workspaceManager.getExistedService();
         ObservableList<ChoiceBoxItem> allMyWS = FXCollections.observableArrayList();
-
-        for (ServiceRequest.Service tab : myServices) {
-            ChoiceBoxItem item = new ChoiceBoxItem(tab.getId(), tab.getName());
-            allMyWS.add(item);
+        if (myServices.size() > 0) {
+            for (ServiceRequest.Service tab : myServices) {
+                ChoiceBoxItem item = new ChoiceBoxItem(tab.getId(), tab.getName());
+                allMyWS.add(item);
+            }
+            this.servicesList.setItems(allMyWS);
+            this.servicesList.setValue(servicesList.getItems().get(0));
         }
-        this.servicesList.setItems(allMyWS);
     }
 
     @FXML
