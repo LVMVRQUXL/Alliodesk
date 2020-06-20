@@ -173,6 +173,8 @@ public class AlliodeskMainLayoutController {
             this.myServiceList = yourList;
             for (ServiceRequest.Service s : myServiceList) {
                 Button b = new Button(s.getName());
+                b.setPrefHeight(33);
+                b.setPrefWidth(125);
                 b.setOnAction(actionEvent -> System.out.println(s.toString()));
                 servicesVBox.getChildren().add(b);
             }
