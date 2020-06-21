@@ -13,7 +13,6 @@
     - [Utilisation de Git](#utilisation-de-git)
 - [Liste des technologies](#liste-des-technologies)
     - [API RESTful](#api-restful)
-    - [Database](#database)
     - [Client](#client)
     - [Frontend](#frontend)
     - [Autres outils](#autres-outils)
@@ -175,8 +174,17 @@ choisi de respecter les patterns suivants :
 - [Sequelize 5.21.5](https://www.npmjs.com/package/sequelize/v/5.21.5) ;
 - [Express 4.17.1](https://www.npmjs.com/package/express/v/4.17.1) ;
 - [Dotenv 8.2.0](https://www.npmjs.com/package/dotenv/v/8.2.0) ;
-- [Body-parser 1.19.0](https://www.npmjs.com/package/body-parser/v/1.19.0) ;
-- [Mocha 7.1.1](https://www.npmjs.com/package/mocha/v/7.1.1).
+- [Body parser 1.19.0](https://www.npmjs.com/package/body-parser/v/1.19.0) ;
+- [Cors 2.8.5](https://www.npmjs.com/package/cors/v/2.8.5) ;
+- [Email validator 2.0.4](https://www.npmjs.com/package/email-validator/v/2.0.4) ;
+- [Pg 8.0.3](https://www.npmjs.com/package/pg/v/8.0.3) ;
+- [Swagger JSDoc 4.0.0](https://www.npmjs.com/package/swagger-jsdoc/v/4.0.0) ;
+- [Swagger UI Express 4.1.4](https://www.npmjs.com/package/swagger-ui-express/v/4.1.4) ;
+- [Chai 4.2.0](https://www.npmjs.com/package/chai/v/4.2.0) ;
+- [Mocha 7.1.1](https://www.npmjs.com/package/mocha/v/7.1.1) ;
+- [Proxyquire 2.1.3](https://www.npmjs.com/package/proxyquire/v/2.1.3) ;
+- [Sequelize test helpers 1.2.2](https://www.npmjs.com/package/sequelize-test-helpers/v/1.2.2) ;
+- [Sinon 9.0.2](https://www.npmjs.com/package/sinon/v/9.0.2).
 
 
 ### Client
@@ -189,7 +197,9 @@ choisi de respecter les patterns suivants :
 
 ### Frontend
 
-- [Angular CLI 9.0.7](https://www.npmjs.com/package/@angular/cli/v/9.0.7).
+- [Angular CLI 9.0.7](https://www.npmjs.com/package/@angular/cli/v/9.0.7) ;
+- [NgxCookieService 3.0.4](https://www.npmjs.com/package/ngx-cookie-service/v/3.0.4) ;
+- [RxJS 6.5.4](https://www.npmjs.com/package/rxjs/v/6.5.4)
 
 
 ### Autres outils
