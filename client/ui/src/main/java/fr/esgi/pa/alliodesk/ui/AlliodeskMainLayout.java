@@ -41,6 +41,14 @@ public class AlliodeskMainLayout extends Application {
         rootLayout.setCenter(RegisterOverview);
     }
 
+    public static void showErrorLayout() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/ErrorView.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+
+
     static void showToDoListLayout() throws IOException {
         ExtensionGetter eg = new ExtensionGetter();
         FXMLLoader loader = new FXMLLoader(eg.getUrl());

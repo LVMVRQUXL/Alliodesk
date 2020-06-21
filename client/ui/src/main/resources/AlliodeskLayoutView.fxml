@@ -26,15 +26,16 @@
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
                         <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" onAction="#showError" text="Send Error" />
                     </items>
                 </Menu>
                 <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins" />
-            <Menu mnemonicParsing="false" text="Workspaces Manager" fx:id="workspacesManager" >
+            <Menu fx:id="workspacesManager" mnemonicParsing="false" text="Workspaces Manager">
                 <items>
-                    <MenuItem mnemonicParsing="false" text="Init My Workspaces" onAction="#addWS" />
+                    <MenuItem mnemonicParsing="false" onAction="#addWS" text="Init My Workspaces" />
                 </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="My Workspaces" fx:id="workspaces" >
+            <Menu fx:id="workspaces" mnemonicParsing="false" text="My Workspaces">
             </Menu>
         </menus>
         </MenuBar>
@@ -66,14 +67,15 @@
           <Menu mnemonicParsing="false" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
+                  <MenuItem mnemonicParsing="false" onAction="#showError" text="Send Error" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Workspaces Manager" fx:id="workspacesManager" >
+            <Menu fx:id="workspacesManager" mnemonicParsing="false" text="Workspaces Manager">
                 <items>
-                    <MenuItem mnemonicParsing="false" text="Init My Workspaces" onAction="#addWS" />
+                    <MenuItem mnemonicParsing="false" onAction="#addWS" text="Init My Workspaces" />
                 </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="My Workspaces" fx:id="workspaces" >
+            <Menu fx:id="workspaces" mnemonicParsing="false" text="My Workspaces">
             </Menu>
         </menus>
       </MenuBar>
