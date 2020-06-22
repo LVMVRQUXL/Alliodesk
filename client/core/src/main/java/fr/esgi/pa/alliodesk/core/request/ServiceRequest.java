@@ -16,10 +16,6 @@ public class ServiceRequest extends ApiRequest {
     private final InfoInForm srFrom;
     private final String functionCall;
 
-    public ArrayList<Service> getExistedService() {
-        return existedService;
-    }
-
     private ArrayList<Service> existedService = new ArrayList<>();
 
     public ServiceRequest(String functionCall, String id) {
@@ -83,10 +79,10 @@ public class ServiceRequest extends ApiRequest {
                     return response.getStatusLine().getStatusCode();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return 2; // TODO: change to 500
+                    return 500;
                 }
         }
-        return 0;
+        return 500;
     }
 
     public static class Service {
