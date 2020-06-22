@@ -47,7 +47,8 @@ public class WSServiceDeleteController {
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
-                System.out.println("Service successfully delete");
+                deleteLabel.setTextFill(WHITE);
+                deleteLabel.setText("Service successfully delete");
                 servicesList.getItems().remove(servicesList.getValue());
                 break;
             case 204:
