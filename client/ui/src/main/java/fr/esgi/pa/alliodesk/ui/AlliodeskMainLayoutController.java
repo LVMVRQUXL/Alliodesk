@@ -42,20 +42,15 @@ public class AlliodeskMainLayoutController {
     @FXML
     private MenuBar menu;
     @FXML
-    private Button RegisterButton;
-    @FXML
     private Menu pluginMenu;
     @FXML
     private Button refreshServiceListButton;
 
     @FXML
-    void showRegisterEvent(ActionEvent event) throws IOException {
-        AlliodeskMainLayout.showRegisterLayout();
-    }
-    @FXML
     void showError(ActionEvent event) throws IOException {
         AlliodeskMainLayout.showErrorLayout();
     }
+
     @FXML
     void addPluginInMenuBar(PluginInterface[] pi) {
         int index = 0;
@@ -116,7 +111,6 @@ public class AlliodeskMainLayoutController {
             workspaces.setDisable(false);
             afterLoading();
             try {
-                //TODO LOAD A MENUSLAYOUT
                 AlliodeskMainLayout.showRegisterLayout();
             } catch (IOException e) {
                 e.printStackTrace();
