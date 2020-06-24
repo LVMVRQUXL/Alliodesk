@@ -30,9 +30,7 @@ public class PluginLoader<C> {
                 // There might be multiple JARs in the directory,
                 // so keep looking
                 continue;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            }  catch (IOException e) {
                 e.printStackTrace();
             }
 
