@@ -3,7 +3,9 @@ package fr.esgi.pa.alliodesk.core.request;
 import com.google.gson.Gson;
 import fr.esgi.pa.alliodesk.core.InfoInForm;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
@@ -14,10 +16,6 @@ public class ServiceRequest extends ApiRequest {
     private final InfoInForm srFrom;
     private final String functionCall;
 
-    public ArrayList<Service> getExistedService() {
-        return existedService;
-    }
-
     private ArrayList<Service> existedService = new ArrayList<>();
 
     public ServiceRequest(String functionCall, String id) {
@@ -26,37 +24,60 @@ public class ServiceRequest extends ApiRequest {
                 .withId(id);
     }
 
+    public ArrayList<Service> getExistedService() {
+        return existedService;
+    }
+
+    private CloseableHttpResponse requestFindAllServicesFromUser() throws IOException {
+        String tempId = "-1";
+        final GetUserData myUser = new GetUserData();
+        myUser.requestToServe();
+        if (myUser.idNotEmpty()) tempId = myUser.getId();
+        final CloseableHttpResponse response = super.request(
+                "/users/" + tempId + "/services",
+                new HttpGet(),
+                this.srFrom
+        );
+
+        if (response.getStatusLine().getStatusCode() == 200) {
+            final String responseContent = EntityUtils.toString(response.getEntity());
+            Service[] yourList = new Gson().fromJson(responseContent, Service[].class);
+            existedService.addAll(Arrays.asList(yourList));
+        }
+
+        return response;
+    }
+
     @Override
     public int requestToServe() {
-        switch (this.functionCall) {
-
-            case "findUserAllServices":
-                try {
-                    String temp_id = "-1";
-                    GetUserData myUser = new GetUserData();
-                    myUser.requestToServe();
-                    if (myUser.idNotEmpty()) {
-                        temp_id = myUser.getId();
-                    }
-                    final CloseableHttpResponse response = super.request(
-                            "/users/" + temp_id + "/services",
-                            new HttpGet(),
+        try {
+            CloseableHttpResponse response = null;
+            int statusCode;
+            switch (this.functionCall) {
+                case "create":
+                    response = super.request(
+                            "/services",
+                            new HttpPost(),
                             this.srFrom
                     );
-                    final int statusCode = response.getStatusLine().getStatusCode();
-
-                    if (statusCode == 200) {
-                        final String responseContent = EntityUtils.toString(response.getEntity());
-                        Service[] yourList = new Gson().fromJson(responseContent, Service[].class);
-                        existedService.addAll(Arrays.asList(yourList));
-                    }
-                    return statusCode;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return 500;
-                }
+                    break;
+                case "findUserAllServices":
+                    response = this.requestFindAllServicesFromUser();
+                    break;
+                case "deleteService":
+                    response = super.request(
+                            "/services/" + this.srFrom.getId(),
+                            new HttpDelete(),
+                            this.srFrom
+                    );
+                    break;
+            }
+            statusCode = (response != null) ? response.getStatusLine().getStatusCode() : 500;
+            return statusCode;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 500;
         }
-        return 0;
     }
 
     public static class Service {

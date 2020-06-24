@@ -1,5 +1,6 @@
 package fr.esgi.pa.alliodesk.ui;
 
+import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
 import fr.esgi.pa.alliodesk.ui.plugin.PluginGuetter;
 import interfacetest.PluginInterface;
 import fr.esgi.pa.alliodesk.ui.controller.WSController;
@@ -11,6 +12,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,12 +21,20 @@ import java.util.ArrayList;
 public class AlliodeskMainLayoutController {
 
     private ArrayList<String[]> myList;
+    private ArrayList<ServiceRequest.Service> myServiceList;
     private AlliodeskMainLayoutController alliodeskMainLayoutController;
+    private static String workspaceId = "";
+
+    public static String getWorkspaceId() {
+        return workspaceId;
+    }
+
     @FXML
     private Menu workspaces;
     @FXML
     private Menu workspacesManager;
-
+    @FXML
+    private VBox servicesVBox;
     @FXML
     private BorderPane rootLayout;
     @FXML
@@ -32,18 +42,15 @@ public class AlliodeskMainLayoutController {
     @FXML
     private MenuBar menu;
     @FXML
-    private Button RegisterButton;
-    @FXML
     private Menu pluginMenu;
-
     @FXML
-    void showRegisterEvent(ActionEvent event) throws IOException {
-        AlliodeskMainLayout.showRegisterLayout();
-    }
+    private Button refreshServiceListButton;
+
     @FXML
     void showError(ActionEvent event) throws IOException {
         AlliodeskMainLayout.showErrorLayout();
     }
+
     @FXML
     void addPluginInMenuBar(PluginInterface[] pi) {
         int index = 0;
@@ -66,6 +73,18 @@ public class AlliodeskMainLayoutController {
     @FXML
     void showTodoEvent(ActionEvent event) throws IOException {
         AlliodeskMainLayout.showToDoListLayout();
+    }
+
+    @FXML
+    void deleteServiceInWS(ActionEvent event) throws IOException {
+        refreshServiceListButton.setDisable(false);
+        AlliodeskMainLayout.showDeleteServiceIntoWS();
+    }
+
+    @FXML
+    public void addToWS() throws IOException {
+        refreshServiceListButton.setDisable(false);
+        AlliodeskMainLayout.showAddServiceIntoWS();
     }
 
     @FXML
@@ -92,7 +111,6 @@ public class AlliodeskMainLayoutController {
             workspaces.setDisable(false);
             afterLoading();
             try {
-                //TODO LOAD A MENUSLAYOUT
                 AlliodeskMainLayout.showRegisterLayout();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -129,13 +147,37 @@ public class AlliodeskMainLayoutController {
             currentList.remove(0, currentList.size());
             for (String[] ws : yourList
             ) {
-                MenuItem test = new MenuItem(ws[1]);
-                test.setId(ws[0]);
-                test.setOnAction(actionEvent -> System.out.printf("id = %s name = %s%n", test.getId(), test.getText()));
-                currentList.add(test);
+                MenuItem item = new MenuItem(ws[1]);
+                item.setId(ws[0]);
+                item.setOnAction(actionEvent -> {
+                    fillServiceInWorkspace(WSController.findAllServiceWorkspace(ws[0]));
+                    workspaceId = item.getId();
+                    System.out.printf("id = %s name = %s%n", item.getId(), item.getText());
+                });
+                currentList.add(item);
             }
         }
         afterLoading();
+    }
+
+
+    public void fillServiceInWorkspace(ArrayList<ServiceRequest.Service> yourList) {
+        servicesVBox.getChildren().clear();
+        if (yourList != null) {
+            this.myServiceList = yourList;
+            for (ServiceRequest.Service s : myServiceList) {
+                Button b = new Button(s.getName());
+                b.setPrefHeight(33);
+                b.setPrefWidth(125);
+                b.setOnAction(actionEvent -> System.out.println(s.toString()));
+                servicesVBox.getChildren().add(b);
+            }
+        }
+    }
+
+    @FXML
+    void refreshServiceList(ActionEvent event) {
+        fillServiceInWorkspace(WSController.findAllServiceWorkspace(workspaceId));
     }
 
     public void forceLoading() {
@@ -153,5 +195,6 @@ public class AlliodeskMainLayoutController {
         workspacesManager.getItems().get(1).setVisible(false);
         workspaces.setDisable(false);
     }
+
 }
 

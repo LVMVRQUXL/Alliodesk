@@ -7,22 +7,30 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class WorkspaceManager extends ApiRequest {
-    private final InfoInForm wSFrom;
+    private final InfoInForm wSForm;
     private final String functionCall;
     private ArrayList<String[]> existedWS = new ArrayList<>();
+
+    private ArrayList<ServiceRequest.Service> existedService = new ArrayList<>();
 
     public ArrayList<String[]> getExistedWS() {
         return existedWS;
     }
 
-    public WorkspaceManager(String functionCall, String name, String description, String id) {
+    public ArrayList<ServiceRequest.Service> getExistedService() {
+        return existedService;
+    }
+
+    public WorkspaceManager(String functionCall, String name, String description, String id, String service_id) {
         this.functionCall = functionCall;
-        this.wSFrom = InfoInForm.build()
+        this.wSForm = InfoInForm.build()
                 .withName(name)
                 .withDescription(description)
-                .withId(id);
+                .withId(id)
+                .withServiceId(service_id);
     }
 
     @Override
@@ -33,7 +41,7 @@ public class WorkspaceManager extends ApiRequest {
                     final CloseableHttpResponse request = super.request(
                             "/workspaces",
                             new HttpPost(),
-                            this.wSFrom
+                            this.wSForm
                     );
                     return request.getStatusLine().getStatusCode();
                 } catch (IOException e) {
@@ -43,7 +51,7 @@ public class WorkspaceManager extends ApiRequest {
             case "findAllUserWS":
                 try {
                     String temp_id = "-1";
-                    GetUserData myid = new GetUserData();
+                    GetUserData myid = new GetUserData();   // Rendre "myid" plus parlant ( myUser par exemple )
                     myid.requestToServe();
                     if (myid.idNotEmpty()) {
                         temp_id = myid.getId();
@@ -51,7 +59,7 @@ public class WorkspaceManager extends ApiRequest {
                     final CloseableHttpResponse response = super.request(
                             "/users/" + temp_id + "/workspaces",
                             new HttpGet(),
-                            this.wSFrom
+                            this.wSForm
                     );
                     final int statusCode = response.getStatusLine().getStatusCode();
 
@@ -71,9 +79,9 @@ public class WorkspaceManager extends ApiRequest {
             case "removeWSFormId":
                 try {
                     final CloseableHttpResponse response = super.request(
-                            "/workspaces/" + this.wSFrom.getId(),
+                            "/workspaces/" + this.wSForm.getId(),
                             new HttpDelete(),
-                            this.wSFrom
+                            this.wSForm
                     );
                     return response.getStatusLine().getStatusCode();
                 } catch (IOException e) {
@@ -84,9 +92,53 @@ public class WorkspaceManager extends ApiRequest {
             case "updateWS":
                 try {
                     final CloseableHttpResponse response = super.request(
-                            "/workspaces/" + this.wSFrom.getId(),
+                            "/workspaces/" + this.wSForm.getId(),
                             new HttpPut(),
-                            this.wSFrom
+                            this.wSForm
+                    );
+                    return response.getStatusLine().getStatusCode();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return 500;
+                }
+            case "deleteServiceFromWorkspace":
+                try {
+
+                    final CloseableHttpResponse response = super.request(
+                            "/workspaces/" + this.wSForm.getId() + "/services/" + this.wSForm.getService_id(),
+                            new HttpDelete(),
+                            this.wSForm
+                    );
+                    return response.getStatusLine().getStatusCode();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return 2;
+                }
+            case "getWorkspaceServices":
+                try {
+
+                    final CloseableHttpResponse response = super.request(
+                            "/workspaces/" + this.wSForm.getId() + "/services",
+                            new HttpGet(),
+                            this.wSForm
+                    );
+                    final int statusCode = response.getStatusLine().getStatusCode();
+                    if (statusCode == 200) {
+                        final String responseContent = EntityUtils.toString(response.getEntity());
+                        ServiceRequest.Service[] yourList = new Gson().fromJson(responseContent, ServiceRequest.Service[].class);
+                        existedService.addAll(Arrays.asList(yourList));
+                    }
+                    return statusCode;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return 2;
+                }
+            case "addServiceToWS":
+                try {
+                    final CloseableHttpResponse response = super.request(
+                            "/workspaces/" + this.wSForm.getId()+"/services",
+                            new HttpPost(),
+                            this.wSForm
                     );
                     return response.getStatusLine().getStatusCode();
                 } catch (IOException e) {
@@ -99,7 +151,6 @@ public class WorkspaceManager extends ApiRequest {
                 return 2;
         }
     }
-
 
 }
 

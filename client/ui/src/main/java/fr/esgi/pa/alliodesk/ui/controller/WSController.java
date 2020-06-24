@@ -1,5 +1,6 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
+import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
 import fr.esgi.pa.alliodesk.core.request.WorkspaceManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +24,7 @@ public class WSController {
 
     @FXML
     public void createWS(ActionEvent actionEvent) {
-        WorkspaceManager wSM = new WorkspaceManager("create", name.getText(), description.getText(), null);
+        WorkspaceManager wSM = new WorkspaceManager("create", name.getText(), description.getText(), null,null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 201:
@@ -45,7 +46,7 @@ public class WSController {
     }
 
     public ArrayList<String[]> findAllUserWS() {
-        WorkspaceManager wSM = new WorkspaceManager("findAllUserWS", null, null, null);
+        WorkspaceManager wSM = new WorkspaceManager("findAllUserWS", null, null, null,null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
@@ -59,6 +60,30 @@ public class WSController {
                 return null;
             case 404:
                 System.out.println("Can't find user from id");
+                return null;
+            case 500:
+                System.out.println("An internal error has occurred");
+                return null;
+            default:
+                System.out.println("status code = " + status_code);
+                return null;
+        }
+    }
+    public static ArrayList<ServiceRequest.Service> findAllServiceWorkspace(String workspaceId){
+        WorkspaceManager wSM = new WorkspaceManager("getWorkspaceServices", null, null, workspaceId,null);
+        int status_code = wSM.requestToServe();
+        switch (status_code) {
+            case 200:
+                System.out.println("Ok");
+                return wSM.getExistedService();
+            case 204:
+                System.out.println("No services to return");
+                return new ArrayList<>();
+            case 400:
+                System.out.println("Invalid workspace's id");
+                return null;
+            case 404:
+                System.out.println("Can't find workspace from id");
                 return null;
             case 500:
                 System.out.println("An internal error has occurred");

@@ -1,7 +1,15 @@
 package fr.esgi.pa.alliodesk.core;
 
 public class InfoInForm {
-    private String name, email, login, password, description, id, message, service_name;
+    private String name,
+            email,
+            login,
+            password,
+            description,
+            id,
+            message,
+            service_name,
+            service_id;
 
     private InfoInForm() {
         this.name = null;
@@ -12,6 +20,7 @@ public class InfoInForm {
         this.id = null;
         this.message = null;
         this.service_name = null;
+        this.service_id = null;
     }
 
     public static InfoInForm build() {
@@ -58,6 +67,11 @@ public class InfoInForm {
         return this;
     }
 
+    public InfoInForm withServiceId(final String service_id) {
+        this.service_id = service_id;
+        return this;
+    }
+
     @Override
     public String toString() {
         return String.format("InfoInForm(name: %s, email: %s, login: %s, password: %s, message: %s, service_name: %s)",
@@ -66,5 +80,9 @@ public class InfoInForm {
 
     public String getId() {
         return id;
+    }
+
+    public String getService_id() {
+        return service_id;
     }
 }

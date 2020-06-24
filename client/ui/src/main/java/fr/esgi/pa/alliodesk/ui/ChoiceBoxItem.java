@@ -1,10 +1,10 @@
 package fr.esgi.pa.alliodesk.ui;
 
 public class ChoiceBoxItem {
-    private int id;
+    private String id;
     private String name;
 
-    public ChoiceBoxItem(int id, String name) {
+    public ChoiceBoxItem(String id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -14,7 +14,7 @@ public class ChoiceBoxItem {
         return this.name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 }
