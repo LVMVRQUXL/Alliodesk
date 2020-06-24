@@ -47,7 +47,6 @@
         <Pane prefHeight="800.0" prefWidth="129.0" style="-fx-background-color: #393C42;" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
             <children>
                 <Button fx:id="todolistButton" layoutX="2.0" mnemonicParsing="false" onAction="#showTodoEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="ToDoList" />
-                <Button fx:id="RegisterButton" layoutX="2.0" layoutY="44.0" mnemonicParsing="false" onAction="#showRegisterEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="Register" />
             </children>
         </Pane>
     </left>

@@ -28,61 +28,56 @@ public class ServiceRequest extends ApiRequest {
         return existedService;
     }
 
+    private CloseableHttpResponse requestFindAllServicesFromUser() throws IOException {
+        String tempId = "-1";
+        final GetUserData myUser = new GetUserData();
+        myUser.requestToServe();
+        if (myUser.idNotEmpty()) tempId = myUser.getId();
+        final CloseableHttpResponse response = super.request(
+                "/users/" + tempId + "/services",
+                new HttpGet(),
+                this.srFrom
+        );
+
+        if (response.getStatusLine().getStatusCode() == 200) {
+            final String responseContent = EntityUtils.toString(response.getEntity());
+            Service[] yourList = new Gson().fromJson(responseContent, Service[].class);
+            existedService.addAll(Arrays.asList(yourList));
+        }
+
+        return response;
+    }
+
     @Override
     public int requestToServe() {
-        // TODO: put global try...catch
-        switch (this.functionCall) {
-            case "create":
-                try {
-                    final CloseableHttpResponse request = super.request(
+        try {
+            CloseableHttpResponse response = null;
+            int statusCode;
+            switch (this.functionCall) {
+                case "create":
+                    response = super.request(
                             "/services",
                             new HttpPost(),
                             this.srFrom
                     );
-                    return request.getStatusLine().getStatusCode();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return 500;
-                }
-            case "findUserAllServices":
-                try {
-                    String temp_id = "-1";
-                    GetUserData myUser = new GetUserData();
-                    myUser.requestToServe();
-                    if (myUser.idNotEmpty()) {
-                        temp_id = myUser.getId();
-                    }
-                    final CloseableHttpResponse response = super.request(
-                            "/users/" + temp_id + "/services",
-                            new HttpGet(),
-                            this.srFrom
-                    );
-                    final int statusCode = response.getStatusLine().getStatusCode();
-
-                    if (statusCode == 200) {
-                        final String responseContent = EntityUtils.toString(response.getEntity());
-                        Service[] yourList = new Gson().fromJson(responseContent, Service[].class);
-                        existedService.addAll(Arrays.asList(yourList));
-                    }
-                    return statusCode;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return 500;
-                }
-            case "deleteService":
-                try {
-                    final CloseableHttpResponse response = super.request(
+                    break;
+                case "findUserAllServices":
+                    response = this.requestFindAllServicesFromUser();
+                    break;
+                case "deleteService":
+                    response = super.request(
                             "/services/" + this.srFrom.getId(),
                             new HttpDelete(),
                             this.srFrom
                     );
-                    return response.getStatusLine().getStatusCode();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return 500;
-                }
+                    break;
+            }
+            statusCode = (response != null) ? response.getStatusLine().getStatusCode() : 500;
+            return statusCode;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 500;
         }
-        return 500;
     }
 
     public static class Service {
