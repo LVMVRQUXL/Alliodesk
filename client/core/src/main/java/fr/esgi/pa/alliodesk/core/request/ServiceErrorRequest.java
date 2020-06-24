@@ -1,6 +1,6 @@
 package fr.esgi.pa.alliodesk.core.request;
 
-import fr.esgi.pa.alliodesk.core.InfoInForm;
+import fr.esgi.pa.alliodesk.core.form.InfoInForm;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 
@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public class ServiceErrorRequest extends ApiRequest {
     private final InfoInForm errorForm;
+
     public ServiceErrorRequest(String serviceName, String message) {
         this.errorForm = InfoInForm.build()
                 .withServiceName(serviceName)

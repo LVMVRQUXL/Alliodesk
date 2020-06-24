@@ -2,7 +2,7 @@ package fr.esgi.pa.alliodesk.core.request;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import fr.esgi.pa.alliodesk.core.InfoInForm;
+import fr.esgi.pa.alliodesk.core.form.InfoInForm;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.util.EntityUtils;

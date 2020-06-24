@@ -1,12 +1,12 @@
 package fr.esgi.pa.alliodesk.core.request;
 
-import fr.esgi.pa.alliodesk.core.InfoInForm;
+import fr.esgi.pa.alliodesk.core.form.InfoInForm;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 
 import java.io.IOException;
 
-public class RegisterRequest extends ApiRequest{
+public class RegisterRequest extends ApiRequest {
     private final InfoInForm registerForm;
 
     public RegisterRequest(String name, String email, String login, String pwd) {

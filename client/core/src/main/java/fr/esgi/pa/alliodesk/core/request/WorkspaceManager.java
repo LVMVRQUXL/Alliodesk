@@ -1,7 +1,7 @@
 package fr.esgi.pa.alliodesk.core.request;
 
 import com.google.gson.Gson;
-import fr.esgi.pa.alliodesk.core.InfoInForm;
+import fr.esgi.pa.alliodesk.core.form.InfoInForm;
 import org.apache.http.client.methods.*;
 import org.apache.http.util.EntityUtils;
 
@@ -136,7 +136,7 @@ public class WorkspaceManager extends ApiRequest {
             case "addServiceToWS":
                 try {
                     final CloseableHttpResponse response = super.request(
-                            "/workspaces/" + this.wSForm.getId()+"/services",
+                            "/workspaces/" + this.wSForm.getId() + "/services",
                             new HttpPost(),
                             this.wSForm
                     );

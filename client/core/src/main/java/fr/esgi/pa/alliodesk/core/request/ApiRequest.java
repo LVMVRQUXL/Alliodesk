@@ -1,7 +1,7 @@
 package fr.esgi.pa.alliodesk.core.request;
 
 import com.google.gson.Gson;
-import fr.esgi.pa.alliodesk.core.InfoInForm;
+import fr.esgi.pa.alliodesk.core.form.InfoInForm;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
