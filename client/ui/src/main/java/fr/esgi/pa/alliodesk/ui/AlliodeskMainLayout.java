@@ -1,5 +1,6 @@
 package fr.esgi.pa.alliodesk.ui;
 
+import fr.esgi.pa.alliodesk.ui.service.ExtensionGetter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -40,6 +41,14 @@ public class AlliodeskMainLayout extends Application {
         rootLayout.setCenter(RegisterOverview);
     }
 
+    public static void showErrorLayout() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/ErrorView.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+
+
     static void showToDoListLayout() throws IOException {
         ExtensionGetter eg = new ExtensionGetter();
         FXMLLoader loader = new FXMLLoader(eg.getUrl());
@@ -51,6 +60,39 @@ public class AlliodeskMainLayout extends Application {
     public static void showConnectionLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/ConnectionView.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+
+    public static void showCreateWSLayout() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/WSCreationView.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+
+    public static void showUpdateWSLayout() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/WSUpdate.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+
+    public static void showDeleteWSLayout() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/WSDelete.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+    public static void showAddServiceIntoWS() throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/AddServiceIntoWS.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+    public static void showDeleteServiceIntoWS() throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/WSServiceDelete.fxml"));
         AnchorPane RegisterOverview = loader.load();
         rootLayout.setCenter(RegisterOverview);
     }

@@ -11,12 +11,14 @@ class ServiceController {
      * @param sourceUrl {string}
      * @param userToken {string}
      *
-     * @returns {Promise<ServiceDTO|null>}
+     * @returns {Promise<ServiceDTO|null|boolean>}
      */
     async createService(name, version, sourceUrl, userToken) {
         const user = await UserController.findOneUserFromToken(userToken);
         if (!user) {
             return null;
+        } else if (await this.findOneServiceFromName(name)) {
+            return false;
         }
         const service = await ServiceService.create(await _getPendingStatusId({
             name: name,
@@ -42,7 +44,7 @@ class ServiceController {
      *
      * @param id {number}
      *
-     * @returns {Promise<ServiceDTO>}
+     * @returns {Promise<ServiceDTO|null>}
      */
     async findOneServiceFromId(id) {
         const service = await ServiceService.findOne({id: id});
@@ -63,6 +65,18 @@ class ServiceController {
             const status = await _getRejectedStatusId({});
             return await ServiceService.update({service_status_id: status.service_status_id}, {id: id});
         }
+    }
+
+    /**
+     * Find one service from name
+     *
+     * @param name {string}
+     *
+     * @returns {Promise<ServiceDTO|null>}
+     */
+    async findOneServiceFromName(name) {
+        const service = await ServiceService.findOne({name: name});
+        return !service ? null : ServiceService.mapToDTO(service);
     }
 
     /**

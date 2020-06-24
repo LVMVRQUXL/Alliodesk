@@ -6,7 +6,9 @@ const {UserStatusMiddleware, UserMiddleware} = require('../middlewares');
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 
 const routes = {
+    UsersMeInfos: '/users/me/infos',
     UsersLogin: '/users/login',
+    UsersIdWorkspaces: '/users/:id/workspaces',
     UsersIdServicesService_id: '/users/:id/services/:service_id',
     UsersIdServices: '/users/:id/services',
     UsersIdLogout: '/users/:id/logout',
@@ -17,6 +19,47 @@ const routes = {
 module.exports = (app) => {
 
     app.use(UserStatusMiddleware.checkStatusForUsers());
+
+    /**
+     * @swagger
+     *
+     * '/users/me/infos':
+     *   get:
+     *     description: Get information of the user currently logged in
+     *     tags:
+     *       - Users
+     *     security:
+     *       - bearerToken: []
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid token session
+     *       401:
+     *         description: Unauthorized operation
+     *       500:
+     *         description: An internal error has occurred
+     */
+    app.get(routes.UsersMeInfos, async (req, res) => {
+        try {
+            const userToken = UserMiddleware.extractTokenFromHeaders(req.headers);
+            if (userToken && userToken !== '') {
+                const user = await UserController.findOneUserFromToken(userToken);
+                if (user) {
+                    res.status(HttpCodeUtil.OK).json(user);
+                } else {
+                    res.status(HttpCodeUtil.UNAUTHORIZED).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
+    });
 
     /**
      * @swagger
@@ -68,11 +111,61 @@ module.exports = (app) => {
     /**
      * @swagger
      *
+     * '/users/{id}/workspaces':
+     *   get:
+     *     description: Get all workspaces of one user from id
+     *     tags:
+     *       - Users
+     *       - Workspaces
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: id
+     *         description: User's id
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       204:
+     *         description: No workspaces to return
+     *       400:
+     *         description: Invalid user's id
+     *       404:
+     *         description: Can't find user from id
+     *       500:
+     *         description: An internal error has occurred
+     */
+    app.get(routes.UsersIdWorkspaces, async (req, res) => {
+        try {
+            const userId = parseInt(req.params.id);
+            if (!isNaN(userId) && userId > 0) {
+                const workspaces = await UserController.findAllWorkspacesOfOneUserFromId(userId);
+                if (workspaces && workspaces.length > 0) {
+                    res.status(HttpCodeUtil.OK).json(workspaces);
+                } else if (workspaces) {
+                    res.status(HttpCodeUtil.NO_CONTENT).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
+    });
+
+    /**
+     * @swagger
+     *
      * '/users/{id}/services/{service_id}':
      *   get:
      *     description: Get a service of one user from id
      *     tags:
      *       - Users
+     *       - Services
      *     security:
      *       - bearerToken: []
      *     produces:
@@ -128,6 +221,7 @@ module.exports = (app) => {
      *     description: Remove a service of one user from id
      *     tags:
      *       - Users
+     *       - Services
      *     security:
      *       - bearerToken: []
      *     parameters:
@@ -181,6 +275,7 @@ module.exports = (app) => {
      *     description: Add a service in one user's account from id
      *     tags:
      *       - Users
+     *       - Services
      *     security:
      *       - bearerToken: []
      *     parameters:
@@ -234,6 +329,7 @@ module.exports = (app) => {
      *     description: Get all services of one user from id
      *     tags:
      *       - Users
+     *       - Services
      *     security:
      *       - bearerToken: []
      *     produces:

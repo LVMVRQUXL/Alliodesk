@@ -22,6 +22,9 @@ module.exports = () => {
                     mapToDTO: sinon.stub(),
                     update: sinon.stub(),
                     updateOneUser: sinon.stub()
+                },
+                WorkspaceService: {
+                    mapToDTO: sinon.stub()
                 }
             },
             ServiceStatusController: {
@@ -71,6 +74,12 @@ module.exports = () => {
         const fakeServiceStatusValidated = {
             id: fakeServiceService_status_id,
             status: MockDependencies.ServiceStatusController.validatedStatus
+        };
+        const fakeWorkspace = {
+            id: 1,
+            name: 'Fake Workspace',
+            description: 'No description',
+            UserId: fakeUser.id
         };
 
         before(() => {
@@ -292,6 +301,76 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(users.length, 0);
+            });
+        });
+
+        describe('#findAllWorkspacesOfOneUserFromId(userId)', () => {
+            afterEach(() => MockDependencies.Services.UserService.findOne.resetHistory());
+
+            const _setup_fakeUser_getWorkspaces = (array) => {
+                fakeUser.getWorkspaces = sinon.stub();
+                fakeUser.getWorkspaces.resolves(array);
+            };
+            const _setup_UserService_findOne = (user) => {
+                MockDependencies.Services.UserService.findOne.resolves(user);
+            };
+            const _setup_WorkspaceService_mapToDTO = (workspace) => {
+                MockDependencies.Services.WorkspaceService.mapToDTO.returns(workspace);
+            };
+
+            const _call = async () => await UserController.findAllWorkspacesOfOneUserFromId(fakeUser.id);
+
+            const _teardown_fakeUser_getWorkspaces = () => fakeUser.getWorkspaces.resetHistory();
+            const _teardown_WorkspaceService_mapToDTO = () => {
+                MockDependencies.Services.WorkspaceService.mapToDTO.resetHistory();
+            };
+
+            it('should return a singleton list of workspaces with valid inputs', async () => {
+                // SETUP
+                _setup_UserService_findOne(fakeUser);
+                _setup_fakeUser_getWorkspaces([fakeWorkspace]);
+                _setup_WorkspaceService_mapToDTO(fakeWorkspace);
+
+                // CALL
+                const workspaces = await _call();
+
+                // VERIFY
+                assert.notEqual(workspaces, undefined);
+                assert.equal(workspaces.length, 1);
+                assert.deepEqual(workspaces[0], fakeWorkspace);
+
+                // TEARDOWN
+                _teardown_fakeUser_getWorkspaces();
+                _teardown_WorkspaceService_mapToDTO();
+            });
+
+            it('should return an empty list of workspaces with valid inputs', async () => {
+                // SETUP
+                _setup_UserService_findOne(fakeUser);
+                _setup_fakeUser_getWorkspaces([]);
+                _setup_WorkspaceService_mapToDTO();
+
+                // CALL
+                const workspaces = await _call();
+
+                // VERIFY
+                assert.notEqual(workspaces, undefined);
+                assert.equal(workspaces.length, 0);
+
+                // TEARDOWN
+                _teardown_fakeUser_getWorkspaces();
+                _teardown_WorkspaceService_mapToDTO();
+            });
+
+            it('should return undefined with invalid user\'s id', async () => {
+                // SETUP
+                _setup_UserService_findOne();
+
+                // CALL
+                const workspaces = await _call();
+
+                // VERIFY
+                assert.equal(workspaces, undefined);
             });
         });
 

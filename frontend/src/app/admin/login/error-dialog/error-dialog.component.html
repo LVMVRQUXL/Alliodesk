@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>An error has occurred!</h1>
+<div mat-dialog-content>Status code: {{data.statusCode}}</div>
+<div mat-dialog-content *ngIf="data.statusCode === 404">Please verify your login and password.</div>
+<div mat-dialog-content *ngIf="data.statusCode === 500">Please retry later.</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" mat-dialog-close>Ok</button>
+</div>

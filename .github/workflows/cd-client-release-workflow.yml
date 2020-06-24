@@ -2,7 +2,7 @@ name: CD Client - Release
 on:
   push:
     tags:
-      - 'client-*'
+      - 'client-**'
 
 env:
   CLIENT_MODULE_PATH: ./client

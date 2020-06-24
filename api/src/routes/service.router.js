@@ -322,6 +322,8 @@ module.exports = (app) => {
      *         description: "Invalid input(s)"
      *       401:
      *         description: "Invalid user's token session"
+     *       409:
+     *         description: "A service with the given name already exists"
      *       500:
      *         description: "An internal error has occurred"
      */
@@ -340,8 +342,10 @@ module.exports = (app) => {
                 );
                 if (service) {
                     res.status(HttpCodeUtil.CREATED).json(service);
-                } else {
+                } else if (service === null) {
                     res.status(HttpCodeUtil.UNAUTHORIZED).end();
+                } else {
+                    res.status(HttpCodeUtil.CONFLICT).end();
                 }
             } else {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();

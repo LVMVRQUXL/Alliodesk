@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         });
 
-        Workspace.belongsToMany(models.Service, { through: 'Workspace_contains_Service' });
+        Workspace.belongsToMany(models.Service, {through: 'Workspace_contains_Service'});
     };
 
     return Workspace;
