@@ -23,8 +23,10 @@ public class RegisterRequest extends ApiRequest {
             final CloseableHttpResponse request = super.request(
                     "/users",
                     new HttpPost(),
-                    this.registerForm
+                    this.registerForm,
+                    false
             );
+
             return request.getStatusLine().getStatusCode();
         } catch (IOException e) {
             e.printStackTrace();

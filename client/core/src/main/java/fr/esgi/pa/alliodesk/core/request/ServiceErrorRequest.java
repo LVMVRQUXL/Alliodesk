@@ -21,8 +21,10 @@ public class ServiceErrorRequest extends ApiRequest {
             final CloseableHttpResponse request = super.request(
                     "/errors",
                     new HttpPost(),
-                    this.errorForm
+                    this.errorForm,
+                    true
             );
+
             return request.getStatusLine().getStatusCode();
         } catch (IOException e) {
             e.printStackTrace();

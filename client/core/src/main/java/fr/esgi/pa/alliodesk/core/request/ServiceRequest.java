@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ServiceRequest extends ApiRequest {
-    private final InfoInForm srFrom;
+    private final InfoInForm form;
     private final String functionCall;
 
     private ArrayList<Service> existedService = new ArrayList<>();
 
     public ServiceRequest(String functionCall, String id) {
         this.functionCall = functionCall;
-        this.srFrom = InfoInForm.build()
+        this.form = InfoInForm.build()
                 .withId(id);
     }
 
@@ -28,7 +28,7 @@ public class ServiceRequest extends ApiRequest {
         return existedService;
     }
 
-    private CloseableHttpResponse requestFindAllServicesFromUser() throws IOException {
+    private CloseableHttpResponse requestFindAllServicesOfUser() throws IOException {
         String tempId = "-1";
         final GetUserData myUser = new GetUserData();
         myUser.requestToServe();
@@ -36,7 +36,8 @@ public class ServiceRequest extends ApiRequest {
         final CloseableHttpResponse response = super.request(
                 "/users/" + tempId + "/services",
                 new HttpGet(),
-                this.srFrom
+                this.form,
+                true
         );
 
         if (response.getStatusLine().getStatusCode() == 200) {
@@ -52,28 +53,29 @@ public class ServiceRequest extends ApiRequest {
     public int requestToServe() {
         try {
             CloseableHttpResponse response = null;
-            int statusCode;
             switch (this.functionCall) {
                 case "create":
                     response = super.request(
                             "/services",
                             new HttpPost(),
-                            this.srFrom
+                            this.form,
+                            true
                     );
                     break;
                 case "findUserAllServices":
-                    response = this.requestFindAllServicesFromUser();
+                    response = this.requestFindAllServicesOfUser();
                     break;
                 case "deleteService":
                     response = super.request(
-                            "/services/" + this.srFrom.getId(),
+                            "/services/" + this.form.getId(),
                             new HttpDelete(),
-                            this.srFrom
+                            this.form,
+                            true
                     );
                     break;
             }
-            statusCode = (response != null) ? response.getStatusLine().getStatusCode() : 500;
-            return statusCode;
+
+            return (response != null) ? response.getStatusLine().getStatusCode() : 500;
         } catch (IOException e) {
             e.printStackTrace();
             return 500;
