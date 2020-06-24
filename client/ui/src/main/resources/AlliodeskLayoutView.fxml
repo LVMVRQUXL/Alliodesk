@@ -82,6 +82,16 @@
             </Menu>
             <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins" />
         </menus>
+          <Menu fx:id="Marketplace" mnemonicParsing="false" text="Marketplace">
+              <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showMarketplace" text="Show Marketplace" />
+                  <Menu mnemonicParsing="false" text="Unspecified Menu">
+                      <items>
+                          <MenuItem mnemonicParsing="false" text="Action 1" />
+                      </items>
+                  </Menu>
+              </items>
+          </Menu>
       </MenuBar>
    </top>
    <left>
