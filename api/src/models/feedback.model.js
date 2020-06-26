@@ -28,13 +28,13 @@ module.exports = (sequelize, DataTypes) => {
         Feedback.belongsTo(models.User, {
             foreignKey: {
                 name: 'user_id',
-                allowNull: false
+                allowNull: true // TODO: put true after testings
             }
         });
         Feedback.belongsTo(models.Service, {
             foreignKey: {
                 name: 'service_id',
-                allowNull: false
+                allowNull: true // TODO: put true after testings
             }
         });
     };

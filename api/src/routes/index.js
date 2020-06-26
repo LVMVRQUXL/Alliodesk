@@ -7,6 +7,7 @@ module.exports = (app) => {
 
     require('./admin.router')(app);
     require('./error.router')(app);
+    require('./feedback.router')(app);
     require('./service.router')(app);
     require('./user.router')(app);
     require('./workspace.router')(app);
