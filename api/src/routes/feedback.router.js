@@ -2,16 +2,12 @@ const bodyParser = require('body-parser');
 
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 const FeedbackController = require('../controllers').FeedbackController;
-
-const routes = {
-    FeedbacksId: '/feedbacks/:id',
-    Feedbacks: '/feedbacks'
-};
+const endpoints = require('./endpoints').FeedbackEndpoints;
 
 module.exports = (app) => {
     // PUT '/feedbacks/{id}' => Update one feedback from id
     // TODO: integration tests
-    app.put(routes.FeedbacksId, bodyParser.json(), async (req, res) => {
+    app.put(endpoints.FeedbacksId, bodyParser.json(), async (req, res) => {
         try {
             const id = parseInt(req.params.id);
             const score = req.body.score;
@@ -36,7 +32,7 @@ module.exports = (app) => {
 
     // DELETE '/feedbacks/{id}' => Remove one feedback from id
     // TODO: integration tests
-    app.delete(routes.FeedbacksId, async (req, res) => {
+    app.delete(endpoints.FeedbacksId, async (req, res) => {
         try {
             const id = parseInt(req.params.id);
             if (id && id > 0) {
@@ -56,7 +52,7 @@ module.exports = (app) => {
 
     // GET '/feedbacks/{id}' => Get one feedback from id
     // TODO: integration tests
-    app.get(routes.FeedbacksId, async (req, res) => {
+    app.get(endpoints.FeedbacksId, async (req, res) => {
         try {
             const id = parseInt(req.params.id);
             if (id && id > 0) {
@@ -76,7 +72,7 @@ module.exports = (app) => {
 
     // GET '/feedbacks' => Get all feedbacks
     // TODO: integration tests
-    app.get(routes.Feedbacks, async (req, res) => {
+    app.get(endpoints.Feedbacks, async (req, res) => {
         try {
             const feedbacks = await FeedbackController.findAllFeedbacks();
             if (feedbacks.length > 0) {
@@ -91,7 +87,7 @@ module.exports = (app) => {
 
     // POST '/feedbacks' => Create a new feedback
     // TODO: integration tests
-    app.post(routes.Feedbacks, bodyParser.json(), async (req, res) => {
+    app.post(endpoints.Feedbacks, bodyParser.json(), async (req, res) => {
         try {
             const score = parseInt(req.body.score);
             const title = req.body.title;
