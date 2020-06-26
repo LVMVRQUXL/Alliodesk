@@ -32,7 +32,7 @@ module.exports = () => describe('FeedbackController tests', () => {
         });
         after(() => _reset_FeedbackService());
 
-        const _call = async () => await FeedbackController.createFeedback(fakeFeedback.score, fakeFeedback.title, null);
+        const _call = async () => await FeedbackController.createFeedback(fakeFeedback);
 
         it('should return the created feedback with valid inputs', async () => {
             // SETUP
@@ -49,8 +49,7 @@ module.exports = () => describe('FeedbackController tests', () => {
             sinon.assert.calledOnce(create);
             sinon.assert.calledWithExactly(create, {
                 score: fakeFeedback.score,
-                title: fakeFeedback.title,
-                description: null
+                title: fakeFeedback.title
             });
             sinon.assert.calledOnce(mapToDTO);
             sinon.assert.calledWithExactly(mapToDTO, fakeFeedback);
@@ -69,8 +68,7 @@ module.exports = () => describe('FeedbackController tests', () => {
             sinon.assert.calledOnce(create);
             sinon.assert.calledWithExactly(create, {
                 score: fakeFeedback.score,
-                title: fakeFeedback.title,
-                description: null
+                title: fakeFeedback.title
             });
             sinon.assert.notCalled(MockDependencies.Services.FeedbackService.mapToDTO);
         });

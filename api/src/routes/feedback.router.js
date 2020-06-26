@@ -89,13 +89,15 @@ module.exports = (app) => {
     // TODO: integration tests
     app.post(endpoints.Feedbacks, bodyParser.json(), async (req, res) => {
         try {
-            const score = parseInt(req.body.score);
-            const title = req.body.title;
-            const description = req.body.description;
-            if (score && score >= 1 && score <= 5 && title && title !== '') {
-                const feedback = await FeedbackController.createFeedback(score, title, description);
-                if (feedback) {
-                    res.status(HttpCodeUtil.CREATED).json(feedback);
+            const feedback = {
+                score: parseInt(req.body.score),
+                title: req.body.title,
+                description: req.body.description
+            };
+            if (FeedbackController.isValid(feedback)) {
+                const feedbackDTO = await FeedbackController.createFeedback(feedback);
+                if (feedbackDTO) {
+                    res.status(HttpCodeUtil.CREATED).json(feedbackDTO);
                 } else {
                     res.status(HttpCodeUtil.CONFLICT).end();
                 }

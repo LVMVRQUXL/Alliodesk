@@ -1,24 +1,18 @@
 const FeedbackService = require('../services').FeedbackService;
+const StringUtil = require('../utils').StringUtil;
 
 class FeedbackController {
     /**
      * Create a new feedback
      *
-     * @param score {number}
-     * @param title {string}
-     * @param description {string}
+     * @param feedback {object}
      *
      * @returns {Promise<FeedbackDTO|undefined>}
-     * TODO: refactor code
      */
-    async createFeedback(score, title, description) {
-        const feedback = await FeedbackService.create({
-            score: score,
-            title: title,
-            description: description && description !== '' ? description : null
-        });
+    async createFeedback(feedback) {
+        const createdFeedback = await FeedbackService.create(feedback);
 
-        return feedback ? FeedbackService.mapToDTO(feedback) : undefined;
+        return createdFeedback ? FeedbackService.mapToDTO(createdFeedback) : undefined;
     }
 
     /**
@@ -45,6 +39,19 @@ class FeedbackController {
         const feedback = await FeedbackService.findOne({id: id});
 
         return feedback ? FeedbackService.mapToDTO(feedback) : undefined;
+    }
+
+    /**
+     * Check if given feedback is valid or not
+     *
+     * @param feedback {object}
+     *
+     * @returns {boolean}
+     * TODO: unit tests
+     */
+    isValid(feedback) {
+        return feedback.score && feedback.score >= 1 && feedback.score <= 5
+            && !StringUtil.isEmpty(feedback.title);
     }
 
     /**
