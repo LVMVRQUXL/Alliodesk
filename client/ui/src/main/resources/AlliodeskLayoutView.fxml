@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController">
     <top>
         <MenuBar fx:id="menu" prefHeight="35.0" prefWidth="1119.0" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
             <menus>
@@ -59,6 +59,7 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
               <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadPlugin" text="Reload plugins" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -79,6 +80,7 @@
             </Menu>
             <Menu fx:id="workspaces" mnemonicParsing="false" text="My Workspaces">
             </Menu>
+            <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins" />
         </menus>
       </MenuBar>
    </top>
