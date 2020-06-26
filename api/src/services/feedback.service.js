@@ -59,6 +59,24 @@ class FeedbackService {
     mapToDTO(feedback) {
         return new FeedbackDTO(feedback.id, feedback.score, feedback.title, feedback.description);
     }
+
+    /**
+     * Update one feedback corresponding to where clause
+     *
+     * @param values {object}
+     * @param where {object}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async update(values, where) {
+        try {
+            await Feedback.update(values, {where: where});
+            return true;
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
+    }
 }
 
 class FeedbackDTO {

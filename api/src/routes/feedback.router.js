@@ -9,9 +9,29 @@ const routes = {
 };
 
 module.exports = (app) => {
-    // TODO: PUT '/feedbacks/{id}' => Update one feedback from id
+    // PUT '/feedbacks/{id}' => Update one feedback from id
+    // TODO: integration tests
     app.put(routes.FeedbacksId, bodyParser.json(), async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+        try {
+            const id = parseInt(req.params.id);
+            const score = req.body.score;
+            const title = req.body.title;
+            const description = req.body.description;
+            if (id && id > 0
+                && score && score !== ''
+                && title && title !== '') {
+                const result = await FeedbackController.updateOneFeedbackFromId(id, score, title, description);
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     // DELETE '/feedbacks/{id}' => Remove one feedback from id

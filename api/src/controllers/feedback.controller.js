@@ -53,6 +53,7 @@ class FeedbackController {
      * @param id {number}
      *
      * @returns {Promise<boolean>}
+     * TODO: unit tests
      */
     async removeOneFeedbackFromId(id) {
         if (!await this.findOneFeedbackFromId(id)) {
@@ -60,6 +61,36 @@ class FeedbackController {
         }
 
         return await FeedbackService.destroy({id: id});
+    }
+
+    /**
+     * Update one feedback from id
+     *
+     * @param id {number}
+     * @param score {number}
+     * @param title {string}
+     * @param description {string}
+     *
+     * @returns {Promise<boolean>}
+     * TODO: unit tests
+     */
+    async updateOneFeedbackFromId(id, score, title, description) {
+        const feedback = await this.findOneFeedbackFromId(id);
+        if (!feedback) {
+            return false;
+        }
+        const values = {};
+        if (score !== feedback.score) {
+            values.score = score;
+        }
+        if (title !== feedback.title) {
+            values.title = title;
+        }
+        if (description && description !== '' && description !== feedback.description) {
+            values.description = description;
+        }
+
+        return await FeedbackService.update(values, {id: id});
     }
 }
 
