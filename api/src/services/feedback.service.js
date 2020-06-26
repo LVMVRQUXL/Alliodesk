@@ -15,10 +15,21 @@ class FeedbackService {
     /**
      * Find all feedbacks
      *
-     * @returns {Promise<Feedback>}
+     * @returns {Promise<Feedback[]>}
      */
     async findAll() {
         return Feedback.findAll();
+    }
+
+    /**
+     * Find one feedback corresponding to given where clause
+     *
+     * @param where {object}
+     *
+     * @returns {Promise<Feedback|null>}
+     */
+    async findOne(where) {
+        return Feedback.findOne({where: where});
     }
 
     /**

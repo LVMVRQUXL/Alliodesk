@@ -19,13 +19,28 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
-    // TODO: GET '/feedbacks/{id}' => Get one feedback from id
+    // GET '/feedbacks/{id}' => Get one feedback from id
+    // TODO: integration tests
     app.get(routes.FeedbacksId, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+        try {
+            const id = parseInt(req.params.id);
+            if (id && id > 0) {
+                const feedback = await FeedbackController.findOneFeedbackFromId(id);
+                if (feedback) {
+                    res.status(HttpCodeUtil.OK).json(feedback);
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     // GET '/feedbacks' => Get all feedbacks
-    // TODO: test with Postman
+    // TODO: integration tests
     app.get(routes.Feedbacks, async (req, res) => {
         try {
             const feedbacks = await FeedbackController.findAllFeedbacks();
@@ -40,7 +55,7 @@ module.exports = (app) => {
     });
 
     // POST '/feedbacks' => Create a new feedback
-    // TODO: test with Postman
+    // TODO: integration tests
     app.post(routes.Feedbacks, bodyParser.json(), async (req, res) => {
         try {
             const score = parseInt(req.body.score);

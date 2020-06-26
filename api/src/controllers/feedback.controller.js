@@ -29,7 +29,22 @@ class FeedbackController {
      */
     async findAllFeedbacks() {
         const feedbacks = await FeedbackService.findAll();
+
         return feedbacks.map(feedback => FeedbackService.mapToDTO(feedback));
+    }
+
+    /**
+     * Find one feedback from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<FeedbackDTO|undefined>}
+     * TODO: unit tests
+     */
+    async findOneFeedbackFromId(id) {
+        const feedback = await FeedbackService.findOne({id: id});
+
+        return feedback ? FeedbackService.mapToDTO(feedback) : undefined;
     }
 }
 
