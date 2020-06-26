@@ -10,13 +10,13 @@ module.exports = (app) => {
     app.put(endpoints.FeedbacksId, bodyParser.json(), async (req, res) => {
         try {
             const id = parseInt(req.params.id);
-            const score = req.body.score;
-            const title = req.body.title;
-            const description = req.body.description;
-            if (id && id > 0
-                && score && score !== ''
-                && title && title !== '') {
-                const result = await FeedbackController.updateOneFeedbackFromId(id, score, title, description);
+            const feedback = {
+                score: parseInt(req.body.score),
+                title: req.body.title,
+                description: req.body.description
+            };
+            if (id && id > 0 && FeedbackController.isValid(feedback)) {
+                const result = await FeedbackController.updateOneFeedbackFromId(id, feedback);
                 if (result) {
                     res.status(HttpCodeUtil.OK).end();
                 } else {

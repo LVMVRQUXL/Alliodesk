@@ -74,30 +74,25 @@ class FeedbackController {
      * Update one feedback from id
      *
      * @param id {number}
-     * @param score {number}
-     * @param title {string}
-     * @param description {string}
+     * @param feedback {object}
      *
      * @returns {Promise<boolean>}
      * TODO: unit tests
      */
-    async updateOneFeedbackFromId(id, score, title, description) {
-        const feedback = await this.findOneFeedbackFromId(id);
-        if (!feedback) {
+    async updateOneFeedbackFromId(id, feedback) {
+        const oldFeedback = await this.findOneFeedbackFromId(id);
+        if (!oldFeedback) {
             return false;
         }
-        const values = {};
-        if (score !== feedback.score) {
-            values.score = score;
-        }
-        if (title !== feedback.title) {
-            values.title = title;
-        }
-        if (description && description !== '' && description !== feedback.description) {
-            values.description = description;
-        }
+        const values = {
+            score: feedback.score !== oldFeedback.score ? feedback.score : undefined,
+            title: feedback.title !== oldFeedback.title ? feedback.title : undefined,
+            description: !StringUtil.isEmpty(feedback.description) && feedback.description !== oldFeedback.description ?
+                feedback.description : undefined
+        };
+        const where = {id: id};
 
-        return await FeedbackService.update(values, {id: id});
+        return await FeedbackService.update(values, where);
     }
 }
 
