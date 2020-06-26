@@ -9,7 +9,7 @@ class FeedbackController {
      * @param description {string}
      *
      * @returns {Promise<FeedbackDTO|undefined>}
-     * TODO: unit tests
+     * TODO: refactor code
      */
     async createFeedback(score, title, description) {
         const feedback = await FeedbackService.create({
