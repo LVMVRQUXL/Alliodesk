@@ -12,7 +12,7 @@ module.exports = () => describe('FeedbackController tests', () => {
     const FeedbackController = proxyquire('../../src/controllers/feedback.controller', {
         '../services': MockDependencies.Services
     });
-    const fakeFeedback = {
+    let fakeFeedback = {
         score: 5,
         title: 'Super service !'
     };
@@ -34,7 +34,7 @@ module.exports = () => describe('FeedbackController tests', () => {
 
         const _call = async () => await FeedbackController.createFeedback(fakeFeedback);
 
-        it('should return the created feedback with valid inputs', async () => {
+        it('should return the created feedback with valid input', async () => {
             // SETUP
             const create = MockDependencies.Services.FeedbackService.create;
             create.resolves(fakeFeedback);
@@ -71,6 +71,63 @@ module.exports = () => describe('FeedbackController tests', () => {
                 title: fakeFeedback.title
             });
             sinon.assert.notCalled(MockDependencies.Services.FeedbackService.mapToDTO);
+        });
+    });
+
+    describe('#isValid', () => {
+        const _call = () => FeedbackController.isValid(fakeFeedback);
+
+        it('should return true with valid input', () => {
+            // CALL
+            const result = _call();
+
+            // VERIFY
+            assert.equal(result, true);
+        });
+
+        it('should return false with invalid score', () => {
+            // SETUP
+            const scoreBackup = fakeFeedback.score;
+            fakeFeedback.score = 10;
+
+            // CALL
+            const result = _call();
+
+            // VERIFY
+            assert.equal(result, false);
+
+            // TEARDOWN
+            fakeFeedback.score = scoreBackup;
+        });
+
+        it('should return false with invalid title', () => {
+            // SETUP
+            const titleBackup = fakeFeedback.title;
+            fakeFeedback.title = '';
+
+            // CALL
+            const result = _call();
+
+            // VERIFY
+            assert.equal(result, false);
+
+            // TEARDOWN
+            fakeFeedback.title = titleBackup;
+        });
+
+        it('should return false with undefined input', () => {
+            // SETUP
+            const fakeFeedbackBackup = fakeFeedback;
+            fakeFeedback = undefined;
+
+            // CALL
+            const result = _call();
+
+            // VERIFY
+            assert.equal(result, false);
+
+            // TEARDOWN
+            fakeFeedback = fakeFeedbackBackup;
         });
     });
 });

@@ -47,10 +47,10 @@ class FeedbackController {
      * @param feedback {object}
      *
      * @returns {boolean}
-     * TODO: unit tests
      */
     isValid(feedback) {
-        return feedback.score && feedback.score >= 1 && feedback.score <= 5
+        return feedback !== undefined && feedback !== null
+            && feedback.score && feedback.score >= 1 && feedback.score <= 5
             && !StringUtil.isEmpty(feedback.title);
     }
 
