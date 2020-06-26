@@ -25,7 +25,8 @@ public class GetUserData extends ApiRequest {
             final CloseableHttpResponse response = super.request(
                     "/users/me/infos",
                     new HttpGet(),
-                    null
+                    null,
+                    true
             );
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode == 200) {

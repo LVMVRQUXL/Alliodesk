@@ -1,7 +1,7 @@
 package fr.esgi.pa.alliodesk.core.request;
 
 import com.google.gson.Gson;
-import fr.esgi.pa.alliodesk.core.InfoInForm;
+import fr.esgi.pa.alliodesk.core.form.InfoInForm;
 import org.apache.http.client.methods.*;
 import org.apache.http.util.EntityUtils;
 
@@ -41,7 +41,8 @@ public class WorkspaceManager extends ApiRequest {
                     final CloseableHttpResponse request = super.request(
                             "/workspaces",
                             new HttpPost(),
-                            this.wSForm
+                            this.wSForm,
+                            true
                     );
                     return request.getStatusLine().getStatusCode();
                 } catch (IOException e) {
@@ -59,7 +60,8 @@ public class WorkspaceManager extends ApiRequest {
                     final CloseableHttpResponse response = super.request(
                             "/users/" + temp_id + "/workspaces",
                             new HttpGet(),
-                            this.wSForm
+                            this.wSForm,
+                            false
                     );
                     final int statusCode = response.getStatusLine().getStatusCode();
 
@@ -81,7 +83,8 @@ public class WorkspaceManager extends ApiRequest {
                     final CloseableHttpResponse response = super.request(
                             "/workspaces/" + this.wSForm.getId(),
                             new HttpDelete(),
-                            this.wSForm
+                            this.wSForm,
+                            true
                     );
                     return response.getStatusLine().getStatusCode();
                 } catch (IOException e) {
@@ -94,7 +97,8 @@ public class WorkspaceManager extends ApiRequest {
                     final CloseableHttpResponse response = super.request(
                             "/workspaces/" + this.wSForm.getId(),
                             new HttpPut(),
-                            this.wSForm
+                            this.wSForm,
+                            true
                     );
                     return response.getStatusLine().getStatusCode();
                 } catch (IOException e) {
@@ -107,7 +111,8 @@ public class WorkspaceManager extends ApiRequest {
                     final CloseableHttpResponse response = super.request(
                             "/workspaces/" + this.wSForm.getId() + "/services/" + this.wSForm.getService_id(),
                             new HttpDelete(),
-                            this.wSForm
+                            this.wSForm,
+                            false
                     );
                     return response.getStatusLine().getStatusCode();
                 } catch (IOException e) {
@@ -120,7 +125,8 @@ public class WorkspaceManager extends ApiRequest {
                     final CloseableHttpResponse response = super.request(
                             "/workspaces/" + this.wSForm.getId() + "/services",
                             new HttpGet(),
-                            this.wSForm
+                            this.wSForm,
+                            false
                     );
                     final int statusCode = response.getStatusLine().getStatusCode();
                     if (statusCode == 200) {
@@ -136,9 +142,10 @@ public class WorkspaceManager extends ApiRequest {
             case "addServiceToWS":
                 try {
                     final CloseableHttpResponse response = super.request(
-                            "/workspaces/" + this.wSForm.getId()+"/services",
+                            "/workspaces/" + this.wSForm.getId() + "/services",
                             new HttpPost(),
-                            this.wSForm
+                            this.wSForm,
+                            false
                     );
                     return response.getStatusLine().getStatusCode();
                 } catch (IOException e) {
