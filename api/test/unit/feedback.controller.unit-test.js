@@ -17,9 +17,7 @@ module.exports = () => describe('FeedbackController tests', () => {
         title: 'Super service !'
     };
 
-    const _reset_FeedbackService = () => {
-        MockDependencies.Services.FeedbackService = {};
-    };
+    // TODO: add useful methods for calling methods instantiation
 
     describe('#createFeedback', () => {
         before(() => {
@@ -30,7 +28,10 @@ module.exports = () => describe('FeedbackController tests', () => {
             MockDependencies.Services.FeedbackService.create.reset();
             MockDependencies.Services.FeedbackService.mapToDTO.reset();
         });
-        after(() => _reset_FeedbackService());
+        after(() => {
+            MockDependencies.Services.FeedbackService.create = undefined;
+            MockDependencies.Services.FeedbackService.mapToDTO = undefined;
+        });
 
         const _call = async () => await FeedbackController.createFeedback(fakeFeedback);
 
@@ -71,6 +72,60 @@ module.exports = () => describe('FeedbackController tests', () => {
                 title: fakeFeedback.title
             });
             sinon.assert.notCalled(MockDependencies.Services.FeedbackService.mapToDTO);
+        });
+    });
+
+    describe('#findAllFeedbacks', () => {
+        before(() => {
+            MockDependencies.Services.FeedbackService.findAll = sinon.stub();
+            MockDependencies.Services.FeedbackService.mapToDTO = sinon.stub();
+        });
+        afterEach(() => {
+            MockDependencies.Services.FeedbackService.findAll.reset();
+            MockDependencies.Services.FeedbackService.mapToDTO.reset();
+        });
+        after(() => {
+            MockDependencies.Services.FeedbackService.findAll = undefined;
+            MockDependencies.Services.FeedbackService.mapToDTO = undefined;
+        });
+
+        const _call = async () => await FeedbackController.findAllFeedbacks();
+
+        it('should return a feedback\'s singleton', async () => {
+            // SETUP
+            const findAll = MockDependencies.Services.FeedbackService.findAll;
+            findAll.resolves([fakeFeedback]);
+            const mapToDTO = MockDependencies.Services.FeedbackService.mapToDTO;
+            mapToDTO.returns(fakeFeedback);
+
+            // CALL
+            const feedbacks = await _call();
+
+            // VERIFY
+            assert.notEqual(feedbacks, undefined);
+            assert.equal(feedbacks.length, 1);
+            assert.deepEqual(feedbacks[0], fakeFeedback);
+            sinon.assert.calledOnce(findAll);
+            sinon.assert.calledWithExactly(findAll);
+            sinon.assert.calledOnce(mapToDTO);
+            sinon.assert.calledWithExactly(mapToDTO, fakeFeedback);
+        });
+
+        it('should return an empty array of feedbacks', async () => {
+            // SETUP
+            const findAll = MockDependencies.Services.FeedbackService.findAll;
+            findAll.resolves([]);
+            const mapToDTO = MockDependencies.Services.FeedbackService.mapToDTO;
+
+            // CALL
+            const feedbacks = await _call();
+
+            // VERIFY
+            assert.notEqual(feedbacks, undefined);
+            assert.equal(feedbacks.length, 0);
+            sinon.assert.calledOnce(findAll);
+            sinon.assert.calledWithExactly(findAll);
+            sinon.assert.notCalled(mapToDTO);
         });
     });
 

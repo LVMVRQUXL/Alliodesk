@@ -19,7 +19,6 @@ class FeedbackController {
      * Find all feedbacks
      *
      * @returns {Promise<FeedbackDTO[]>}
-     * TODO: unit tests
      */
     async findAllFeedbacks() {
         const feedbacks = await FeedbackService.findAll();
