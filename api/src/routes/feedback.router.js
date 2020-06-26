@@ -24,9 +24,19 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
-    // TODO: GET '/feedbacks' => Get all feedbacks
+    // GET '/feedbacks' => Get all feedbacks
+    // TODO: test with Postman
     app.get(routes.Feedbacks, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+        try {
+            const feedbacks = await FeedbackController.findAllFeedbacks();
+            if (feedbacks.length > 0) {
+                res.status(HttpCodeUtil.OK).json(feedbacks);
+            } else {
+                res.status(HttpCodeUtil.NO_CONTENT).end();
+            }
+        } catch (e) {
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     // POST '/feedbacks' => Create a new feedback

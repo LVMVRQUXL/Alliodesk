@@ -13,6 +13,15 @@ class FeedbackService {
     }
 
     /**
+     * Find all feedbacks
+     *
+     * @returns {Promise<Feedback>}
+     */
+    async findAll() {
+        return Feedback.findAll();
+    }
+
+    /**
      * Map given feedback to DTO
      *
      * @param feedback {Feedback}
