@@ -13,6 +13,23 @@ class FeedbackService {
     }
 
     /**
+     * Remove one feedback corresponding to given where clause
+     *
+     * @param where {object}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async destroy(where) {
+        try {
+            await Feedback.destroy({where: where});
+            return true;
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
+    }
+
+    /**
      * Find all feedbacks
      *
      * @returns {Promise<Feedback[]>}

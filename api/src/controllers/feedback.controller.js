@@ -46,6 +46,21 @@ class FeedbackController {
 
         return feedback ? FeedbackService.mapToDTO(feedback) : undefined;
     }
+
+    /**
+     * Remove one feedback from id
+     *
+     * @param id {number}
+     *
+     * @returns {Promise<boolean>}
+     */
+    async removeOneFeedbackFromId(id) {
+        if (!await this.findOneFeedbackFromId(id)) {
+            return false;
+        }
+
+        return await FeedbackService.destroy({id: id});
+    }
 }
 
 module.exports = new FeedbackController();

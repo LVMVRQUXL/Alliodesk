@@ -14,9 +14,24 @@ module.exports = (app) => {
         res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
     });
 
-    // TODO: DELETE '/feedbacks/{id}' => Remove one feedback from id
+    // DELETE '/feedbacks/{id}' => Remove one feedback from id
+    // TODO: integration tests
     app.delete(routes.FeedbacksId, async (req, res) => {
-        res.status(HttpCodeUtil.NOT_IMPLEMENTED).end();
+        try {
+            const id = parseInt(req.params.id);
+            if (id && id > 0) {
+                const result = await FeedbackController.removeOneFeedbackFromId(id);
+                if (result) {
+                    res.status(HttpCodeUtil.OK).end();
+                } else {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                }
+            } else {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            }
+        } catch (e) {
+            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+        }
     });
 
     // GET '/feedbacks/{id}' => Get one feedback from id
