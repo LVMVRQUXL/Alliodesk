@@ -1,7 +1,8 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
+import fr.esgi.pa.alliodesk.core.Service;
 import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
-import fr.esgi.pa.alliodesk.core.request.WorkspaceManager;
+import fr.esgi.pa.alliodesk.core.request.WorkspaceRequest;
 import fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController;
 import fr.esgi.pa.alliodesk.ui.ChoiceBoxItem;
 import javafx.collections.FXCollections;
@@ -26,12 +27,12 @@ public class WSServiceDeleteController {
 
     @FXML
     public void initialize() {
-        WorkspaceManager workspaceManager = new WorkspaceManager("getWorkspaceServices", null, null, workspaceId, null);
-        workspaceManager.requestToServe();
-        ArrayList<ServiceRequest.Service> myServices = workspaceManager.getExistedService();
+        WorkspaceRequest workspaceRequest = new WorkspaceRequest("getWorkspaceServices", null, null, workspaceId, null);
+        workspaceRequest.requestToServe();
+        ArrayList<Service> myServices = workspaceRequest.getExistedService();
         ObservableList<ChoiceBoxItem> allMyWS = FXCollections.observableArrayList();
         if (myServices.size() > 0) {
-            for (ServiceRequest.Service tab : myServices) {
+            for (Service tab : myServices) {
                 ChoiceBoxItem item = new ChoiceBoxItem(tab.getId(), tab.getName());
                 allMyWS.add(item);
             }
@@ -43,7 +44,7 @@ public class WSServiceDeleteController {
     @FXML
     void deleteWorkspaceServiceUsingId(ActionEvent event) {
         String serviceId = servicesList.getValue().getId();
-        WorkspaceManager wSM = new WorkspaceManager("deleteServiceFromWorkspace", null, null, workspaceId, serviceId);
+        WorkspaceRequest wSM = new WorkspaceRequest("deleteServiceFromWorkspace", null, null, workspaceId, serviceId);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:

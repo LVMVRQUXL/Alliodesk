@@ -1,9 +1,8 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
-import java.awt.*;
 import java.util.ArrayList;
 
-import fr.esgi.pa.alliodesk.core.request.WorkspaceManager;
+import fr.esgi.pa.alliodesk.core.request.WorkspaceRequest;
 import fr.esgi.pa.alliodesk.ui.ChoiceBoxItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,7 +30,7 @@ public class WSDelete {
     @FXML
     public void deleteWSUsingId(ActionEvent actionEvent) {
         actionEvent.consume();
-        WorkspaceManager wSM = new WorkspaceManager("removeWSFormId", null, null, wSList.getValue().getId(),null);
+        WorkspaceRequest wSM = new WorkspaceRequest("removeWSFormId", null, null, wSList.getValue().getId(),null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
