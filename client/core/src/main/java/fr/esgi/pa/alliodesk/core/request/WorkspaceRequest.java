@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class WorkspaceManager extends ApiRequest {
+public class WorkspaceRequest extends ApiRequest {
     private final InfoInForm wSForm;
     private final String functionCall;
     private ArrayList<String[]> existedWS = new ArrayList<>();
@@ -24,7 +24,7 @@ public class WorkspaceManager extends ApiRequest {
         return existedService;
     }
 
-    public WorkspaceManager(String functionCall, String name, String description, String id, String service_id) {
+    public WorkspaceRequest(String functionCall, String name, String description, String id, String service_id) {
         this.functionCall = functionCall;
         this.wSForm = InfoInForm.build()
                 .withName(name)
@@ -153,7 +153,6 @@ public class WorkspaceManager extends ApiRequest {
                     return 500;
                 }
 
-
             default:
                 return 2;
         }
@@ -161,27 +160,3 @@ public class WorkspaceManager extends ApiRequest {
 
 }
 
-class WS {
-    String id, name, description, user_id;
-
-    WS(String id, String name, String description, String user_id) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.user_id = user_id;
-    }
-
-    public String[] getUsableData() {
-        return new String[]{this.id, this.name};
-    }
-
-    @Override
-    public String toString() {
-        return "WS{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", user_id='" + user_id + '\'' +
-                '}';
-    }
-}
