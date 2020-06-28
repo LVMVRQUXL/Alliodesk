@@ -1,6 +1,6 @@
 package fr.esgi.pa.alliodesk.ui;
 
-import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
+import fr.esgi.pa.alliodesk.core.models.Service;
 import fr.esgi.pa.alliodesk.ui.plugin.PluginGuetter;
 import interfacetest.PluginInterface;
 import fr.esgi.pa.alliodesk.ui.controller.WSController;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class AlliodeskMainLayoutController {
 
     private ArrayList<String[]> myList;
-    private ArrayList<ServiceRequest.Service> myServiceList;
+    private ArrayList<Service> myServiceList;
     private AlliodeskMainLayoutController alliodeskMainLayoutController;
     private static String workspaceId = "";
 
@@ -161,11 +161,11 @@ public class AlliodeskMainLayoutController {
     }
 
 
-    public void fillServiceInWorkspace(ArrayList<ServiceRequest.Service> yourList) {
+    public void fillServiceInWorkspace(ArrayList<Service> yourList) {
         servicesVBox.getChildren().clear();
         if (yourList != null) {
             this.myServiceList = yourList;
-            for (ServiceRequest.Service s : myServiceList) {
+            for (Service s : myServiceList) {
                 Button b = new Button(s.getName());
                 b.setPrefHeight(33);
                 b.setPrefWidth(125);

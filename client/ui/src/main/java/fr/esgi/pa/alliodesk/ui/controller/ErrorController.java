@@ -1,5 +1,6 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
+import fr.esgi.pa.alliodesk.core.models.Service;
 import fr.esgi.pa.alliodesk.core.request.AllioErrorRequest;
 import fr.esgi.pa.alliodesk.core.request.ServiceErrorRequest;
 import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import static javafx.scene.paint.Color.WHITE;
 
 public class ErrorController {
-    private ObservableList<ServiceRequest.Service> list = FXCollections.observableArrayList();
+    private ObservableList<Service> list = FXCollections.observableArrayList();
     @FXML
     private TextArea textError;
 
@@ -37,7 +38,7 @@ public class ErrorController {
         list.clear();
         list.addAll(findAllServiceWorkspace());
         if (list.size() > 0) {
-            for (ServiceRequest.Service service : list) {
+            for (Service service : list) {
                 servicesChoice.getItems().add(service.getName());
             }
             servicesChoice.setValue(servicesChoice.getItems().get(0));
@@ -82,7 +83,7 @@ public class ErrorController {
         }
     }
 
-    public static ArrayList<ServiceRequest.Service> findAllServiceWorkspace() {
+    public static ArrayList<Service> findAllServiceWorkspace() {
         ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices", null);
         int status_code = serviceRequest.requestToServe();
         switch (status_code) {
@@ -91,7 +92,7 @@ public class ErrorController {
                 return serviceRequest.getExistedService();
             case 204:
                 System.out.println("No services to return");
-                return new ArrayList<ServiceRequest.Service>();
+                return new ArrayList<Service>();
             case 400:
                 System.out.println("Invalid workspace id");
                 return null;

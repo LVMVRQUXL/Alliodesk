@@ -1,7 +1,8 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
+import fr.esgi.pa.alliodesk.core.models.Service;
 import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
-import fr.esgi.pa.alliodesk.core.request.WorkspaceManager;
+import fr.esgi.pa.alliodesk.core.request.WorkspaceRequest;
 import fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController;
 import fr.esgi.pa.alliodesk.ui.ChoiceBoxItem;
 import javafx.collections.FXCollections;
@@ -22,9 +23,9 @@ public class ServiceAddToWS{
         System.out.println(currentID);
         ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices",null);
         serviceRequest.requestToServe();
-        ArrayList<ServiceRequest.Service> myServices = serviceRequest.getExistedService();
+        ArrayList<Service> myServices = serviceRequest.getExistedService();
         ObservableList<ChoiceBoxItem> allMyWS = FXCollections.observableArrayList();
-        for (ServiceRequest.Service tab : myServices) {
+        for (Service tab : myServices) {
             ChoiceBoxItem item = new ChoiceBoxItem(tab.getId(), tab.getName());
             allMyWS.add(item);
         }
@@ -34,7 +35,7 @@ public class ServiceAddToWS{
     public void addService(){
         System.out.println("currentID = "+currentID);
         System.out.println("currentID = "+AlliodeskMainLayoutController.getWorkspaceId() );
-        WorkspaceManager wSM = new WorkspaceManager("addServiceToWS",null,null,currentID,serviceList.getValue().getId());
+        WorkspaceRequest wSM = new WorkspaceRequest("addServiceToWS",null,null,currentID,serviceList.getValue().getId());
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 201:

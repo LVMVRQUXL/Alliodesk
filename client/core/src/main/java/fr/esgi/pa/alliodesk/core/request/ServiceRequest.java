@@ -1,6 +1,7 @@
 package fr.esgi.pa.alliodesk.core.request;
 
 import com.google.gson.Gson;
+import fr.esgi.pa.alliodesk.core.models.Service;
 import fr.esgi.pa.alliodesk.core.form.InfoInForm;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -82,37 +83,4 @@ public class ServiceRequest extends ApiRequest {
         }
     }
 
-    public static class Service {
-        String id, name, version, source_url, user_id, service_status_id;
-
-
-        public Service(String id, String name, String version, String source_url, String user_id, String service_status_id) {
-            this.id = id;
-            this.name = name;
-            this.version = version;
-            this.source_url = source_url;
-            this.user_id = user_id;
-            this.service_status_id = service_status_id;
-        }
-
-        @Override
-        public String toString() {
-            return "Service{" +
-                    "id='" + id + '\'' +
-                    ", name='" + name + '\'' +
-                    ", version='" + version + '\'' +
-                    ", source_url='" + source_url + '\'' +
-                    ", user_id='" + user_id + '\'' +
-                    ", service_status_id='" + service_status_id + '\'' +
-                    '}';
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getId() {
-            return id;
-        }
-    }
 }

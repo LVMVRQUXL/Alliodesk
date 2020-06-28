@@ -1,6 +1,8 @@
 package fr.esgi.pa.alliodesk.core.request;
 
 import com.google.gson.Gson;
+import fr.esgi.pa.alliodesk.core.models.Service;
+import fr.esgi.pa.alliodesk.core.models.Workspace;
 import fr.esgi.pa.alliodesk.core.form.InfoInForm;
 import org.apache.http.client.methods.*;
 import org.apache.http.util.EntityUtils;
@@ -9,22 +11,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class WorkspaceManager extends ApiRequest {
+public class WorkspaceRequest extends ApiRequest {
     private final InfoInForm wSForm;
     private final String functionCall;
     private ArrayList<String[]> existedWS = new ArrayList<>();
 
-    private ArrayList<ServiceRequest.Service> existedService = new ArrayList<>();
+    private ArrayList<Service> existedService = new ArrayList<>();
 
     public ArrayList<String[]> getExistedWS() {
         return existedWS;
     }
 
-    public ArrayList<ServiceRequest.Service> getExistedService() {
+    public ArrayList<Service> getExistedService() {
         return existedService;
     }
 
-    public WorkspaceManager(String functionCall, String name, String description, String id, String service_id) {
+    public WorkspaceRequest(String functionCall, String name, String description, String id, String service_id) {
         this.functionCall = functionCall;
         this.wSForm = InfoInForm.build()
                 .withName(name)
@@ -67,8 +69,8 @@ public class WorkspaceManager extends ApiRequest {
 
                     if (statusCode == 200) {
                         final String responseContent = EntityUtils.toString(response.getEntity());
-                        WS[] yourList = new Gson().fromJson(responseContent, WS[].class);
-                        for (WS a : yourList) {
+                        Workspace[] yourList = new Gson().fromJson(responseContent, Workspace[].class);
+                        for (Workspace a : yourList) {
                             existedWS.add(a.getUsableData());
                         }
                     }
@@ -131,7 +133,7 @@ public class WorkspaceManager extends ApiRequest {
                     final int statusCode = response.getStatusLine().getStatusCode();
                     if (statusCode == 200) {
                         final String responseContent = EntityUtils.toString(response.getEntity());
-                        ServiceRequest.Service[] yourList = new Gson().fromJson(responseContent, ServiceRequest.Service[].class);
+                        Service[] yourList = new Gson().fromJson(responseContent, Service[].class);
                         existedService.addAll(Arrays.asList(yourList));
                     }
                     return statusCode;
@@ -153,7 +155,6 @@ public class WorkspaceManager extends ApiRequest {
                     return 500;
                 }
 
-
             default:
                 return 2;
         }
@@ -161,27 +162,3 @@ public class WorkspaceManager extends ApiRequest {
 
 }
 
-class WS {
-    String id, name, description, user_id;
-
-    WS(String id, String name, String description, String user_id) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.user_id = user_id;
-    }
-
-    public String[] getUsableData() {
-        return new String[]{this.id, this.name};
-    }
-
-    @Override
-    public String toString() {
-        return "WS{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", user_id='" + user_id + '\'' +
-                '}';
-    }
-}
