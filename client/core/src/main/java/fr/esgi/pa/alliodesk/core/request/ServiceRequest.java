@@ -1,7 +1,7 @@
 package fr.esgi.pa.alliodesk.core.request;
 
 import com.google.gson.Gson;
-import fr.esgi.pa.alliodesk.core.Service;
+import fr.esgi.pa.alliodesk.core.models.Service;
 import fr.esgi.pa.alliodesk.core.form.InfoInForm;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
