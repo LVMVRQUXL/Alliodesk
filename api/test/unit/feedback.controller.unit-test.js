@@ -13,20 +13,24 @@ module.exports = () => describe('FeedbackController tests', () => {
         '../services': MockDependencies.Services
     });
     let fakeFeedback = {
+        id: 1,
         score: 5,
         title: 'Super service !'
     };
 
     const setup_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create = sinon.stub();
     const setup_FeedbackService_findAll = () => MockDependencies.Services.FeedbackService.findAll = sinon.stub();
+    const setup_FeedbackService_findOne = () => MockDependencies.Services.FeedbackService.findOne = sinon.stub();
     const setup_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO = sinon.stub();
 
     const reset_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create.reset();
     const reset_FeedbackService_findAll = () => MockDependencies.Services.FeedbackService.findAll.reset();
+    const reset_FeedbackService_findOne = () => MockDependencies.Services.FeedbackService.findOne.reset();
     const reset_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO.reset();
 
     const teardown_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create = undefined;
     const teardown_FeedbackService_findAll = () => MockDependencies.Services.FeedbackService.findAll = undefined;
+    const teardown_FeedbackService_findOne = () => MockDependencies.Services.FeedbackService.findOne = undefined;
     const teardown_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO = undefined;
 
     describe('#createFeedback', () => {
@@ -43,7 +47,10 @@ module.exports = () => describe('FeedbackController tests', () => {
             teardown_FeedbackService_mapToDTO();
         });
 
-        const _call = async () => await FeedbackController.createFeedback(fakeFeedback);
+        const _call = async () => await FeedbackController.createFeedback({
+            score: fakeFeedback.score,
+            title: fakeFeedback.title
+        });
 
         it('should return the created feedback with valid input', async () => {
             // SETUP
@@ -135,6 +142,58 @@ module.exports = () => describe('FeedbackController tests', () => {
             assert.equal(feedbacks.length, 0);
             sinon.assert.calledOnce(findAll);
             sinon.assert.calledWithExactly(findAll);
+            sinon.assert.notCalled(mapToDTO);
+        });
+    });
+
+    describe('#findOneFeedbackFromId', () => {
+        before(() => {
+            setup_FeedbackService_findOne();
+            setup_FeedbackService_mapToDTO();
+        });
+        afterEach(() => {
+            reset_FeedbackService_findOne();
+            reset_FeedbackService_mapToDTO();
+        });
+        after(() => {
+            teardown_FeedbackService_findOne();
+            teardown_FeedbackService_mapToDTO();
+        });
+
+        const _call = async () => await FeedbackController.findOneFeedbackFromId(fakeFeedback.id);
+
+        it('should return one feedback with valid id', async () => {
+            // SETUP
+            const findOne = MockDependencies.Services.FeedbackService.findOne;
+            findOne.resolves(fakeFeedback);
+            const mapToDTO = MockDependencies.Services.FeedbackService.mapToDTO;
+            mapToDTO.returns(fakeFeedback);
+
+            // CALL
+            const feedback = await _call();
+
+            // VERIFY
+            assert.notEqual(feedback, undefined);
+            assert.deepEqual(feedback, fakeFeedback);
+            sinon.assert.calledOnce(findOne);
+            sinon.assert.calledWithExactly(findOne, {id: fakeFeedback.id});
+            sinon.assert.calledOnce(mapToDTO);
+            sinon.assert.calledWithExactly(mapToDTO, fakeFeedback);
+        });
+
+        it('should return undefined with invalid id', async () => {
+            // SETUP
+            const findOne = MockDependencies.Services.FeedbackService.findOne;
+            findOne.resolves();
+            const mapToDTO = MockDependencies.Services.FeedbackService.mapToDTO;
+
+            // CALL
+            const feedback = await _call();
+
+            // VERIFY
+            assert.equal(feedback, undefined);
+            sinon.assert.calledOnce(findOne);
+            sinon.assert.calledWithExactly(findOne, {id: fakeFeedback.id});
             sinon.assert.notCalled(mapToDTO);
         });
     });

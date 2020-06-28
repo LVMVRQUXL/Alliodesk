@@ -32,7 +32,6 @@ class FeedbackController {
      * @param id {number}
      *
      * @returns {Promise<FeedbackDTO|undefined>}
-     * TODO: unit tests
      */
     async findOneFeedbackFromId(id) {
         const feedback = await FeedbackService.findOne({id: id});
