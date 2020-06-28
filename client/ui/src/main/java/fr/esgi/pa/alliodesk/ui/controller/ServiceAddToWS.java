@@ -1,6 +1,6 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
-import fr.esgi.pa.alliodesk.core.Service;
+import fr.esgi.pa.alliodesk.core.models.Service;
 import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
 import fr.esgi.pa.alliodesk.core.request.WorkspaceRequest;
 import fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController;

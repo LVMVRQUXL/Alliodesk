@@ -1,7 +1,6 @@
 package fr.esgi.pa.alliodesk.ui;
 
-import fr.esgi.pa.alliodesk.core.Service;
-import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
+import fr.esgi.pa.alliodesk.core.models.Service;
 import fr.esgi.pa.alliodesk.ui.plugin.PluginGuetter;
 import interfacetest.PluginInterface;
 import fr.esgi.pa.alliodesk.ui.controller.WSController;
