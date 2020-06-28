@@ -1,7 +1,7 @@
 package fr.esgi.pa.alliodesk.core.models;
 
 public class Service {
-    String id, name, version, source_url, user_id, service_status_id;
+   private final String id, name, version, source_url, user_id, service_status_id;
 
 
     public Service(String id, String name, String version, String source_url, String user_id, String service_status_id) {
