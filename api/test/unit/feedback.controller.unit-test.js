@@ -17,20 +17,30 @@ module.exports = () => describe('FeedbackController tests', () => {
         title: 'Super service !'
     };
 
-    // TODO: add useful methods for calling methods instantiation
+    const setup_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create = sinon.stub();
+    const setup_FeedbackService_findAll = () => MockDependencies.Services.FeedbackService.findAll = sinon.stub();
+    const setup_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO = sinon.stub();
+
+    const reset_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create.reset();
+    const reset_FeedbackService_findAll = () => MockDependencies.Services.FeedbackService.findAll.reset();
+    const reset_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO.reset();
+
+    const teardown_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create = undefined;
+    const teardown_FeedbackService_findAll = () => MockDependencies.Services.FeedbackService.findAll = undefined;
+    const teardown_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO = undefined;
 
     describe('#createFeedback', () => {
         before(() => {
-            MockDependencies.Services.FeedbackService.create = sinon.stub();
-            MockDependencies.Services.FeedbackService.mapToDTO = sinon.stub();
+            setup_FeedbackService_create();
+            setup_FeedbackService_mapToDTO();
         });
         afterEach(() => {
-            MockDependencies.Services.FeedbackService.create.reset();
-            MockDependencies.Services.FeedbackService.mapToDTO.reset();
+            reset_FeedbackService_create();
+            reset_FeedbackService_mapToDTO();
         });
         after(() => {
-            MockDependencies.Services.FeedbackService.create = undefined;
-            MockDependencies.Services.FeedbackService.mapToDTO = undefined;
+            teardown_FeedbackService_create();
+            teardown_FeedbackService_mapToDTO();
         });
 
         const _call = async () => await FeedbackController.createFeedback(fakeFeedback);
@@ -77,16 +87,16 @@ module.exports = () => describe('FeedbackController tests', () => {
 
     describe('#findAllFeedbacks', () => {
         before(() => {
-            MockDependencies.Services.FeedbackService.findAll = sinon.stub();
-            MockDependencies.Services.FeedbackService.mapToDTO = sinon.stub();
+            setup_FeedbackService_findAll();
+            setup_FeedbackService_mapToDTO();
         });
         afterEach(() => {
-            MockDependencies.Services.FeedbackService.findAll.reset();
-            MockDependencies.Services.FeedbackService.mapToDTO.reset();
+            reset_FeedbackService_findAll();
+            reset_FeedbackService_mapToDTO();
         });
         after(() => {
-            MockDependencies.Services.FeedbackService.findAll = undefined;
-            MockDependencies.Services.FeedbackService.mapToDTO = undefined;
+            teardown_FeedbackService_findAll();
+            teardown_FeedbackService_mapToDTO();
         });
 
         const _call = async () => await FeedbackController.findAllFeedbacks();
