@@ -1,6 +1,6 @@
 package fr.esgi.pa.alliodesk.ui.controller;
 
-import fr.esgi.pa.alliodesk.core.request.WorkspaceManager;
+import fr.esgi.pa.alliodesk.core.request.WorkspaceRequest;
 import fr.esgi.pa.alliodesk.ui.ChoiceBoxItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +36,7 @@ public class WSUpdate {
     public void updateWS(ActionEvent actionEvent) {
         actionEvent.consume();
         System.out.println(wSList.getValue().getId());
-        WorkspaceManager wSM = new WorkspaceManager("updateWS", name.getText(), description.getText(), wSList.getValue().getId(),null);
+        WorkspaceRequest wSM = new WorkspaceRequest("updateWS", name.getText(), description.getText(), wSList.getValue().getId(),null);
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:

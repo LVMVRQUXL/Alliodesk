@@ -1,4 +1,4 @@
-package fr.esgi.pa.alliodesk.core;
+package fr.esgi.pa.alliodesk.core.form;
 
 public class InfoInForm {
     private String name,
