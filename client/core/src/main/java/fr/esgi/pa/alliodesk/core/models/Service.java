@@ -1,4 +1,4 @@
-package fr.esgi.pa.alliodesk.core;
+package fr.esgi.pa.alliodesk.core.models;
 
 public class Service {
     String id, name, version, source_url, user_id, service_status_id;
@@ -15,14 +15,8 @@ public class Service {
 
     @Override
     public String toString() {
-        return "Service{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", version='" + version + '\'' +
-                ", source_url='" + source_url + '\'' +
-                ", user_id='" + user_id + '\'' +
-                ", service_status_id='" + service_status_id + '\'' +
-                '}';
+        return String.format("Service{ id = %s, name = %s, version = %s, source_url = %s, user_id = %s, service_status_id = %s",
+                id,name,version,source_url,user_id,service_status_id);
     }
 
     public String getName() {

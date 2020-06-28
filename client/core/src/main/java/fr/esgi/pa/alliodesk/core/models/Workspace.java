@@ -1,4 +1,4 @@
-package fr.esgi.pa.alliodesk.core;
+package fr.esgi.pa.alliodesk.core.models;
 
 public class Workspace {
     private String id, name, description, user_id;
@@ -16,11 +16,7 @@ public class Workspace {
 
     @Override
     public String toString() {
-        return "Workspace{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", user_id='" + user_id + '\'' +
-                '}';
+        return String.format("id = %s, name = %s, description = %s, user_id = %s",
+                id, name, description, user_id);
     }
 }
