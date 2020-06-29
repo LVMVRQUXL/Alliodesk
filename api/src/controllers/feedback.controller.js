@@ -1,4 +1,5 @@
 const FeedbackService = require('../services').FeedbackService;
+const ValidatorUtil = require('../utils').ValidatorUtil;
 
 class FeedbackController {
     /**
@@ -67,10 +68,12 @@ class FeedbackController {
             return false;
         }
         const values = {
-            score: feedback.score !== oldFeedback.score ? feedback.score : undefined,
-            title: feedback.title !== oldFeedback.title ? feedback.title : undefined,
-            description: feedback.description && feedback.description !== oldFeedback.description ?
-                feedback.description : null
+            score: feedback.score !== oldFeedback.score ? feedback.score : oldFeedback.score,
+            title: feedback.title !== oldFeedback.title ? feedback.title : oldFeedback.title,
+            description: (
+                (ValidatorUtil.isValidString(feedback.description) || feedback.description === '')
+                && feedback.description !== oldFeedback.description
+            ) ? feedback.description : oldFeedback.description
         };
         const where = {id: id};
 

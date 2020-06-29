@@ -7,7 +7,6 @@ const FeedbackValidator = require('./validators').FeedbackValidator;
 
 module.exports = (app) => {
     /**
-     * TODO: tests with Postman
      * @swagger
      *
      * '/feedbacks/{id}':
@@ -43,23 +42,24 @@ module.exports = (app) => {
         try {
             const id = parseInt(req.params.id);
             const feedback = {
-                score: parseInt(req.body.score),
+                score: req.body.score ? parseInt(req.body.score) : undefined,
                 title: req.body.title,
                 description: req.body.description
             };
-            if (ValidatorUtil.isValidId(id) && (
-                FeedbackValidator.isValidScore(feedback.score)
-                || ValidatorUtil.isValidString(feedback.title)
-                || ValidatorUtil.isValidString(feedback.description)
-            )) {
+            if (!ValidatorUtil.isValidId(id)
+                || (!FeedbackValidator.isValidScore(feedback.score)
+                    && !ValidatorUtil.isValidString(feedback.title)
+                    && !ValidatorUtil.isValidString(feedback.description))
+                || (feedback.score && !FeedbackValidator.isValidScore(feedback.score))
+                || (feedback.title && !ValidatorUtil.isValidString(feedback.title))) {
+                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            } else {
                 const result = await FeedbackController.updateOneFeedbackFromId(id, feedback);
                 if (result) {
                     res.status(HttpCodeUtil.OK).end();
                 } else {
                     res.status(HttpCodeUtil.NOT_FOUND).end();
                 }
-            } else {
-                res.status(HttpCodeUtil.BAD_REQUEST).end();
             }
         } catch (e) {
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -67,7 +67,6 @@ module.exports = (app) => {
     });
 
     /**
-     * TODO: tests with Postman
      * @swagger
      *
      * '/feedbacks/{id}':
@@ -109,7 +108,6 @@ module.exports = (app) => {
     });
 
     /**
-     * TODO: tests with Postman
      * @swagger
      *
      * '/feedbacks/{id}':
@@ -153,7 +151,6 @@ module.exports = (app) => {
     });
 
     /**
-     * TODO: tests with Postman
      * @swagger
      *
      * '/feedbacks':
@@ -185,7 +182,6 @@ module.exports = (app) => {
     });
 
     /**
-     * TODO: tests with Postman
      * @swagger
      *
      * '/feedbacks':
