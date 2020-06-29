@@ -17,21 +17,29 @@ module.exports = (sandbox) => describe('FeedbackValidator', () => {
         const _call = (description) => FeedbackValidator.isValidDescription(description);
 
         it('should return true with valid description', () => {
-            // CALL
-            const result = _call('Test');
+            // SETUP
+            const description = 'Test';
 
-            // TODO: VERIFY
+            // CALL
+            const result = _call(description);
+
+            // VERIFY
             assert.equal(result, true);
             sandbox.assert.calledOnce(StringUtil.isEmpty);
+            sandbox.assert.calledWithExactly(StringUtil.isEmpty, description);
         });
 
         it('should return false with empty description', () => {
-            // CALL
-            const result = _call('');
+            // SETUP
+            const description = '';
 
-            // TODO: VERIFY
+            // CALL
+            const result = _call(description);
+
+            // VERIFY
             assert.equal(result, false);
             sandbox.assert.calledOnce(StringUtil.isEmpty);
+            sandbox.assert.calledWithExactly(StringUtil.isEmpty, description);
         });
     });
 
