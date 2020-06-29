@@ -58,7 +58,6 @@ class FeedbackController {
      * @param id {number}
      *
      * @returns {Promise<boolean>}
-     * TODO: unit tests
      */
     async removeOneFeedbackFromId(id) {
         if (!await this.findOneFeedbackFromId(id)) {
