@@ -1,46 +1,12 @@
-const {describe, it, beforeEach, afterEach} = require('mocha');
+const {describe, it, afterEach} = require('mocha');
 const assert = require('assert');
 
 const FeedbackValidator = require('../../../src/routes/validators').FeedbackValidator;
-const StringUtil = require('../../../src/utils').StringUtil;
 
 module.exports = (sandbox) => describe('FeedbackValidator', () => {
     afterEach(() => sandbox.restore());
 
     describe('#isValid', () => {
-    });
-
-    describe('#isValidDescription', () => {
-        beforeEach(() => sandbox.spy(StringUtil, 'isEmpty'));
-        afterEach(() => sandbox.reset());
-
-        const _call = (description) => FeedbackValidator.isValidDescription(description);
-
-        it('should return true with valid description', () => {
-            // SETUP
-            const description = 'Test';
-
-            // CALL
-            const result = _call(description);
-
-            // VERIFY
-            assert.equal(result, true);
-            sandbox.assert.calledOnce(StringUtil.isEmpty);
-            sandbox.assert.calledWithExactly(StringUtil.isEmpty, description);
-        });
-
-        it('should return false with empty description', () => {
-            // SETUP
-            const description = '';
-
-            // CALL
-            const result = _call(description);
-
-            // VERIFY
-            assert.equal(result, false);
-            sandbox.assert.calledOnce(StringUtil.isEmpty);
-            sandbox.assert.calledWithExactly(StringUtil.isEmpty, description);
-        });
     });
 
     describe('#isValidScore', () => {
@@ -60,39 +26,6 @@ module.exports = (sandbox) => describe('FeedbackValidator', () => {
 
             // VERIFY
             assert.equal(result, false);
-        });
-    });
-
-    describe('#isValidTitle', () => {
-        beforeEach(() => sandbox.spy(StringUtil, 'isEmpty'));
-        afterEach(() => sandbox.reset());
-
-        const _call = (title) => FeedbackValidator.isValidTitle(title);
-
-        it('should return true with valid title', () => {
-            // SETUP
-            const title = 'Test';
-
-            // CALL
-            const result = _call(title);
-
-            // VERIFY
-            assert.equal(result, true);
-            sandbox.assert.calledOnce(StringUtil.isEmpty);
-            sandbox.assert.calledWithExactly(StringUtil.isEmpty, title);
-        });
-
-        it('should return false with invalid title', () => {
-            // SETUP
-            const title = '';
-
-            // CALL
-            const result = _call(title);
-
-            // VERIFY
-            assert.equal(result, false);
-            sandbox.assert.calledOnce(StringUtil.isEmpty);
-            sandbox.assert.calledWithExactly(StringUtil.isEmpty, title);
         });
     });
 });

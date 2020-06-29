@@ -49,8 +49,8 @@ module.exports = (app) => {
             };
             if (ValidatorUtil.isValidId(id) && (
                 FeedbackValidator.isValidScore(feedback.score)
-                || FeedbackValidator.isValidTitle(feedback.title)
-                || FeedbackValidator.isValidDescription(feedback.description)
+                || ValidatorUtil.isValidString(feedback.title)
+                || ValidatorUtil.isValidString(feedback.description)
             )) {
                 const result = await FeedbackController.updateOneFeedbackFromId(id, feedback);
                 if (result) {
