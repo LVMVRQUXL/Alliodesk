@@ -2,7 +2,6 @@ const ValidatorUtil = require('../../utils').ValidatorUtil;
 
 class FeedbackValidator {
     /**
-     * TODO: unit tests
      * Check if given feedback is valid or not
      *
      * @param feedback {object}

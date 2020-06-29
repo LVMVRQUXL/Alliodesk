@@ -2,7 +2,6 @@ const StringUtil = require('./string.util');
 
 class ValidatorUtil {
     /**
-     * TODO: unit tests
      * Check if given id is valid or not
      *
      * @param id {number}
@@ -14,7 +13,6 @@ class ValidatorUtil {
     }
 
     /**
-     * TODO: unit tests
      * Check if given string is valid or not
      *
      * @param string {string}
