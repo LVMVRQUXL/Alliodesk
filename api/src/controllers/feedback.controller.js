@@ -48,8 +48,44 @@ class FeedbackController {
      */
     isValid(feedback) {
         return feedback !== undefined && feedback !== null
-            && feedback.score && feedback.score >= 1 && feedback.score <= 5
-            && !StringUtil.isEmpty(feedback.title);
+            && this.isValidScore(feedback.score)
+            && this.isValidTitle(feedback.title);
+    }
+
+    /**
+     * TODO: unit tests
+     * Check if given feedback's description is valid or not
+     *
+     * @param description {string}
+     *
+     * @returns {boolean}
+     */
+    isValidDescription(description) {
+        return !StringUtil.isEmpty(description);
+    }
+
+    /**
+     * TODO: unit tests
+     * Check if given feedback's score is valid or not
+     *
+     * @param score {number}
+     *
+     * @returns {boolean}
+     */
+    isValidScore(score) {
+        return score && score >= 1 && score <= 5;
+    }
+
+    /**
+     * TODO: unit tests
+     * Check if given feedback's title is valid or not
+     *
+     * @param title {string}
+     *
+     * @returns {boolean}
+     */
+    isValidTitle(title) {
+        return !StringUtil.isEmpty(title);
     }
 
     /**

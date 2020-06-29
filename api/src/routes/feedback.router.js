@@ -5,8 +5,39 @@ const FeedbackController = require('../controllers').FeedbackController;
 const endpoints = require('./endpoints').FeedbackEndpoints;
 
 module.exports = (app) => {
-    // PUT '/feedbacks/{id}' => Update one feedback from id
-    // TODO: integration tests
+    /**
+     * TODO: tests with Postman
+     * @swagger
+     *
+     * '/feedbacks/{id}':
+     *   put:
+     *     description: Update one feedback from id
+     *     tags:
+     *       - Feedbacks
+     *     parameters:
+     *       - name: id
+     *         description: Feedback's id
+     *         in: path
+     *         required: true
+     *       - name: score
+     *         description: Feedback's score
+     *         in: body
+     *       - name: title
+     *         description: Feedback's title
+     *         in: body
+     *       - name: description
+     *         description: Feedback's description
+     *         in: body
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid parameters
+     *       404:
+     *         description: Can't find feedback from id
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.put(endpoints.FeedbacksId, bodyParser.json(), async (req, res) => {
         try {
             const id = parseInt(req.params.id);
@@ -15,7 +46,11 @@ module.exports = (app) => {
                 title: req.body.title,
                 description: req.body.description
             };
-            if (id && id > 0 && FeedbackController.isValid(feedback)) {
+            if (id && id > 0
+                && (FeedbackController.isValidScore(feedback.score)
+                    || FeedbackController.isValidTitle(feedback.title)
+                    || FeedbackController.isValidDescription(feedback.description))
+            ) {
                 const result = await FeedbackController.updateOneFeedbackFromId(id, feedback);
                 if (result) {
                     res.status(HttpCodeUtil.OK).end();
@@ -30,8 +65,30 @@ module.exports = (app) => {
         }
     });
 
-    // DELETE '/feedbacks/{id}' => Remove one feedback from id
-    // TODO: integration tests
+    /**
+     * TODO: tests with Postman
+     * @swagger
+     *
+     * '/feedbacks/{id}':
+     *   delete:
+     *     description: Remove one feedback from id
+     *     tags:
+     *       - Feedbacks
+     *     parameters:
+     *       - name: id
+     *         description: Feedback's id
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid parameters
+     *       404:
+     *         description: Can't find feedback from id
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.delete(endpoints.FeedbacksId, async (req, res) => {
         try {
             const id = parseInt(req.params.id);
@@ -50,8 +107,32 @@ module.exports = (app) => {
         }
     });
 
-    // GET '/feedbacks/{id}' => Get one feedback from id
-    // TODO: integration tests
+    /**
+     * TODO: tests with Postman
+     * @swagger
+     *
+     * '/feedbacks/{id}':
+     *   get:
+     *     description: Get one feedback from id
+     *     tags:
+     *       - Feedbacks
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: id
+     *         description: Feedback's id
+     *         in: path
+     *         required: true
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       400:
+     *         description: Invalid parameters
+     *       404:
+     *         description: Can't find feedback from id
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.get(endpoints.FeedbacksId, async (req, res) => {
         try {
             const id = parseInt(req.params.id);
@@ -70,8 +151,25 @@ module.exports = (app) => {
         }
     });
 
-    // GET '/feedbacks' => Get all feedbacks
-    // TODO: integration tests
+    /**
+     * TODO: tests with Postman
+     * @swagger
+     *
+     * '/feedbacks':
+     *   get:
+     *     description: Get all feedbacks
+     *     tags:
+     *       - Feedbacks
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: Ok
+     *       204:
+     *         description: No feedbacks to return
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.get(endpoints.Feedbacks, async (req, res) => {
         try {
             const feedbacks = await FeedbackController.findAllFeedbacks();
@@ -85,8 +183,37 @@ module.exports = (app) => {
         }
     });
 
-    // POST '/feedbacks' => Create a new feedback
-    // TODO: integration tests
+    /**
+     * TODO: tests with Postman
+     * @swagger
+     *
+     * '/feedbacks':
+     *   post:
+     *     description: Create a new feedback
+     *     tags:
+     *       - Feedbacks
+     *     parameters:
+     *       - name: score
+     *         description: Feedback's score
+     *         in: body
+     *         required: true
+     *       - name: title
+     *         description: Feedback's title
+     *         in: body
+     *         required: true
+     *       - name: description
+     *         description: Feedback's description
+     *         in: body
+     *     responses:
+     *       201:
+     *         description: New feedback successfully created
+     *       400:
+     *         description: Invalid parameters
+     *       409:
+     *         description: A conflict error has occurred while creating a new feedback
+     *       500:
+     *         description: An internal error has occurred
+     */
     app.post(endpoints.Feedbacks, bodyParser.json(), async (req, res) => {
         try {
             const feedback = {
