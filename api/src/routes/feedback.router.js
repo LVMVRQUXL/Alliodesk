@@ -1,8 +1,9 @@
 const bodyParser = require('body-parser');
 
-const HttpCodeUtil = require('../utils').HttpCodeUtil;
+const {HttpCodeUtil, ValidatorUtil} = require('../utils');
 const FeedbackController = require('../controllers').FeedbackController;
 const endpoints = require('./endpoints').FeedbackEndpoints;
+const FeedbackValidator = require('./validators').FeedbackValidator;
 
 module.exports = (app) => {
     /**
@@ -46,11 +47,11 @@ module.exports = (app) => {
                 title: req.body.title,
                 description: req.body.description
             };
-            if (id && id > 0
-                && (FeedbackController.isValidScore(feedback.score)
-                    || FeedbackController.isValidTitle(feedback.title)
-                    || FeedbackController.isValidDescription(feedback.description))
-            ) {
+            if (ValidatorUtil.isValidId(id) && (
+                FeedbackValidator.isValidScore(feedback.score)
+                || FeedbackValidator.isValidTitle(feedback.title)
+                || FeedbackValidator.isValidDescription(feedback.description)
+            )) {
                 const result = await FeedbackController.updateOneFeedbackFromId(id, feedback);
                 if (result) {
                     res.status(HttpCodeUtil.OK).end();
@@ -92,7 +93,7 @@ module.exports = (app) => {
     app.delete(endpoints.FeedbacksId, async (req, res) => {
         try {
             const id = parseInt(req.params.id);
-            if (id && id > 0) {
+            if (ValidatorUtil.isValidId(id)) {
                 const result = await FeedbackController.removeOneFeedbackFromId(id);
                 if (result) {
                     res.status(HttpCodeUtil.OK).end();
@@ -136,7 +137,7 @@ module.exports = (app) => {
     app.get(endpoints.FeedbacksId, async (req, res) => {
         try {
             const id = parseInt(req.params.id);
-            if (id && id > 0) {
+            if (ValidatorUtil.isValidId(id)) {
                 const feedback = await FeedbackController.findOneFeedbackFromId(id);
                 if (feedback) {
                     res.status(HttpCodeUtil.OK).json(feedback);
@@ -221,7 +222,7 @@ module.exports = (app) => {
                 title: req.body.title,
                 description: req.body.description
             };
-            if (FeedbackController.isValid(feedback)) {
+            if (FeedbackValidator.isValid(feedback)) {
                 const feedbackDTO = await FeedbackController.createFeedback(feedback);
                 if (feedbackDTO) {
                     res.status(HttpCodeUtil.CREATED).json(feedbackDTO);

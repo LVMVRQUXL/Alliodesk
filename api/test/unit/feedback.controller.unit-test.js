@@ -208,64 +208,6 @@ module.exports = () => describe('FeedbackController tests', () => {
         });
     });
 
-    describe('#isValid', () => {
-        // noinspection JSUnresolvedFunction
-        const _call = () => FeedbackController.isValid(fakeFeedback);
-
-        it('should return true with valid input', () => {
-            // CALL
-            const result = _call();
-
-            // VERIFY
-            assert.equal(result, true);
-        });
-
-        it('should return false with invalid score', () => {
-            // SETUP
-            const scoreBackup = fakeFeedback.score;
-            fakeFeedback.score = 10;
-
-            // CALL
-            const result = _call();
-
-            // VERIFY
-            assert.equal(result, false);
-
-            // TEARDOWN
-            fakeFeedback.score = scoreBackup;
-        });
-
-        it('should return false with invalid title', () => {
-            // SETUP
-            const titleBackup = fakeFeedback.title;
-            fakeFeedback.title = '';
-
-            // CALL
-            const result = _call();
-
-            // VERIFY
-            assert.equal(result, false);
-
-            // TEARDOWN
-            fakeFeedback.title = titleBackup;
-        });
-
-        it('should return false with undefined input', () => {
-            // SETUP
-            const fakeFeedbackBackup = fakeFeedback;
-            fakeFeedback = undefined;
-
-            // CALL
-            const result = _call();
-
-            // VERIFY
-            assert.equal(result, false);
-
-            // TEARDOWN
-            fakeFeedback = fakeFeedbackBackup;
-        });
-    });
-
     describe('#removeOneFeedbackFromId', () => {
         before(() => {
             setup_FeedbackService_destroy();
