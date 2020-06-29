@@ -16,7 +16,6 @@ class FeedbackValidator {
     }
 
     /**
-     * TODO: unit tests
      * Check if given feedback's description is valid or not
      *
      * @param description {string}

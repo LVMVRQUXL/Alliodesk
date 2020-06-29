@@ -1,3 +1,3 @@
-module.exports = () => {
-    require('./feedback.validator')();
+module.exports = (sandbox) => {
+    require('./feedback.validator')(sandbox);
 };
