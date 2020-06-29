@@ -20,7 +20,7 @@ module.exports = (sandbox) => describe('FeedbackValidator', () => {
             // CALL
             const result = _call('Test');
 
-            // VERIFY
+            // TODO: VERIFY
             assert.equal(result, true);
             sandbox.assert.calledOnce(StringUtil.isEmpty);
         });
@@ -29,7 +29,7 @@ module.exports = (sandbox) => describe('FeedbackValidator', () => {
             // CALL
             const result = _call('');
 
-            // VERIFY
+            // TODO: VERIFY
             assert.equal(result, false);
             sandbox.assert.calledOnce(StringUtil.isEmpty);
         });
@@ -56,5 +56,35 @@ module.exports = (sandbox) => describe('FeedbackValidator', () => {
     });
 
     describe('#isValidTitle', () => {
+        beforeEach(() => sandbox.spy(StringUtil, 'isEmpty'));
+        afterEach(() => sandbox.reset());
+
+        const _call = (title) => FeedbackValidator.isValidTitle(title);
+
+        it('should return true with valid title', () => {
+            // SETUP
+            const title = 'Test';
+
+            // CALL
+            const result = _call(title);
+
+            // VERIFY
+            assert.equal(result, true);
+            sandbox.assert.calledOnce(StringUtil.isEmpty);
+            sandbox.assert.calledWithExactly(StringUtil.isEmpty, title);
+        });
+
+        it('should return false with invalid title', () => {
+            // SETUP
+            const title = '';
+
+            // CALL
+            const result = _call(title);
+
+            // VERIFY
+            assert.equal(result, false);
+            sandbox.assert.calledOnce(StringUtil.isEmpty);
+            sandbox.assert.calledWithExactly(StringUtil.isEmpty, title);
+        });
     });
 });

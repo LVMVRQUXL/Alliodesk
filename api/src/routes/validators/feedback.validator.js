@@ -38,7 +38,6 @@ class FeedbackValidator {
     }
 
     /**
-     * TODO: unit tests
      * Check if given feedback's title is valid or not
      *
      * @param title {string}
