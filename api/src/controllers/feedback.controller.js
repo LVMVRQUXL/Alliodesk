@@ -74,7 +74,6 @@ class FeedbackController {
      * @param feedback {object}
      *
      * @returns {Promise<boolean>}
-     * TODO: unit tests
      */
     async updateOneFeedbackFromId(id, feedback) {
         const oldFeedback = await this.findOneFeedbackFromId(id);
@@ -84,8 +83,8 @@ class FeedbackController {
         const values = {
             score: feedback.score !== oldFeedback.score ? feedback.score : undefined,
             title: feedback.title !== oldFeedback.title ? feedback.title : undefined,
-            description: !StringUtil.isEmpty(feedback.description) && feedback.description !== oldFeedback.description ?
-                feedback.description : undefined
+            description: feedback.description && feedback.description !== oldFeedback.description ?
+                feedback.description : null
         };
         const where = {id: id};
 

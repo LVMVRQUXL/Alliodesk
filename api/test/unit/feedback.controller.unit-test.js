@@ -15,7 +15,8 @@ module.exports = () => describe('FeedbackController tests', () => {
     let fakeFeedback = {
         id: 1,
         score: 5,
-        title: 'Super service !'
+        title: 'Super service !',
+        description: 'Old description'
     };
 
     const setup_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create = sinon.stub();
@@ -23,18 +24,21 @@ module.exports = () => describe('FeedbackController tests', () => {
     const setup_FeedbackService_findAll = () => MockDependencies.Services.FeedbackService.findAll = sinon.stub();
     const setup_FeedbackService_findOne = () => MockDependencies.Services.FeedbackService.findOne = sinon.stub();
     const setup_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO = sinon.stub();
+    const setup_FeedbackService_update = () => MockDependencies.Services.FeedbackService.update = sinon.stub();
 
     const reset_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create.reset();
     const reset_FeedbackService_destroy = () => MockDependencies.Services.FeedbackService.destroy.reset();
     const reset_FeedbackService_findAll = () => MockDependencies.Services.FeedbackService.findAll.reset();
     const reset_FeedbackService_findOne = () => MockDependencies.Services.FeedbackService.findOne.reset();
     const reset_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO.reset();
+    const reset_FeedbackService_update = () => MockDependencies.Services.FeedbackService.update.reset();
 
     const teardown_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create = undefined;
     const teardown_FeedbackService_destroy = () => MockDependencies.Services.FeedbackService.destroy = undefined;
     const teardown_FeedbackService_findAll = () => MockDependencies.Services.FeedbackService.findAll = undefined;
     const teardown_FeedbackService_findOne = () => MockDependencies.Services.FeedbackService.findOne = undefined;
     const teardown_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO = undefined;
+    const teardown_FeedbackService_update = () => MockDependencies.Services.FeedbackService.update = undefined;
 
     describe('#createFeedback', () => {
         before(() => {
@@ -315,6 +319,75 @@ module.exports = () => describe('FeedbackController tests', () => {
             sinon.assert.calledWithExactly(findOne, {id: fakeFeedback.id});
             sinon.assert.notCalled(mapToDTO);
             sinon.assert.notCalled(destroy);
+        });
+    });
+
+    describe('#updateOneFeedbackFromId', () => {
+        before(() => {
+            setup_FeedbackService_update();
+            setup_FeedbackService_findOne();
+            setup_FeedbackService_mapToDTO();
+        });
+        afterEach(() => {
+            reset_FeedbackService_update();
+            reset_FeedbackService_findOne();
+            reset_FeedbackService_mapToDTO();
+        });
+        after(() => {
+            teardown_FeedbackService_update();
+            teardown_FeedbackService_findOne();
+            teardown_FeedbackService_mapToDTO();
+        });
+
+        const newFeedback = {
+            score: 3,
+            title: 'Bof bof finalement...',
+            description: 'J\'ai rencontré des problèmes bizarres depuis la MAJ...'
+        };
+
+        // noinspection JSUnresolvedFunction
+        const _call = async () => await FeedbackController.updateOneFeedbackFromId(fakeFeedback.id, newFeedback);
+
+        // noinspection DuplicatedCode
+        it('should return true with valid inputs', async () => {
+            // SETUP
+            const update = MockDependencies.Services.FeedbackService.update;
+            const findOne = MockDependencies.Services.FeedbackService.findOne;
+            const mapToDTO = MockDependencies.Services.FeedbackService.mapToDTO;
+            findOne.resolves(fakeFeedback);
+            mapToDTO.returns(fakeFeedback);
+            update.resolves(true);
+
+            // CALL
+            const result = await _call();
+
+            // VERIFY
+            assert.equal(result, true);
+            sinon.assert.calledOnce(findOne);
+            sinon.assert.calledWithExactly(findOne, {id: fakeFeedback.id});
+            sinon.assert.calledOnce(mapToDTO);
+            sinon.assert.calledWithExactly(mapToDTO, fakeFeedback);
+            sinon.assert.calledOnce(update);
+            sinon.assert.calledWithExactly(update, newFeedback, {id: fakeFeedback.id});
+        });
+
+        // noinspection DuplicatedCode
+        it('should return false with invalid id', async () => {
+            // SETUP
+            const update = MockDependencies.Services.FeedbackService.update;
+            const findOne = MockDependencies.Services.FeedbackService.findOne;
+            const mapToDTO = MockDependencies.Services.FeedbackService.mapToDTO;
+            findOne.resolves();
+
+            // CALL
+            const result = await _call();
+
+            // VERIFY
+            assert.equal(result, false);
+            sinon.assert.calledOnce(findOne);
+            sinon.assert.calledWithExactly(findOne, {id: fakeFeedback.id});
+            sinon.assert.notCalled(mapToDTO);
+            sinon.assert.notCalled(update);
         });
     });
 });
