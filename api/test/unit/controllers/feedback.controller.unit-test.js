@@ -3,13 +3,13 @@ const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
-module.exports = () => describe('FeedbackController tests', () => {
+module.exports = () => describe('FeedbackController', () => {
     const MockDependencies = {
         Services: {
             FeedbackService: {}
         }
     };
-    const FeedbackController = proxyquire('../../src/controllers/feedback.controller', {
+    const FeedbackController = proxyquire('../../../src/controllers/feedback.controller', {
         '../services': MockDependencies.Services
     });
     let fakeFeedback = {

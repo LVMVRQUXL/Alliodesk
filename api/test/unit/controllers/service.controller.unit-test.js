@@ -3,10 +3,10 @@ const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
-const SecurityUtil = require('../../src/utils/security.util');
+const SecurityUtil = require('../../../src/utils/security.util');
 
 module.exports = () => {
-    describe('ServiceController tests', () => {
+    describe('ServiceController', () => {
         const MockDependencies = {
             Services: {
                 ServiceService: {
@@ -27,7 +27,7 @@ module.exports = () => {
             }
         };
 
-        const ServiceController = proxyquire('../../src/controllers/service.controller', {
+        const ServiceController = proxyquire('../../../src/controllers/service.controller', {
             '../services': MockDependencies.Services,
             './service_status.controller': MockDependencies.ServiceStatusController,
             './user.controller': MockDependencies.UserController
@@ -187,7 +187,7 @@ module.exports = () => {
         });
 
         describe('#findOneServiceFromId(id)', () => {
-            afterEach(() =>_teardown_ServiceService_findOne());
+            afterEach(() => _teardown_ServiceService_findOne());
 
             const _call = async () => await ServiceController.findOneServiceFromId(fakeServiceId);
 
