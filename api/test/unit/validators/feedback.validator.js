@@ -36,6 +36,23 @@ module.exports = (sandbox) => describe('FeedbackValidator', () => {
     });
 
     describe('#isValidScore', () => {
+        const _call = (score) => FeedbackValidator.isValidScore(score);
+
+        it('should return true with valid score', () => {
+            // CALL
+            const result = _call(5);
+
+            // VERIFY
+            assert.equal(result, true);
+        });
+
+        it('should return false with invalid score', () => {
+            // CALL
+            const result = _call(6);
+
+            // VERIFY
+            assert.equal(result, false);
+        });
     });
 
     describe('#isValidTitle', () => {

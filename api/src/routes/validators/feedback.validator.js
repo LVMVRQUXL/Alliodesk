@@ -27,7 +27,6 @@ class FeedbackValidator {
     }
 
     /**
-     * TODO: unit tests
      * Check if given feedback's score is valid or not
      *
      * @param score {number}
