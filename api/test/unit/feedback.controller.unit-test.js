@@ -54,6 +54,7 @@ module.exports = () => describe('FeedbackController tests', () => {
             teardown_FeedbackService_mapToDTO();
         });
 
+        // noinspection JSUnresolvedFunction
         const _call = async () => await FeedbackController.createFeedback({
             score: fakeFeedback.score,
             title: fakeFeedback.title
@@ -113,6 +114,7 @@ module.exports = () => describe('FeedbackController tests', () => {
             teardown_FeedbackService_mapToDTO();
         });
 
+        // noinspection JSUnresolvedFunction
         const _call = async () => await FeedbackController.findAllFeedbacks();
 
         it('should return a feedback\'s singleton', async () => {
@@ -167,6 +169,7 @@ module.exports = () => describe('FeedbackController tests', () => {
             teardown_FeedbackService_mapToDTO();
         });
 
+        // noinspection JSUnresolvedFunction
         const _call = async () => await FeedbackController.findOneFeedbackFromId(fakeFeedback.id);
 
         it('should return one feedback with valid id', async () => {
@@ -206,6 +209,7 @@ module.exports = () => describe('FeedbackController tests', () => {
     });
 
     describe('#isValid', () => {
+        // noinspection JSUnresolvedFunction
         const _call = () => FeedbackController.isValid(fakeFeedback);
 
         it('should return true with valid input', () => {
@@ -279,8 +283,10 @@ module.exports = () => describe('FeedbackController tests', () => {
             teardown_FeedbackService_mapToDTO();
         });
 
+        // noinspection JSUnresolvedFunction
         const _call = async () => await FeedbackController.removeOneFeedbackFromId(fakeFeedback.id);
 
+        // noinspection DuplicatedCode
         it('should return true with valid id', async () => {
             // SETUP
             const destroy = MockDependencies.Services.FeedbackService.destroy;
@@ -303,6 +309,7 @@ module.exports = () => describe('FeedbackController tests', () => {
             sinon.assert.calledWithExactly(destroy, {id: fakeFeedback.id});
         });
 
+        // noinspection DuplicatedCode
         it('should return false with valid id', async () => {
             // SETUP
             const destroy = MockDependencies.Services.FeedbackService.destroy;
