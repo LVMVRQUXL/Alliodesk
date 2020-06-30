@@ -207,6 +207,7 @@ module.exports = (app) => {
      *     description: Create a new feedback about a service
      *     tags:
      *       - Feedbacks
+     *       - Services
      *     security:
      *       - bearerToken: []
      *     parameters:
