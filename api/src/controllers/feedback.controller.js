@@ -1,23 +1,15 @@
 const FeedbackService = require('../services').FeedbackService;
 const ValidatorUtil = require('../utils').ValidatorUtil;
-const UserController = require('./user.controller');
 
 class FeedbackController {
     /**
-     * TODO: unit tests
      * Create a new feedback
      *
      * @param feedback {object}
-     * @param token {string}
      *
      * @returns {Promise<FeedbackDTO|undefined>}
      */
-    async createFeedback(feedback, token) {
-        const userDTO = await UserController.findOneUserFromToken(token);
-        if (!userDTO) {
-            return undefined;
-        }
-        feedback.user_id = userDTO.id;
+    async createFeedback(feedback) {
         const createdFeedback = await FeedbackService.create(feedback);
 
         return createdFeedback ? FeedbackService.mapToDTO(createdFeedback) : undefined;

@@ -226,9 +226,9 @@ module.exports = (app) => {
                     title: req.body.title,
                     description: req.body.description
                 };
-                const token = UserMiddleware.extractTokenFromHeaders(req.headers);
-                if (FeedbackValidator.isValid(feedback) && ValidatorUtil.isValidString(token)) {
-                    const feedbackDTO = await FeedbackController.createFeedback(feedback, token);
+                if (FeedbackValidator.isValid(feedback)) {
+                    feedback.user_id = req.userLoggedIn.id;
+                    const feedbackDTO = await FeedbackController.createFeedback(feedback);
                     if (feedbackDTO) {
                         res.status(HttpCodeUtil.CREATED).json(feedbackDTO);
                     } else {
