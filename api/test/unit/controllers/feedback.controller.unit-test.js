@@ -6,17 +6,33 @@ const proxyquire = require('proxyquire');
 module.exports = () => describe('FeedbackController', () => {
     const MockDependencies = {
         Services: {
-            FeedbackService: {}
-        }
+            FeedbackService: {},
+            UserService: {}
+        },
+        UserController: {}
     };
-    const FeedbackController = proxyquire('../../../src/controllers/feedback.controller', {
+    MockDependencies.UserController = proxyquire('../../../src/controllers/user.controller', {
         '../services': MockDependencies.Services
     });
+    const FeedbackController = proxyquire('../../../src/controllers/feedback.controller', {
+        '../services': MockDependencies.Services,
+        './user.controller': MockDependencies.UserController
+    });
+
+    const fakeTokenSession = 'zzzzzzzzzzzzzzz';
+    const fakeUser = {
+        id: 1,
+        name: 'User test',
+        email: 'test@gmail.com',
+        login: 'test'
+    };
     let fakeFeedback = {
         id: 1,
         score: 5,
         title: 'Super service !',
-        description: 'Old description'
+        description: 'Old description',
+        user_id: fakeUser.id,
+        service_id: undefined
     };
 
     const setup_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create = sinon.stub();
@@ -25,6 +41,8 @@ module.exports = () => describe('FeedbackController', () => {
     const setup_FeedbackService_findOne = () => MockDependencies.Services.FeedbackService.findOne = sinon.stub();
     const setup_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO = sinon.stub();
     const setup_FeedbackService_update = () => MockDependencies.Services.FeedbackService.update = sinon.stub();
+    const setup_UserService_findOne = () => MockDependencies.Services.UserService.findOne = sinon.stub();
+    const setup_UserService_mapToDTO = () => MockDependencies.Services.UserService.mapToDTO = sinon.stub();
 
     const reset_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create.reset();
     const reset_FeedbackService_destroy = () => MockDependencies.Services.FeedbackService.destroy.reset();
@@ -32,6 +50,8 @@ module.exports = () => describe('FeedbackController', () => {
     const reset_FeedbackService_findOne = () => MockDependencies.Services.FeedbackService.findOne.reset();
     const reset_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO.reset();
     const reset_FeedbackService_update = () => MockDependencies.Services.FeedbackService.update.reset();
+    const reset_UserService_findOne = () => MockDependencies.Services.UserService.findOne.reset();
+    const reset_UserService_mapToDTO = () => MockDependencies.Services.UserService.mapToDTO.reset();
 
     const teardown_FeedbackService_create = () => MockDependencies.Services.FeedbackService.create = undefined;
     const teardown_FeedbackService_destroy = () => MockDependencies.Services.FeedbackService.destroy = undefined;
@@ -39,63 +59,82 @@ module.exports = () => describe('FeedbackController', () => {
     const teardown_FeedbackService_findOne = () => MockDependencies.Services.FeedbackService.findOne = undefined;
     const teardown_FeedbackService_mapToDTO = () => MockDependencies.Services.FeedbackService.mapToDTO = undefined;
     const teardown_FeedbackService_update = () => MockDependencies.Services.FeedbackService.update = undefined;
+    const teardown_UserService_findOne = () => MockDependencies.Services.UserService.findOne = undefined;
+    const teardown_UserService_mapToDTO = () => MockDependencies.Services.UserService.mapToDTO = undefined;
 
     describe('#createFeedback', () => {
         before(() => {
             setup_FeedbackService_create();
             setup_FeedbackService_mapToDTO();
+            setup_UserService_findOne();
+            setup_UserService_mapToDTO();
         });
         afterEach(() => {
             reset_FeedbackService_create();
             reset_FeedbackService_mapToDTO();
+            reset_UserService_findOne();
+            reset_UserService_mapToDTO();
         });
         after(() => {
             teardown_FeedbackService_create();
             teardown_FeedbackService_mapToDTO();
+            teardown_UserService_findOne();
+            teardown_UserService_mapToDTO();
         });
 
-        // noinspection JSUnresolvedFunction
-        const _call = async () => await FeedbackController.createFeedback({
+        const givenFeedback = {
             score: fakeFeedback.score,
             title: fakeFeedback.title
-        });
+        };
+        // noinspection JSUnresolvedFunction
+        const _call = async () => await FeedbackController.createFeedback(givenFeedback, fakeTokenSession);
 
         it('should return the created feedback with valid input', async () => {
             // SETUP
-            const create = MockDependencies.Services.FeedbackService.create;
-            create.resolves(fakeFeedback);
-            const mapToDTO = MockDependencies.Services.FeedbackService.mapToDTO;
-            mapToDTO.resolves(fakeFeedback);
+            const create_FeedbackService = MockDependencies.Services.FeedbackService.create;
+            const mapToDTO_FeedbackService = MockDependencies.Services.FeedbackService.mapToDTO;
+            const findOne_UserService = MockDependencies.Services.UserService.findOne;
+            const mapToDTO_UserService = MockDependencies.Services.UserService.mapToDTO;
+            findOne_UserService.resolves(fakeUser);
+            mapToDTO_UserService.returns(fakeUser);
+            create_FeedbackService.resolves(fakeFeedback);
+            mapToDTO_FeedbackService.returns(fakeFeedback);
 
             // CALL
             const feedback = await _call();
 
             // VERIFY
             assert.deepEqual(feedback, fakeFeedback);
-            sinon.assert.calledOnce(create);
-            sinon.assert.calledWithExactly(create, {
-                score: fakeFeedback.score,
-                title: fakeFeedback.title
-            });
-            sinon.assert.calledOnce(mapToDTO);
-            sinon.assert.calledWithExactly(mapToDTO, fakeFeedback);
+            sinon.assert.calledOnce(findOne_UserService);
+            sinon.assert.calledWithExactly(findOne_UserService, {token_session: fakeTokenSession});
+            sinon.assert.calledOnce(mapToDTO_UserService);
+            sinon.assert.calledWithExactly(mapToDTO_UserService, fakeUser);
+            sinon.assert.calledOnce(create_FeedbackService);
+            sinon.assert.calledWithExactly(create_FeedbackService, givenFeedback);
+            sinon.assert.calledOnce(mapToDTO_FeedbackService);
+            sinon.assert.calledWithExactly(mapToDTO_FeedbackService, fakeFeedback);
         });
 
         it('should return undefined if a conflict has occurred', async () => {
             // SETUP
-            const create = MockDependencies.Services.FeedbackService.create;
-            create.resolves();
+            const findOne_UserService = MockDependencies.Services.UserService.findOne;
+            const mapToDTO_UserService = MockDependencies.Services.UserService.mapToDTO;
+            const create_FeedbackService = MockDependencies.Services.FeedbackService.create;
+            findOne_UserService.resolves(fakeUser);
+            mapToDTO_UserService.returns(fakeUser);
+            create_FeedbackService.resolves();
 
             // CALL
             const feedback = await _call();
 
             // VERIFY
             assert.equal(feedback, undefined);
-            sinon.assert.calledOnce(create);
-            sinon.assert.calledWithExactly(create, {
-                score: fakeFeedback.score,
-                title: fakeFeedback.title
-            });
+            sinon.assert.calledOnce(findOne_UserService);
+            sinon.assert.calledWithExactly(findOne_UserService, {token_session: fakeTokenSession});
+            sinon.assert.calledOnce(mapToDTO_UserService);
+            sinon.assert.calledWithExactly(mapToDTO_UserService, fakeUser);
+            sinon.assert.calledOnce(create_FeedbackService);
+            sinon.assert.calledWithExactly(create_FeedbackService, givenFeedback);
             sinon.assert.notCalled(MockDependencies.Services.FeedbackService.mapToDTO);
         });
     });
