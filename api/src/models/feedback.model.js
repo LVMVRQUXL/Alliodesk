@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         Feedback.belongsTo(models.Service, {
             foreignKey: {
                 name: 'service_id',
-                allowNull: true // TODO: put false after testings
+                allowNull: false
             }
         });
     };

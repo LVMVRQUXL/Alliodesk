@@ -74,7 +74,7 @@ class FeedbackDTO {
         this.title = feedback.title;
         this.description = feedback.description;
         this.user_id = parseInt(feedback.user_id);
-        this.service_id = feedback.service_id; // TODO: parseInt(feedback.service_id)
+        this.service_id = parseInt(feedback.service_id);
     }
 }
 
