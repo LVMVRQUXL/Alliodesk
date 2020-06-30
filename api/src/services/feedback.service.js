@@ -57,7 +57,7 @@ class FeedbackService {
      * @returns {FeedbackDTO}
      */
     mapToDTO(feedback) {
-        return new FeedbackDTO(feedback.id, feedback.score, feedback.title, feedback.description);
+        return new FeedbackDTO(feedback);
     }
 
     /**
@@ -80,11 +80,13 @@ class FeedbackService {
 }
 
 class FeedbackDTO {
-    constructor(id, score, title, description) {
-        this.id = id;
-        this.score = score;
-        this.title = title;
-        this.description = description;
+    constructor(feedback) {
+        this.id = feedback.id;
+        this.score = feedback.score;
+        this.title = feedback.title;
+        this.description = feedback.description;
+        this.user_id = feedback.user_id;
+        this.service_id = feedback.service_id;
     }
 }
 

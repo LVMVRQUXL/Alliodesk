@@ -4,9 +4,11 @@ const {HttpCodeUtil, ValidatorUtil} = require('../utils');
 const FeedbackController = require('../controllers').FeedbackController;
 const endpoints = require('./endpoints').FeedbackEndpoints;
 const FeedbackValidator = require('./validators').FeedbackValidator;
+const UserMiddleware = require('../middlewares').UserMiddleware;
 
 module.exports = (app) => {
     /**
+     * TODO
      * @swagger
      *
      * '/feedbacks/{id}':
@@ -67,6 +69,7 @@ module.exports = (app) => {
     });
 
     /**
+     * TODO
      * @swagger
      *
      * '/feedbacks/{id}':
@@ -189,6 +192,8 @@ module.exports = (app) => {
      *     description: Create a new feedback
      *     tags:
      *       - Feedbacks
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: score
      *         description: Feedback's score
@@ -206,30 +211,35 @@ module.exports = (app) => {
      *         description: New feedback successfully created
      *       400:
      *         description: Invalid parameters
+     *       401:
+     *         description: Unauthorized operation
      *       409:
      *         description: A conflict error has occurred while creating a new feedback
      *       500:
      *         description: An internal error has occurred
      */
-    app.post(endpoints.Feedbacks, bodyParser.json(), async (req, res) => {
-        try {
-            const feedback = {
-                score: parseInt(req.body.score),
-                title: req.body.title,
-                description: req.body.description
-            };
-            if (FeedbackValidator.isValid(feedback)) {
-                const feedbackDTO = await FeedbackController.createFeedback(feedback);
-                if (feedbackDTO) {
-                    res.status(HttpCodeUtil.CREATED).json(feedbackDTO);
+    app.post(endpoints.Feedbacks, UserMiddleware.checkIfUserIsLoggedInFromToken(), bodyParser.json(),
+        async (req, res) => {
+            try {
+                const feedback = {
+                    score: parseInt(req.body.score),
+                    title: req.body.title,
+                    description: req.body.description
+                };
+                const token = UserMiddleware.extractTokenFromHeaders(req.headers);
+                if (FeedbackValidator.isValid(feedback) && ValidatorUtil.isValidString(token)) {
+                    const feedbackDTO = await FeedbackController.createFeedback(feedback, token);
+                    if (feedbackDTO) {
+                        res.status(HttpCodeUtil.CREATED).json(feedbackDTO);
+                    } else {
+                        res.status(HttpCodeUtil.CONFLICT).end();
+                    }
                 } else {
-                    res.status(HttpCodeUtil.CONFLICT).end();
+                    res.status(HttpCodeUtil.BAD_REQUEST).end();
                 }
-            } else {
-                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            } catch (e) {
+                res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
             }
-        } catch (e) {
-            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
         }
-    });
+    );
 };
