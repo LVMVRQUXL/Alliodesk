@@ -214,65 +214,26 @@ module.exports = () => describe('FeedbackController', () => {
     });
 
     describe('#removeOneFeedbackFromId', () => {
-        before(() => {
-            setup_FeedbackService_destroy();
-            setup_FeedbackService_findOne();
-            setup_FeedbackService_mapToDTO();
-        });
-        afterEach(() => {
-            reset_FeedbackService_destroy();
-            reset_FeedbackService_findOne();
-            reset_FeedbackService_mapToDTO();
-        });
-        after(() => {
-            teardown_FeedbackService_destroy();
-            teardown_FeedbackService_findOne();
-            teardown_FeedbackService_mapToDTO();
-        });
+        before(() => setup_FeedbackService_destroy());
+        afterEach(() => reset_FeedbackService_destroy());
+        after(() => teardown_FeedbackService_destroy());
 
         // noinspection JSUnresolvedFunction
         const _call = async () => await FeedbackController.removeOneFeedbackFromId(fakeFeedback.id);
 
         // noinspection DuplicatedCode
-        it('should return true with valid id', async () => {
+        it('should return nothing with valid id', async () => {
             // SETUP
             const destroy = MockDependencies.Services.FeedbackService.destroy;
-            const findOne = MockDependencies.Services.FeedbackService.findOne;
-            const mapToDTO = MockDependencies.Services.FeedbackService.mapToDTO;
-            findOne.resolves(fakeFeedback);
-            mapToDTO.returns(fakeFeedback);
             destroy.resolves(true);
 
             // CALL
             const result = await _call();
 
             // VERIFY
-            assert.equal(result, true);
-            sinon.assert.calledOnce(findOne);
-            sinon.assert.calledWithExactly(findOne, {id: fakeFeedback.id});
-            sinon.assert.calledOnce(mapToDTO);
-            sinon.assert.calledWithExactly(mapToDTO, fakeFeedback);
+            assert.equal(result, undefined);
             sinon.assert.calledOnce(destroy);
             sinon.assert.calledWithExactly(destroy, {id: fakeFeedback.id});
-        });
-
-        // noinspection DuplicatedCode
-        it('should return false with valid id', async () => {
-            // SETUP
-            const destroy = MockDependencies.Services.FeedbackService.destroy;
-            const findOne = MockDependencies.Services.FeedbackService.findOne;
-            const mapToDTO = MockDependencies.Services.FeedbackService.mapToDTO;
-            findOne.resolves();
-
-            // CALL
-            const result = await _call();
-
-            // VERIFY
-            assert.equal(result, false);
-            sinon.assert.calledOnce(findOne);
-            sinon.assert.calledWithExactly(findOne, {id: fakeFeedback.id});
-            sinon.assert.notCalled(mapToDTO);
-            sinon.assert.notCalled(destroy);
         });
     });
 

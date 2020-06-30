@@ -44,17 +44,14 @@ class FeedbackController {
      *
      * @param id {number}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
     async removeOneFeedbackFromId(id) {
-        if (!await this.findOneFeedbackFromId(id)) {
-            return false;
-        }
-
-        return await FeedbackService.destroy({id: id});
+        await FeedbackService.destroy({id: id});
     }
 
     /**
+     * TODO: refactor
      * Update one feedback from id
      *
      * @param id {number}

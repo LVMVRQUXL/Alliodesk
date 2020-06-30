@@ -17,16 +17,10 @@ class FeedbackService {
      *
      * @param where {object}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
     async destroy(where) {
-        try {
-            await Feedback.destroy({where: where});
-            return true;
-        } catch (e) {
-            console.error(e);
-            return false;
-        }
+        await Feedback.destroy({where: where});
     }
 
     /**

@@ -8,7 +8,7 @@ const UserMiddleware = require('../middlewares').UserMiddleware;
 
 module.exports = (app) => {
     /**
-     * TODO
+     * TODO: add rights
      * @swagger
      *
      * '/feedbacks/{id}':
@@ -69,7 +69,7 @@ module.exports = (app) => {
     });
 
     /**
-     * TODO
+     * TODO: add rights
      * @swagger
      *
      * '/feedbacks/{id}':
@@ -96,11 +96,12 @@ module.exports = (app) => {
         try {
             const id = parseInt(req.params.id);
             if (ValidatorUtil.isValidId(id)) {
-                const result = await FeedbackController.removeOneFeedbackFromId(id);
-                if (result) {
-                    res.status(HttpCodeUtil.OK).end();
-                } else {
+                const feedback = await FeedbackController.findOneFeedbackFromId(id);
+                if (!feedback) {
                     res.status(HttpCodeUtil.NOT_FOUND).end();
+                } else {
+                    await FeedbackController.removeOneFeedbackFromId(id);
+                    res.status(HttpCodeUtil.OK).end();
                 }
             } else {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();
