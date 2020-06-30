@@ -1,5 +1,7 @@
 module.exports = {
     HttpCodeUtil: require('./http_codes.util'),
     SecurityUtil: require('./security.util'),
-    SwaggerSpec: require('./swagger.util')
+    StringUtil: require('./string.util'),
+    SwaggerSpec: require('./swagger.util'),
+    ValidatorUtil: require('./validator.util')
 };

@@ -3,10 +3,10 @@ const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
-const SecurityUtil = require('../../src/utils/security.util');
+const SecurityUtil = require('../../../src/utils/security.util');
 
 module.exports = () => {
-    describe('ErrorController tests', () => {
+    describe('ErrorController', () => {
         const MockDependencies = {
             Services: {
                 ErrorService: {
@@ -25,7 +25,7 @@ module.exports = () => {
             }
         };
 
-        const ErrorController = proxyquire('../../src/controllers/error.controller', {
+        const ErrorController = proxyquire('../../../src/controllers/error.controller', {
             '../services': MockDependencies.Services,
             './service.controller': MockDependencies.ServiceController,
             './user.controller': MockDependencies.UserController

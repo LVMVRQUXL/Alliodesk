@@ -22,4 +22,8 @@ jobs:
       - name: Run unit tests
         run: |
           cd ./api
-          npm run test
+          npm run unit-test
+      - name: Run integration tests
+        run: |
+          cd ./api
+          npm run integration-test

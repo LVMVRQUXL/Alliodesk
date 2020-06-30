@@ -5,7 +5,7 @@ const proxyquire = require('proxyquire');
 
 module.exports = () => {
 
-    describe('UserStatusController tests', () => {
+    describe('UserStatusController', () => {
         const MockDependencies = {
             Services: {
                 UserStatusService: {
@@ -17,7 +17,7 @@ module.exports = () => {
             }
         };
 
-        const UserStatusController = proxyquire('../../src/controllers/user_status.controller', {
+        const UserStatusController = proxyquire('../../../src/controllers/user_status.controller', {
             '../services': MockDependencies.Services
         });
 
