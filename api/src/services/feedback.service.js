@@ -60,27 +60,21 @@ class FeedbackService {
      * @param values {object}
      * @param where {object}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
     async update(values, where) {
-        try {
-            await Feedback.update(values, {where: where});
-            return true;
-        } catch (e) {
-            console.error(e);
-            return false;
-        }
+        await Feedback.update(values, {where: where});
     }
 }
 
 class FeedbackDTO {
     constructor(feedback) {
-        this.id = feedback.id;
-        this.score = feedback.score;
+        this.id = parseInt(feedback.id);
+        this.score = parseInt(feedback.score);
         this.title = feedback.title;
         this.description = feedback.description;
-        this.user_id = feedback.user_id;
-        this.service_id = feedback.service_id;
+        this.user_id = parseInt(feedback.user_id);
+        this.service_id = feedback.service_id; // TODO: parseInt(feedback.service_id)
     }
 }
 

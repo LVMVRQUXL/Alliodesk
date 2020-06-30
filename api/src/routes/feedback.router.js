@@ -42,13 +42,13 @@ module.exports = (app) => {
      */
     app.put(endpoints.FeedbacksId, bodyParser.json(), async (req, res) => {
         try {
-            const id = parseInt(req.params.id);
             const feedback = {
+                id: parseInt(req.params.id),
                 score: req.body.score ? parseInt(req.body.score) : undefined,
                 title: req.body.title,
                 description: req.body.description
             };
-            if (!ValidatorUtil.isValidId(id)
+            if (!ValidatorUtil.isValidId(feedback.id)
                 || (!FeedbackValidator.isValidScore(feedback.score)
                     && !ValidatorUtil.isValidString(feedback.title)
                     && !ValidatorUtil.isValidString(feedback.description))
@@ -56,11 +56,13 @@ module.exports = (app) => {
                 || (feedback.title && !ValidatorUtil.isValidString(feedback.title))) {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();
             } else {
-                const result = await FeedbackController.updateOneFeedbackFromId(id, feedback);
-                if (result) {
-                    res.status(HttpCodeUtil.OK).end();
-                } else {
+                const oldFeedback = await FeedbackController.findOneFeedbackFromId(feedback.id);
+                if (!oldFeedback) {
                     res.status(HttpCodeUtil.NOT_FOUND).end();
+                } else {
+                    const values = FeedbackController.buildUpdatingValues(oldFeedback, feedback);
+                    await FeedbackController.updateOneFeedbackFromId(oldFeedback.id, values);
+                    res.status(HttpCodeUtil.OK).end();
                 }
             }
         } catch (e) {
@@ -95,16 +97,13 @@ module.exports = (app) => {
     app.delete(endpoints.FeedbacksId, async (req, res) => {
         try {
             const id = parseInt(req.params.id);
-            if (ValidatorUtil.isValidId(id)) {
-                const feedback = await FeedbackController.findOneFeedbackFromId(id);
-                if (!feedback) {
-                    res.status(HttpCodeUtil.NOT_FOUND).end();
-                } else {
-                    await FeedbackController.removeOneFeedbackFromId(id);
-                    res.status(HttpCodeUtil.OK).end();
-                }
-            } else {
+            if (!ValidatorUtil.isValidId(id)) {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();
+            } else if (!await FeedbackController.findOneFeedbackFromId(id)) {
+                res.status(HttpCodeUtil.NOT_FOUND).end();
+            } else {
+                await FeedbackController.removeOneFeedbackFromId(id);
+                res.status(HttpCodeUtil.OK).end();
             }
         } catch (e) {
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
