@@ -71,7 +71,6 @@ module.exports = (app) => {
     });
 
     /**
-     * TODO: add rights
      * @swagger
      *
      * '/feedbacks/{id}':
@@ -79,6 +78,8 @@ module.exports = (app) => {
      *     description: Remove one feedback from id
      *     tags:
      *       - Feedbacks
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: Feedback's id
@@ -89,21 +90,28 @@ module.exports = (app) => {
      *         description: Ok
      *       400:
      *         description: Invalid parameters
+     *       401:
+     *         description: Unauthorized operation
      *       404:
      *         description: Can't find feedback from id
      *       500:
      *         description: An internal error has occurred
      */
-    app.delete(endpoints.FeedbacksId, async (req, res) => {
+    app.delete(endpoints.FeedbacksId, UserMiddleware.checkIfUserIsLoggedInFromToken(), async (req, res) => {
         try {
             const id = parseInt(req.params.id);
             if (!ValidatorUtil.isValidId(id)) {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();
-            } else if (!await FeedbackController.findOneFeedbackFromId(id)) {
-                res.status(HttpCodeUtil.NOT_FOUND).end();
             } else {
-                await FeedbackController.removeOneFeedbackFromId(id);
-                res.status(HttpCodeUtil.OK).end();
+                const feedback = await FeedbackController.findOneFeedbackFromId(id);
+                if (!feedback) {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                } else if (feedback.user_id !== parseInt(req.userLoggedIn.id)) {
+                    res.status(HttpCodeUtil.UNAUTHORIZED).end();
+                } else {
+                    await FeedbackController.removeOneFeedbackFromId(id);
+                    res.status(HttpCodeUtil.OK).end();
+                }
             }
         } catch (e) {
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
