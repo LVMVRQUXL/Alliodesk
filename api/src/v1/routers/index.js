@@ -1,16 +1,26 @@
+const router = require('express').Router();
 const swaggerUi = require('swagger-ui-express');
 const cors = require('cors');
+
 const SwaggerSpec = require('../utils').SwaggerSpec;
 
-module.exports.config = (app) => {
-    app.use(cors());
+// noinspection JSUnresolvedFunction
+router.use(cors());
 
-    require('./admin.router')(app);
-    require('./error.router')(app);
-    require('./feedback.router')(app);
-    require('./service.router')(app);
-    require('./user.router')(app);
-    require('./workspace.router')(app);
+// noinspection JSUnresolvedFunction
+router.use('/admins', require('./admin.router'));
+// noinspection JSUnresolvedFunction
+router.use('/errors', require('./error.router'));
+// noinspection JSUnresolvedFunction,SpellCheckingInspection
+router.use('/feedbacks', require('./feedback.router'));
+// noinspection JSUnresolvedFunction
+router.use('/services', require('./service.router'));
+// noinspection JSUnresolvedFunction
+router.use('/users', require('./user.router'));
+// noinspection JSUnresolvedFunction
+router.use('/workspaces', require('./workspace.router'));
 
-    app.use('/swagger', swaggerUi.serve, swaggerUi.setup(SwaggerSpec));
-};
+// noinspection JSUnresolvedFunction
+router.use('/swagger', swaggerUi.serve, swaggerUi.setup(SwaggerSpec));
+
+module.exports = router;
