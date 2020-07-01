@@ -3,7 +3,7 @@ const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
-const SecurityUtil = require('../../../src/utils/security.util');
+const SecurityUtil = require('../../../src/v1/utils/security.util');
 
 module.exports = () => {
     describe('ServiceController', () => {

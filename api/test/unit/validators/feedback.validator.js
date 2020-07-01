@@ -1,8 +1,8 @@
 const {describe, it, afterEach, beforeEach} = require('mocha');
 const assert = require('assert');
 
-const FeedbackValidator = require('../../../src/routers/validators').FeedbackValidator;
-const ValidatorUtil = require('../../../src/utils').ValidatorUtil;
+const FeedbackValidator = require('../../../src/v1/routers/validators').FeedbackValidator;
+const ValidatorUtil = require('../../../src/v1/utils').ValidatorUtil;
 
 module.exports = (sandbox) => describe('FeedbackValidator', () => {
     afterEach(() => sandbox.restore());

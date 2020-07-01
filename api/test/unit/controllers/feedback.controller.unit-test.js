@@ -3,7 +3,7 @@ const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
-const ValidatorUtil = require('../../../src/utils').ValidatorUtil;
+const ValidatorUtil = require('../../../src/v1/utils').ValidatorUtil;
 
 module.exports = () => describe('FeedbackController', () => {
     const MockDependencies = {

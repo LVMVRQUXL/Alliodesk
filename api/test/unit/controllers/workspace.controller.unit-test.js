@@ -3,7 +3,7 @@ const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const assert = require('assert');
 
-const SecurityUtil = require('../../../src/utils/security.util');
+const SecurityUtil = require('../../../src/v1/utils/security.util');
 
 module.exports = () => {
     describe('WorkspaceController', () => {

@@ -2,11 +2,11 @@ const {describe, it, afterEach} = require('mocha');
 const request = require('supertest');
 const assert = require('assert');
 
-const feedbackRouter = require('../../src/routers/feedback.router');
-const HttpCodeUtil = require('../../src/utils').HttpCodeUtil;
-const endpoints = require('../../src/routers/endpoints').FeedbackEndpoints;
-const FeedbackService = require('../../src/services').FeedbackService;
-const FeedbackController = require('../../src/controllers').FeedbackController;
+const feedbackRouter = require('../../src/v1/routers/feedback.router');
+const HttpCodeUtil = require('../../src/v1/utils').HttpCodeUtil;
+const endpoints = require('../../src/v1/routers/endpoints').FeedbackEndpoints;
+const FeedbackService = require('../../src/v1/services').FeedbackService;
+const FeedbackController = require('../../src/v1/controllers').FeedbackController;
 
 module.exports = (app, sandbox) => describe('Feedback integration tests', () => {
     feedbackRouter(app);
