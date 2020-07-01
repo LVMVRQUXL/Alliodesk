@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController">
+<BorderPane stylesheets="@AlliodeskLayout.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController">
     <top>
-        <MenuBar fx:id="menu" prefHeight="35.0" prefWidth="1119.0" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
+        <MenuBar prefHeight="35.0" prefWidth="1119.0" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem fx:id="Close" mnemonicParsing="false" text="Close" />
+                        <MenuItem mnemonicParsing="false" text="Close" />
                         <MenuItem mnemonicParsing="false" onAction="#loadPlugin" text="Reload plugins" />
                     </items>
                 </Menu>
@@ -32,15 +32,21 @@
                         <MenuItem mnemonicParsing="false" onAction="#showError" text="Send Error" />
                     </items>
                 </Menu>
+                <Menu fx:id="workspacesManager" mnemonicParsing="false" text="Workspaces Manager">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#addWS" text="Init My Workspaces" />
+                    </items>
+                </Menu>
+                <Menu fx:id="workspaces" mnemonicParsing="false" text="My Workspaces">
+                </Menu>
                 <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins" />
-            <Menu fx:id="workspacesManager" mnemonicParsing="false" text="Workspaces Manager">
-                <items>
-                    <MenuItem mnemonicParsing="false" onAction="#addWS" text="Init My Workspaces" />
-                </items>
-            </Menu>
-            <Menu fx:id="workspaces" mnemonicParsing="false" text="My Workspaces">
-            </Menu>
-        </menus>
+                <Menu fx:id="marketplace" mnemonicParsing="false" text="Marketplace">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#getMarketplaceServices" text="Get Marketplace Services" />
+                    </items>
+                </Menu>
+            </menus>
+
         </MenuBar>
     </top>
     <left>
@@ -53,47 +59,7 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="16.0" prefWidth="1200.0" style="-fx-background-color: #2c2c2c;" BorderPane.alignment="CENTER" />
     </bottom>
-   <top>
-      <MenuBar prefHeight="35.0" prefWidth="1119.0" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-                  <MenuItem mnemonicParsing="false" onAction="#loadPlugin" text="Reload plugins" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-                  <MenuItem mnemonicParsing="false" onAction="#showError" text="Send Error" />
-            </items>
-          </Menu>
-            <Menu fx:id="workspacesManager" mnemonicParsing="false" text="Workspaces Manager">
-                <items>
-                    <MenuItem mnemonicParsing="false" onAction="#addWS" text="Init My Workspaces" />
-                </items>
-            </Menu>
-            <Menu fx:id="workspaces" mnemonicParsing="false" text="My Workspaces">
-            </Menu>
-            <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins" />
-        </menus>
-          <Menu fx:id="Marketplace" mnemonicParsing="false" text="Marketplace">
-              <items>
-                  <MenuItem mnemonicParsing="false" onAction="#showMarketplace" text="Show Marketplace" />
-                  <Menu mnemonicParsing="false" text="Unspecified Menu">
-                      <items>
-                          <MenuItem mnemonicParsing="false" text="Action 1" />
-                      </items>
-                  </Menu>
-              </items>
-          </Menu>
-      </MenuBar>
-   </top>
+
    <left>
       <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #393C42;" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
          <children>
