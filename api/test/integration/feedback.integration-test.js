@@ -2,9 +2,9 @@ const {describe, it, afterEach} = require('mocha');
 const request = require('supertest');
 const assert = require('assert');
 
-const feedbackRouter = require('../../src/routes/feedback.router');
+const feedbackRouter = require('../../src/routers/feedback.router');
 const HttpCodeUtil = require('../../src/utils').HttpCodeUtil;
-const endpoints = require('../../src/routes/endpoints').FeedbackEndpoints;
+const endpoints = require('../../src/routers/endpoints').FeedbackEndpoints;
 const FeedbackService = require('../../src/services').FeedbackService;
 const FeedbackController = require('../../src/controllers').FeedbackController;
 

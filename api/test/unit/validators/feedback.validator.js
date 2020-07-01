@@ -1,7 +1,7 @@
 const {describe, it, afterEach, beforeEach} = require('mocha');
 const assert = require('assert');
 
-const FeedbackValidator = require('../../../src/routes/validators').FeedbackValidator;
+const FeedbackValidator = require('../../../src/routers/validators').FeedbackValidator;
 const ValidatorUtil = require('../../../src/utils').ValidatorUtil;
 
 module.exports = (sandbox) => describe('FeedbackValidator', () => {

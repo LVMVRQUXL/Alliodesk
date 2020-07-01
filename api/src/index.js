@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const express = require('express');
 
-const routes = require('./routes');
+const routes = require('./routers');
 const bootstrap = require('./boot_sequelize');
 
 // SERVE
