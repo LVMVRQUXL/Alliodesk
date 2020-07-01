@@ -49,7 +49,26 @@ public class ServiceRequest extends ApiRequest {
 
         return response;
     }
+    private CloseableHttpResponse requestFindAllServices() throws IOException {
+        String tempId = "-1";
+        final GetUserData myUser = new GetUserData();
+        myUser.requestToServe();
+        if (myUser.idNotEmpty()) tempId = myUser.getId();
+        final CloseableHttpResponse response = super.request(
+                "/services",
+                new HttpGet(),
+                this.form,
+                true
+        );
 
+        if (response.getStatusLine().getStatusCode() == 200) {
+            final String responseContent = EntityUtils.toString(response.getEntity());
+            Service[] yourList = new Gson().fromJson(responseContent, Service[].class);
+            existedService.addAll(Arrays.asList(yourList));
+        }
+
+        return response;
+    }
     @Override
     public int requestToServe() {
         try {
@@ -62,6 +81,9 @@ public class ServiceRequest extends ApiRequest {
                             this.form,
                             true
                     );
+                    break;
+                case "findAllService":
+                    response = this.requestFindAllServices();
                     break;
                 case "findUserAllServices":
                     response = this.requestFindAllServicesOfUser();
