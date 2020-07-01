@@ -22,7 +22,7 @@ public class ServiceRequest extends ApiRequest {
     public ServiceRequest(String functionCall, String id) {
         this.functionCall = functionCall;
         this.form = InfoInForm.build()
-                .withId(id);
+                .withServiceId(id);
     }
 
     public ArrayList<Service> getExistedService() {
