@@ -3,7 +3,7 @@ const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const assert = require('assert');
 
-const SecurityUtil = require('../../../src/v1/utils/security.util');
+const SecurityUtil = require('../../../../src/v1/utils/security.util');
 
 module.exports = () => {
     describe('WorkspaceController', () => {
@@ -29,7 +29,7 @@ module.exports = () => {
             }
         };
 
-        const WorkspaceController = proxyquire('../../../src/controllers/workspace.controller', {
+        const WorkspaceController = proxyquire('../../../../src/v1/controllers/workspace.controller', {
             '../services': MockDependencies.Services,
             './user.controller': MockDependencies.UserController,
             './service.controller': MockDependencies.ServiceController

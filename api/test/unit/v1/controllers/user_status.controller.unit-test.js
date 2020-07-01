@@ -17,7 +17,7 @@ module.exports = () => {
             }
         };
 
-        const UserStatusController = proxyquire('../../../src/controllers/user_status.controller', {
+        const UserStatusController = proxyquire('../../../../src/v1/controllers/user_status.controller', {
             '../services': MockDependencies.Services
         });
 

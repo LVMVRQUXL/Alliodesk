@@ -3,7 +3,7 @@ const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
-const ValidatorUtil = require('../../../src/v1/utils').ValidatorUtil;
+const ValidatorUtil = require('../../../../src/v1/utils').ValidatorUtil;
 
 module.exports = () => describe('FeedbackController', () => {
     const MockDependencies = {
@@ -11,7 +11,7 @@ module.exports = () => describe('FeedbackController', () => {
             FeedbackService: {}
         }
     };
-    const FeedbackController = proxyquire('../../../src/controllers/feedback.controller', {
+    const FeedbackController = proxyquire('../../../../src/v1/controllers/feedback.controller', {
         '../services': MockDependencies.Services
     });
 
