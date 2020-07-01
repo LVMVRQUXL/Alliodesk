@@ -50,10 +50,8 @@ public class ServiceRequest extends ApiRequest {
         return response;
     }
     private CloseableHttpResponse requestFindAllServices() throws IOException {
-        String tempId = "-1";
         final GetUserData myUser = new GetUserData();
         myUser.requestToServe();
-        if (myUser.idNotEmpty()) tempId = myUser.getId();
         final CloseableHttpResponse response = super.request(
                 "/services",
                 new HttpGet(),
@@ -69,6 +67,31 @@ public class ServiceRequest extends ApiRequest {
 
         return response;
     }
+
+    private CloseableHttpResponse RequestAddServiceToUser() throws IOException {
+        String tempId = "-1";
+        GetUserData myUser = new GetUserData();
+        myUser.requestToServe();
+        if (myUser.idNotEmpty()) {
+            tempId = myUser.getId();
+        }
+
+        CloseableHttpResponse response = super.request("/users/" + tempId + "/services", new HttpPost(), this.form, true);
+        return response;
+    }
+
+    private CloseableHttpResponse requestDeleteServiceToUser() throws IOException {
+        String tempId = "-1";
+        GetUserData myUser = new GetUserData();
+        myUser.requestToServe();
+        if (myUser.idNotEmpty()) {
+            tempId = myUser.getId();
+        }
+
+        CloseableHttpResponse response = super.request("/users/" + tempId + "/services/" + this.form.getService_id(), new HttpDelete(), this.form, true);
+        return response;
+    }
+
     @Override
     public int requestToServe() {
         try {
@@ -81,6 +104,12 @@ public class ServiceRequest extends ApiRequest {
                             this.form,
                             true
                     );
+                    break;
+                case "addServiceToUser":
+                    response = this.RequestAddServiceToUser();
+                    break;
+                case "deleteServiceToUser":
+                    response = this.requestDeleteServiceToUser();
                     break;
                 case "findAllService":
                     response = this.requestFindAllServices();
