@@ -8,30 +8,7 @@ import java.util.ArrayList;
 
 import javafx.scene.control.MenuItem;
 
-import java.util.ArrayList;
-
 public class MarketplaceController {
-    private ObservableList<ServiceRequest.Service> list = FXCollections.observableArrayList();
-    @FXML
-    private ChoiceBox<String> servicesChoice;
-    @FXML
-    public void initialize() {
-        loadService();
-    }
-
-    private void loadService(){
-        list.clear();
-        list.addAll(findAllService());
-        if (list.size() > 0) {
-            for (ServiceRequest.Service service : list) {
-                MenuItem i = new MenuItem(service.getName());
-                servicesChoice.getItems().add(service.getName());
-            }
-            servicesChoice.setValue(servicesChoice.getItems().get(0));
-        } else {
-            servicesChoice.setValue("Aucun service trouvé");
-        }
-    }
 
     public static ArrayList<Service> findAllService() {
         ServiceRequest serviceRequest = new ServiceRequest("findAllService", (String)null);
