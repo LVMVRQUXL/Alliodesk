@@ -19,6 +19,7 @@
                     <items>
                         <MenuItem mnemonicParsing="false" text="Close" />
                         <MenuItem mnemonicParsing="false" onAction="#loadPlugin" text="Reload plugins" />
+                        <MenuItem mnemonicParsing="false" onAction="#getMarketplaceServices" text="Get Marketplace Services" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
@@ -40,11 +41,7 @@
                 <Menu fx:id="workspaces" mnemonicParsing="false" text="My Workspaces">
                 </Menu>
                 <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins" />
-                <Menu fx:id="marketplace" mnemonicParsing="false" text="Marketplace">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#getMarketplaceServices" text="Get Marketplace Services" />
-                    </items>
-                </Menu>
+                <Menu fx:id="marketplace" mnemonicParsing="false" text="Marketplace" />
             </menus>
 
         </MenuBar>
