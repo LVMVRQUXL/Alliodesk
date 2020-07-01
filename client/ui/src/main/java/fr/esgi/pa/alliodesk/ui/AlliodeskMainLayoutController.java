@@ -1,6 +1,7 @@
 package fr.esgi.pa.alliodesk.ui;
 
 import fr.esgi.pa.alliodesk.core.models.Service;
+import fr.esgi.pa.alliodesk.ui.controller.MarketplaceController;
 import fr.esgi.pa.alliodesk.ui.plugin.PluginGuetter;
 import interfacetest.PluginInterface;
 import fr.esgi.pa.alliodesk.ui.controller.WSController;
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -22,7 +24,7 @@ public class AlliodeskMainLayoutController {
 
     private ArrayList<String[]> myList;
     private ArrayList<Service> myServiceList;
-    private AlliodeskMainLayoutController alliodeskMainLayoutController;
+    private ArrayList<Service> marketplaceServiceList;
     private static String workspaceId = "";
 
     public static String getWorkspaceId() {
@@ -45,7 +47,8 @@ public class AlliodeskMainLayoutController {
     private Menu pluginMenu;
     @FXML
     private Button refreshServiceListButton;
-
+    @FXML
+    private Menu marketplace;
     @FXML
     void showError(ActionEvent event) throws IOException {
         AlliodeskMainLayout.showErrorLayout();
@@ -62,6 +65,30 @@ public class AlliodeskMainLayoutController {
             pluginMenu.getItems().add(mi);
             index++;
         }
+    }
+    @FXML
+    void getMarketplaceServices(ActionEvent event) {
+        this.marketplaceServiceList = MarketplaceController.findAllService();
+        this.marketplace.getItems().clear();
+        for (Service s : marketplaceServiceList){
+            Hyperlink hyperlink = new Hyperlink("Link");
+            Menu serviceMenu = new Menu(s.getName());
+            Menu link = new Menu();
+            MenuItem add = new MenuItem("Add service");
+            MarketplaceController.setAddItem(add, s.getId());
+            hyperlink.setOnAction(linkEvent -> {
+                AlliodeskMainLayout.getHostService().showDocument(s.getSource_url());
+            });
+            link.setGraphic(hyperlink);
+            link.getItems().add(add);
+            serviceMenu.getItems().add(link);
+            this.marketplace.getItems().add(serviceMenu);
+        }
+
+
+
+
+
     }
 
     @FXML
