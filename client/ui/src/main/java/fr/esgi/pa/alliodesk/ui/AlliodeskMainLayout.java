@@ -1,7 +1,11 @@
+
+
 package fr.esgi.pa.alliodesk.ui;
 
 import fr.esgi.pa.alliodesk.ui.service.ExtensionGetter;
+import java.io.IOException;
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
@@ -10,12 +14,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class AlliodeskMainLayout extends Application {
     private Stage primaryStage;
     private static BorderPane rootLayout;
+    private static HostServices hostServices;
 
+    public AlliodeskMainLayout() {
+    }
+
+    public static HostServices getHostService() {
+        return hostServices;
+    }
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
