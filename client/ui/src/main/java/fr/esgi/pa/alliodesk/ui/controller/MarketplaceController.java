@@ -1,12 +1,11 @@
 
 package fr.esgi.pa.alliodesk.ui.controller;
 
+import fr.esgi.pa.alliodesk.core.models.Service;
 import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
+import fr.esgi.pa.alliodesk.core.request.WorkspaceRequest;
+import java.util.ArrayList;
+
 import javafx.scene.control.MenuItem;
 
 import java.util.ArrayList;
@@ -34,21 +33,16 @@ public class MarketplaceController {
         }
     }
 
-    @FXML
-    void addService(ActionEvent event) {
-
-    }
-
-    public static ArrayList<ServiceRequest.Service> findAllService(){
-        ServiceRequest serviceRequest = new ServiceRequest("findAllService", null);
+    public static ArrayList<Service> findAllService() {
+        ServiceRequest serviceRequest = new ServiceRequest("findAllService", (String)null);
         int status_code = serviceRequest.requestToServe();
-        switch (status_code) {
+        switch(status_code) {
             case 200:
                 System.out.println("Ok");
                 return serviceRequest.getExistedService();
             case 204:
                 System.out.println("No services to return");
-                return new ArrayList<ServiceRequest.Service>();
+                return new ArrayList();
             case 400:
                 System.out.println("Invalid workspace id");
                 return null;
