@@ -4,16 +4,9 @@ const emailValidator = require('email-validator');
 const {UserMiddleware, UserStatusMiddleware} = require('../middlewares');
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 const AdminController = require('../controllers').AdminController;
-
-const routes = {
-    AdminsLogin: '/admins/login',
-    AdminsIdLogout: '/admins/:id/logout',
-    AdminsId: '/admins/:id',
-    Admins: '/admins'
-};
+const endpoints = require('./endpoints').AdminEndpoints;
 
 module.exports = (app) => {
-
     app.use(UserStatusMiddleware.checkStatusForAdmins());
 
     /**
@@ -43,7 +36,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.AdminsLogin, bodyParser.json(), async (req, res) => {
+    app.put(endpoints.AdminsLogin, bodyParser.json(), async (req, res) => {
         try {
             const adminLogin = req.body.login;
             const adminPassword = req.body.password;
@@ -88,7 +81,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.AdminsIdLogout, bodyParser.json(), async (req, res) => {
+    app.put(endpoints.AdminsIdLogout, bodyParser.json(), async (req, res) => {
         try {
             const adminId = parseInt(req.params.id);
             const adminTokenSession = UserMiddleware.extractTokenFromHeaders(req.headers);
@@ -133,7 +126,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.AdminsId, async (req, res) => {
+    app.get(endpoints.AdminsId, async (req, res) => {
         try {
             const adminId = parseInt(req.params.id);
             if (!isNaN(adminId)) {
@@ -175,7 +168,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.delete(routes.AdminsId, async (req, res) => {
+    app.delete(endpoints.AdminsId, async (req, res) => {
         try {
             const adminId = parseInt(req.params.id);
             if (!isNaN(adminId)) {
@@ -226,7 +219,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.AdminsId, bodyParser.json(), async (req, res) => {
+    app.put(endpoints.AdminsId, bodyParser.json(), async (req, res) => {
         try {
             const adminId = parseInt(req.params.id);
             const adminName = req.body.name;
@@ -271,7 +264,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.Admins, async (req, res) => {
+    app.get(endpoints.Admins, async (req, res) => {
         try {
             const admins = await AdminController.findAllAdmins();
             if (admins.length > 0) {
@@ -322,7 +315,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.post(routes.Admins, bodyParser.json(), async (req, res) => {
+    app.post(endpoints.Admins, bodyParser.json(), async (req, res) => {
         try {
             const adminName = req.body.name;
             const adminEmail = req.body.email;
@@ -346,5 +339,4 @@ module.exports = (app) => {
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
         }
     });
-
 };

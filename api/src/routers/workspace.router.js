@@ -3,13 +3,7 @@ const bodyParser = require('body-parser');
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 const WorkspaceController = require('../controllers').WorkspaceController;
 const UserMiddleware = require('../middlewares').UserMiddleware;
-
-const routes = {
-    WorkspacesIdServicesService_id: '/workspaces/:id/services/:service_id',
-    WorkspacesIdServices: '/workspaces/:id/services',
-    WorkspacesId: '/workspaces/:id',
-    Workspaces: '/workspaces'
-};
+const endpoints = require('./endpoints').WorkspaceEndpoints;
 
 module.exports = (app) => {
     /**
@@ -40,7 +34,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.delete(routes.WorkspacesIdServicesService_id, async (req, res) => {
+    app.delete(endpoints.WorkspacesIdServicesService_id, async (req, res) => {
         try {
             const workspaceId = parseInt(req.params.id);
             const serviceId = parseInt(req.params.service_id);
@@ -88,7 +82,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.get(routes.WorkspacesIdServices, async (req, res) => {
+    app.get(endpoints.WorkspacesIdServices, async (req, res) => {
         try {
             const workspaceId = parseInt(req.params.id);
             if (!isNaN(workspaceId)) {
@@ -137,7 +131,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.post(routes.WorkspacesIdServices, bodyParser.json(), async (req, res) => {
+    app.post(endpoints.WorkspacesIdServices, bodyParser.json(), async (req, res) => {
         try {
             const workspaceId = parseInt(req.params.id);
             const serviceId = parseInt(req.body.service_id);
@@ -182,7 +176,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.get(routes.WorkspacesId, async (req, res) => {
+    app.get(endpoints.WorkspacesId, async (req, res) => {
         try {
             const workspaceId = parseInt(req.params.id);
             if (!isNaN(workspaceId)) {
@@ -228,7 +222,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.delete(routes.WorkspacesId, async (req, res) => {
+    app.delete(endpoints.WorkspacesId, async (req, res) => {
         try {
             const workspaceId = parseInt(req.params.id);
             const userToken = UserMiddleware.extractTokenFromHeaders(req.headers);
@@ -285,7 +279,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.put(routes.WorkspacesId, bodyParser.json(), async (req, res) => {
+    app.put(endpoints.WorkspacesId, bodyParser.json(), async (req, res) => {
         try {
             const workspaceId = parseInt(req.params.id);
             const workspaceName = req.body.name;
@@ -331,7 +325,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.get(routes.Workspaces, async (req, res) => {
+    app.get(endpoints.Workspaces, async (req, res) => {
         try {
             const workspaces = await WorkspaceController.findAllWorkspaces();
             if (workspaces.length > 0) {
@@ -374,7 +368,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.post(routes.Workspaces, bodyParser.json(), async (req, res) => {
+    app.post(endpoints.Workspaces, bodyParser.json(), async (req, res) => {
         try {
             const workspaceName = req.body.name;
             const workspaceDescription = req.body.description;

@@ -3,11 +3,7 @@ const bodyParser = require('body-parser');
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 const ErrorController = require('../controllers').ErrorController;
 const {AdminMiddleware, UserMiddleware} = require('../middlewares');
-
-const routes = {
-    ErrorsId: '/errors/:id',
-    Errors: '/errors'
-};
+const endpoints = require('./endpoints').ErrorEndpoints;
 
 module.exports = (app) => {
     /**
@@ -37,7 +33,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.delete(routes.ErrorsId, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
+    app.delete(endpoints.ErrorsId, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const errorId = parseInt(req.params.id);
             if (errorId && errorId > 0) {
@@ -87,7 +83,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.get(routes.ErrorsId, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
+    app.get(endpoints.ErrorsId, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const errorId = parseInt(req.params.id);
             if (errorId && errorId > 0) {
@@ -130,7 +126,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.get(routes.Errors, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
+    app.get(endpoints.Errors, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const errors = await ErrorController.findAllErrors();
             if (errors && errors.length > 0) {
@@ -175,7 +171,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.post(routes.Errors, bodyParser.json(), async (req, res) => {
+    app.post(endpoints.Errors, bodyParser.json(), async (req, res) => {
         try {
             const errorMessage = req.body.message;
             const serviceName = req.body.service_name;

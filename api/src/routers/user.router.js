@@ -4,20 +4,9 @@ const emailValidator = require('email-validator');
 const UserController = require('../controllers').UserController;
 const {UserStatusMiddleware, UserMiddleware} = require('../middlewares');
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
-
-const routes = {
-    UsersMeInfos: '/users/me/infos',
-    UsersLogin: '/users/login',
-    UsersIdWorkspaces: '/users/:id/workspaces',
-    UsersIdServicesService_id: '/users/:id/services/:service_id',
-    UsersIdServices: '/users/:id/services',
-    UsersIdLogout: '/users/:id/logout',
-    UsersId: '/users/:id',
-    Users: '/users'
-};
+const endpoints = require('./endpoints').UserEndpoints;
 
 module.exports = (app) => {
-
     app.use(UserStatusMiddleware.checkStatusForUsers());
 
     /**
@@ -42,7 +31,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.get(routes.UsersMeInfos, async (req, res) => {
+    app.get(endpoints.UsersMeInfos, async (req, res) => {
         try {
             const userToken = UserMiddleware.extractTokenFromHeaders(req.headers);
             if (userToken && userToken !== '') {
@@ -88,7 +77,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.UsersLogin, bodyParser.json(), async (req, res) => {
+    app.put(endpoints.UsersLogin, bodyParser.json(), async (req, res) => {
         try {
             const userLogin = req.body.login;
             const userPassword = req.body.password;
@@ -136,7 +125,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.get(routes.UsersIdWorkspaces, async (req, res) => {
+    app.get(endpoints.UsersIdWorkspaces, async (req, res) => {
         try {
             const userId = parseInt(req.params.id);
             if (!isNaN(userId) && userId > 0) {
@@ -191,7 +180,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.get(routes.UsersIdServicesService_id, UserMiddleware.checkIfUserIsLoggedInFromToken(),
+    app.get(endpoints.UsersIdServicesService_id, UserMiddleware.checkIfUserIsLoggedInFromToken(),
         async (req, res) => {
             try {
                 const userId = parseInt(req.params.id);
@@ -245,7 +234,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.delete(routes.UsersIdServicesService_id, UserMiddleware.checkIfUserIsLoggedInFromToken(),
+    app.delete(endpoints.UsersIdServicesService_id, UserMiddleware.checkIfUserIsLoggedInFromToken(),
         async (req, res) => {
             try {
                 const userId = parseInt(req.params.id);
@@ -299,7 +288,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.post(routes.UsersIdServices, UserMiddleware.checkIfUserIsLoggedInFromToken(),
+    app.post(endpoints.UsersIdServices, UserMiddleware.checkIfUserIsLoggedInFromToken(),
         bodyParser.json(), async (req, res) => {
             try {
                 const userId = parseInt(req.params.id);
@@ -353,7 +342,7 @@ module.exports = (app) => {
      *       500:
      *         description: An internal error has occurred
      */
-    app.get(routes.UsersIdServices, UserMiddleware.checkIfUserIsLoggedInFromToken(),
+    app.get(endpoints.UsersIdServices, UserMiddleware.checkIfUserIsLoggedInFromToken(),
         async (req, res) => {
             try {
                 const userId = parseInt(req.params.id);
@@ -401,7 +390,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.UsersIdLogout, async (req, res) => {
+    app.put(endpoints.UsersIdLogout, async (req, res) => {
         try {
             const userId = parseInt(req.params.id);
             const userTokenSession = UserMiddleware.extractTokenFromHeaders(req.headers);
@@ -444,7 +433,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.delete(routes.UsersId, async (req, res) => {
+    app.delete(endpoints.UsersId, async (req, res) => {
         try {
             const userId = parseInt(req.params.id);
             if (!isNaN(userId)) {
@@ -488,7 +477,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.UsersId, async (req, res) => {
+    app.get(endpoints.UsersId, async (req, res) => {
         try {
             const userId = parseInt(req.params.id);
             if (!isNaN(userId)) {
@@ -539,7 +528,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.UsersId, bodyParser.json(), async (req, res) => {
+    app.put(endpoints.UsersId, bodyParser.json(), async (req, res) => {
         try {
             const userId = parseInt(req.params.id);
             const userName = req.body.name;
@@ -582,7 +571,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.Users, async (req, res) => {
+    app.get(endpoints.Users, async (req, res) => {
         try {
             const users = await UserController.findAllUsers();
             if (users.length > 0) {
@@ -633,7 +622,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.post(routes.Users, bodyParser.json(), async (req, res) => {
+    app.post(endpoints.Users, bodyParser.json(), async (req, res) => {
         try {
             const userName = req.body.name;
             const userEmail = req.body.email;

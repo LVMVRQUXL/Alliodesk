@@ -3,13 +3,7 @@ const bodyParser = require('body-parser');
 const HttpCodeUtil = require('../utils').HttpCodeUtil;
 const {AdminMiddleware, ServiceStatusMiddleware, UserMiddleware} = require('../middlewares');
 const ServiceController = require('../controllers').ServiceController;
-
-const routes = {
-    ServicesIdReject: '/services/:id/reject',
-    ServicesIdValidate: '/services/:id/validate',
-    ServicesId: '/services/:id',
-    Services: '/services'
-};
+const endpoints = require('./endpoints').ServiceEndpoints;
 
 module.exports = (app) => {
 
@@ -42,7 +36,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.ServicesIdReject, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
+    app.put(endpoints.ServicesIdReject, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             if (!isNaN(serviceId)) {
@@ -88,7 +82,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.ServicesIdValidate, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
+    app.put(endpoints.ServicesIdValidate, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             if (!isNaN(serviceId)) {
@@ -132,7 +126,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.ServicesId, async (req, res) => {
+    app.get(endpoints.ServicesId, async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             if (!isNaN(serviceId)) {
@@ -178,7 +172,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.delete(routes.ServicesId, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
+    app.delete(endpoints.ServicesId, AdminMiddleware.checkIfIsAdminFromToken(), async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             if (!isNaN(serviceId)) {
@@ -233,7 +227,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.put(routes.ServicesId, AdminMiddleware.checkIfIsAdminFromToken(), bodyParser.json(), async (req, res) => {
+    app.put(endpoints.ServicesId, AdminMiddleware.checkIfIsAdminFromToken(), bodyParser.json(), async (req, res) => {
         try {
             const serviceId = parseInt(req.params.id);
             const serviceName = req.body.name;
@@ -278,7 +272,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.get(routes.Services, async (req, res) => {
+    app.get(endpoints.Services, async (req, res) => {
         try {
             const services = await ServiceController.findAllServices();
             if (services.length > 0) {
@@ -327,7 +321,7 @@ module.exports = (app) => {
      *       500:
      *         description: "An internal error has occurred"
      */
-    app.post(routes.Services, bodyParser.json(), async (req, res) => {
+    app.post(endpoints.Services, bodyParser.json(), async (req, res) => {
         try {
             const serviceName = req.body.name;
             const serviceVersion = req.body.version;
