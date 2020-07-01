@@ -49,12 +49,6 @@ public class AlliodeskMainLayout extends Application {
         AnchorPane RegisterOverview = loader.load();
         rootLayout.setCenter(RegisterOverview);
     }
-    public static void showMarketplaceLayout() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("/MarketplaceView.fxml"));
-        AnchorPane RegisterOverview = loader.load();
-        rootLayout.setCenter(RegisterOverview);
-    }
 
     public static void showErrorLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
