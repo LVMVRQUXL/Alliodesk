@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 
-
 const bootstrap = require('./boot_sequelize');
 
 bootstrap().then(() => {
@@ -14,6 +13,9 @@ bootstrap().then(() => {
     app.use('/v1', apiV1);
     app.use('/', apiV1);
 
-    app.listen(app.get("port"),
-        () => console.log(`Server listening on http://${ app.get("host") }:${ app.get("port") }/...`));
+    // noinspection JSUnresolvedFunction
+    const host = app.get("host");
+    // noinspection JSUnresolvedFunction
+    const port = app.get("port");
+    app.listen(port, () => console.log(`Server listening on http://${host}:${port}/...`));
 });
