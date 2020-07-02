@@ -1,4 +1,4 @@
-name: CI API - Unit Tests
+name: CI API - Testings
 on:
   pull_request:
     branches:
@@ -8,11 +8,13 @@ on:
       - 'api/**'
 
 jobs:
-  test:
+  unit-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Node JS 12.16.1
+        uses: actions/setup-node@v1
         with:
           node-version: 12.16.1
       - name: Install all dependencies
@@ -23,6 +25,20 @@ jobs:
         run: |
           cd ./api
           npm run unit-test
+  integration-tests:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Node JS 12.16.1
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.16.1
+      - name: Install all dependencies
+        run: |
+          cd ./api
+          npm clean-install
       - name: Run integration tests
         run: |
           cd ./api

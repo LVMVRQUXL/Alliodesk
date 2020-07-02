@@ -1,9 +1,10 @@
 const bodyParser = require('body-parser');
 
 const {HttpCodeUtil, ValidatorUtil} = require('../utils');
-const FeedbackController = require('../controllers').FeedbackController;
+const {FeedbackController, ServiceController} = require('../controllers');
 const endpoints = require('./endpoints').FeedbackEndpoints;
 const FeedbackValidator = require('./validators').FeedbackValidator;
+const UserMiddleware = require('../middlewares').UserMiddleware;
 
 module.exports = (app) => {
     /**
@@ -14,6 +15,8 @@ module.exports = (app) => {
      *     description: Update one feedback from id
      *     tags:
      *       - Feedbacks
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: Feedback's id
@@ -33,38 +36,46 @@ module.exports = (app) => {
      *         description: Ok
      *       400:
      *         description: Invalid parameters
+     *       401:
+     *         description: Unauthorized operations
      *       404:
      *         description: Can't find feedback from id
      *       500:
      *         description: An internal error has occurred
      */
-    app.put(endpoints.FeedbacksId, bodyParser.json(), async (req, res) => {
-        try {
-            const id = parseInt(req.params.id);
-            const feedback = {
-                score: req.body.score ? parseInt(req.body.score) : undefined,
-                title: req.body.title,
-                description: req.body.description
-            };
-            if (!ValidatorUtil.isValidId(id)
-                || (!FeedbackValidator.isValidScore(feedback.score)
-                    && !ValidatorUtil.isValidString(feedback.title)
-                    && !ValidatorUtil.isValidString(feedback.description))
-                || (feedback.score && !FeedbackValidator.isValidScore(feedback.score))
-                || (feedback.title && !ValidatorUtil.isValidString(feedback.title))) {
-                res.status(HttpCodeUtil.BAD_REQUEST).end();
-            } else {
-                const result = await FeedbackController.updateOneFeedbackFromId(id, feedback);
-                if (result) {
-                    res.status(HttpCodeUtil.OK).end();
+    app.put(endpoints.FeedbacksId, UserMiddleware.checkIfUserIsLoggedInFromToken(), bodyParser.json(),
+        async (req, res) => {
+            try {
+                const feedback = {
+                    id: parseInt(req.params.id),
+                    score: req.body.score ? parseInt(req.body.score) : undefined,
+                    title: req.body.title,
+                    description: req.body.description
+                };
+                if (!ValidatorUtil.isValidId(feedback.id)
+                    || (!FeedbackValidator.isValidScore(feedback.score)
+                        && !ValidatorUtil.isValidString(feedback.title)
+                        && !ValidatorUtil.isValidString(feedback.description))
+                    || (feedback.score && !FeedbackValidator.isValidScore(feedback.score))
+                    || (feedback.title && !ValidatorUtil.isValidString(feedback.title))) {
+                    res.status(HttpCodeUtil.BAD_REQUEST).end();
                 } else {
-                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                    const oldFeedback = await FeedbackController.findOneFeedbackFromId(feedback.id);
+                    if (!oldFeedback) {
+                        res.status(HttpCodeUtil.NOT_FOUND).end();
+                    } else if (oldFeedback.user_id !== parseInt(req.userLoggedIn.id)) {
+                        res.status(HttpCodeUtil.UNAUTHORIZED).end();
+                    } else {
+                        const values = FeedbackController.buildUpdatingValues(oldFeedback, feedback);
+                        await FeedbackController.updateOneFeedbackFromId(oldFeedback.id, values);
+                        res.status(HttpCodeUtil.OK).end();
+                    }
                 }
+            } catch (e) {
+                res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
             }
-        } catch (e) {
-            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
         }
-    });
+    );
 
     /**
      * @swagger
@@ -74,6 +85,8 @@ module.exports = (app) => {
      *     description: Remove one feedback from id
      *     tags:
      *       - Feedbacks
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: id
      *         description: Feedback's id
@@ -84,23 +97,28 @@ module.exports = (app) => {
      *         description: Ok
      *       400:
      *         description: Invalid parameters
+     *       401:
+     *         description: Unauthorized operation
      *       404:
      *         description: Can't find feedback from id
      *       500:
      *         description: An internal error has occurred
      */
-    app.delete(endpoints.FeedbacksId, async (req, res) => {
+    app.delete(endpoints.FeedbacksId, UserMiddleware.checkIfUserIsLoggedInFromToken(), async (req, res) => {
         try {
             const id = parseInt(req.params.id);
-            if (ValidatorUtil.isValidId(id)) {
-                const result = await FeedbackController.removeOneFeedbackFromId(id);
-                if (result) {
-                    res.status(HttpCodeUtil.OK).end();
-                } else {
-                    res.status(HttpCodeUtil.NOT_FOUND).end();
-                }
-            } else {
+            if (!ValidatorUtil.isValidId(id)) {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();
+            } else {
+                const feedback = await FeedbackController.findOneFeedbackFromId(id);
+                if (!feedback) {
+                    res.status(HttpCodeUtil.NOT_FOUND).end();
+                } else if (feedback.user_id !== parseInt(req.userLoggedIn.id)) {
+                    res.status(HttpCodeUtil.UNAUTHORIZED).end();
+                } else {
+                    await FeedbackController.removeOneFeedbackFromId(id);
+                    res.status(HttpCodeUtil.OK).end();
+                }
             }
         } catch (e) {
             res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
@@ -186,9 +204,12 @@ module.exports = (app) => {
      *
      * '/feedbacks':
      *   post:
-     *     description: Create a new feedback
+     *     description: Create a new feedback about a service
      *     tags:
      *       - Feedbacks
+     *       - Services
+     *     security:
+     *       - bearerToken: []
      *     parameters:
      *       - name: score
      *         description: Feedback's score
@@ -201,35 +222,51 @@ module.exports = (app) => {
      *       - name: description
      *         description: Feedback's description
      *         in: body
+     *       - name: service_id
+     *         description: Service's id
+     *         in: body
+     *         required: true
      *     responses:
      *       201:
      *         description: New feedback successfully created
      *       400:
      *         description: Invalid parameters
+     *       401:
+     *         description: Unauthorized operation
+     *       404:
+     *         description: Can't find service from id
      *       409:
      *         description: A conflict error has occurred while creating a new feedback
      *       500:
      *         description: An internal error has occurred
      */
-    app.post(endpoints.Feedbacks, bodyParser.json(), async (req, res) => {
-        try {
-            const feedback = {
-                score: parseInt(req.body.score),
-                title: req.body.title,
-                description: req.body.description
-            };
-            if (FeedbackValidator.isValid(feedback)) {
-                const feedbackDTO = await FeedbackController.createFeedback(feedback);
-                if (feedbackDTO) {
-                    res.status(HttpCodeUtil.CREATED).json(feedbackDTO);
+    app.post(endpoints.Feedbacks, UserMiddleware.checkIfUserIsLoggedInFromToken(), bodyParser.json(),
+        async (req, res) => {
+            try {
+                const feedback = {
+                    score: parseInt(req.body.score),
+                    title: req.body.title,
+                    description: req.body.description,
+                    user_id: parseInt(req.userLoggedIn.id),
+                    service_id: parseInt(req.body.service_id)
+                };
+                if (!FeedbackValidator.isValid(feedback) || !ValidatorUtil.isValidId(feedback.service_id)) {
+                    res.status(HttpCodeUtil.BAD_REQUEST).end();
                 } else {
-                    res.status(HttpCodeUtil.CONFLICT).end();
+                    if (!await ServiceController.findOneServiceFromId(feedback.service_id)) {
+                        res.status(HttpCodeUtil.NOT_FOUND).end();
+                    } else {
+                        const feedbackDTO = await FeedbackController.createFeedback(feedback);
+                        if (feedbackDTO) {
+                            res.status(HttpCodeUtil.CREATED).json(feedbackDTO);
+                        } else {
+                            res.status(HttpCodeUtil.CONFLICT).end();
+                        }
+                    }
                 }
-            } else {
-                res.status(HttpCodeUtil.BAD_REQUEST).end();
+            } catch (e) {
+                res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
             }
-        } catch (e) {
-            res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
         }
-    });
+    );
 };

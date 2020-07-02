@@ -17,16 +17,10 @@ class FeedbackService {
      *
      * @param where {object}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
     async destroy(where) {
-        try {
-            await Feedback.destroy({where: where});
-            return true;
-        } catch (e) {
-            console.error(e);
-            return false;
-        }
+        await Feedback.destroy({where: where});
     }
 
     /**
@@ -57,7 +51,7 @@ class FeedbackService {
      * @returns {FeedbackDTO}
      */
     mapToDTO(feedback) {
-        return new FeedbackDTO(feedback.id, feedback.score, feedback.title, feedback.description);
+        return new FeedbackDTO(feedback);
     }
 
     /**
@@ -66,25 +60,21 @@ class FeedbackService {
      * @param values {object}
      * @param where {object}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
     async update(values, where) {
-        try {
-            await Feedback.update(values, {where: where});
-            return true;
-        } catch (e) {
-            console.error(e);
-            return false;
-        }
+        await Feedback.update(values, {where: where});
     }
 }
 
 class FeedbackDTO {
-    constructor(id, score, title, description) {
-        this.id = id;
-        this.score = score;
-        this.title = title;
-        this.description = description;
+    constructor(feedback) {
+        this.id = parseInt(feedback.id);
+        this.score = parseInt(feedback.score);
+        this.title = feedback.title;
+        this.description = feedback.description;
+        this.user_id = parseInt(feedback.user_id);
+        this.service_id = parseInt(feedback.service_id);
     }
 }
 

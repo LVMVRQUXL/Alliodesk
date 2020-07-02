@@ -3,6 +3,25 @@ const ValidatorUtil = require('../utils').ValidatorUtil;
 
 class FeedbackController {
     /**
+     * Build an object containing all the differences between old and new feedbacks
+     *
+     * @param oldFeedback {object}
+     * @param feedback {object}
+     *
+     * @returns {{score: (*), description: (*), title: (*)}}
+     */
+    buildUpdatingValues(oldFeedback, feedback) {
+        return {
+            score: feedback.score !== oldFeedback.score ? feedback.score : oldFeedback.score,
+            title: feedback.title !== oldFeedback.title ? feedback.title : oldFeedback.title,
+            description: (
+                feedback.description !== oldFeedback.description
+                && (feedback.description === '' || ValidatorUtil.isValidString(feedback.description))
+            ) ? feedback.description : oldFeedback.description
+        };
+    }
+
+    /**
      * Create a new feedback
      *
      * @param feedback {object}
@@ -44,40 +63,23 @@ class FeedbackController {
      *
      * @param id {number}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
     async removeOneFeedbackFromId(id) {
-        if (!await this.findOneFeedbackFromId(id)) {
-            return false;
-        }
-
-        return await FeedbackService.destroy({id: id});
+        await FeedbackService.destroy({id: id});
     }
 
     /**
      * Update one feedback from id
      *
      * @param id {number}
-     * @param feedback {object}
+     * @param values {object}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
-    async updateOneFeedbackFromId(id, feedback) {
-        const oldFeedback = await this.findOneFeedbackFromId(id);
-        if (!oldFeedback) {
-            return false;
-        }
-        const values = {
-            score: feedback.score !== oldFeedback.score ? feedback.score : oldFeedback.score,
-            title: feedback.title !== oldFeedback.title ? feedback.title : oldFeedback.title,
-            description: (
-                (ValidatorUtil.isValidString(feedback.description) || feedback.description === '')
-                && feedback.description !== oldFeedback.description
-            ) ? feedback.description : oldFeedback.description
-        };
+    async updateOneFeedbackFromId(id, values) {
         const where = {id: id};
-
-        return await FeedbackService.update(values, where);
+        await FeedbackService.update(values, where);
     }
 }
 

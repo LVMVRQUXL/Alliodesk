@@ -14,6 +14,7 @@ class UserMiddleware {
                 if (token && token !== "") {
                     const user = await UserController.findOneUserFromToken(token);
                     if (user) {
+                        req.userLoggedIn = user;
                         next();
                     } else {
                         res.status(HttpCodeUtil.UNAUTHORIZED).end();
