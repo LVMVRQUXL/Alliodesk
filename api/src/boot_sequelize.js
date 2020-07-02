@@ -6,7 +6,7 @@ module.exports = async () => {
 
         console.log('Loading models...');
         // noinspection JSUnresolvedFunction
-        sequelize.loadModels(sequelize);
+        Sequelize.loadModels(sequelize);
         // noinspection JSUnresolvedFunction
         await sequelize.authenticate();
         // noinspection JSUnresolvedFunction
