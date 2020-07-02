@@ -9,7 +9,10 @@ public class InfoInForm {
             id,
             message,
             service_name,
-            service_id;
+            service_id,
+            score,
+            title;
+
 
     private InfoInForm() {
         this.name = null;
@@ -21,6 +24,9 @@ public class InfoInForm {
         this.message = null;
         this.service_name = null;
         this.service_id = null;
+        this.title=null;
+        this.score=null;
+
     }
 
     public static InfoInForm build() {
@@ -69,6 +75,14 @@ public class InfoInForm {
 
     public InfoInForm withServiceId(final String service_id) {
         this.service_id = service_id;
+        return this;
+    }
+    public InfoInForm withScore(final String score) {
+        this.score = score;
+        return this;
+    }
+    public InfoInForm withTitle(final String title) {
+        this.title = title;
         return this;
     }
 
