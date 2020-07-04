@@ -19,10 +19,13 @@ public class ServiceRequest extends ApiRequest {
 
     private ArrayList<Service> existedService = new ArrayList<>();
 
-    public ServiceRequest(String functionCall, String id) {
+    public ServiceRequest(String functionCall, String id, String name, String version, String source_url) {
         this.functionCall = functionCall;
         this.form = InfoInForm.build()
-                .withServiceId(id);
+                .withServiceId(id)
+                .withName(name)
+                .withVersion(version)
+                .withSourceUrl(source_url);
     }
 
     public ArrayList<Service> getExistedService() {
@@ -64,6 +67,18 @@ public class ServiceRequest extends ApiRequest {
             Service[] yourList = new Gson().fromJson(responseContent, Service[].class);
             existedService.addAll(Arrays.asList(yourList));
         }
+
+        return response;
+    }
+
+    private CloseableHttpResponse requestSendService() throws IOException{
+
+        final CloseableHttpResponse response = super.request(
+                "/services",
+                new HttpPost(),
+                this.form,
+                true
+        );
 
         return response;
     }
@@ -113,6 +128,9 @@ public class ServiceRequest extends ApiRequest {
                     break;
                 case "findAllService":
                     response = this.requestFindAllServices();
+                    break;
+                case "sendService":
+                    response = this.requestSendService();
                     break;
                 case "findUserAllServices":
                     response = this.requestFindAllServicesOfUser();
