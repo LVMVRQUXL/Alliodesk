@@ -11,8 +11,9 @@ public class InfoInForm {
             service_name,
             service_id,
             score,
-            title;
-
+            title,
+            version,
+            source_url;
 
     private InfoInForm() {
         this.name = null;
@@ -26,7 +27,8 @@ public class InfoInForm {
         this.service_id = null;
         this.title=null;
         this.score=null;
-
+        this.version = null;
+        this.source_url = null;
     }
 
     public static InfoInForm build() {
@@ -83,6 +85,16 @@ public class InfoInForm {
     }
     public InfoInForm withTitle(final String title) {
         this.title = title;
+        return this;
+    }
+
+    public InfoInForm withVersion(final String version){
+        this.version = version;
+        return this;
+    }
+
+    public InfoInForm withSourceUrl(final String source_url){
+        this.source_url = source_url;
         return this;
     }
 
