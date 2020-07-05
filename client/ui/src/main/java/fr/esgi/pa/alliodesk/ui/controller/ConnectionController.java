@@ -36,6 +36,9 @@ public class ConnectionController {
             case 500:
                 System.out.println("An internal error has occurred");
                 break;
+            default:
+                System.out.println("You are already connected with another account");
+                break;
         }
     }
 

@@ -22,6 +22,13 @@ public class ConnectionRequest extends ApiRequest {
     @Override
     public int requestToServe() {
         try {
+            if(TokenManager.getTokenFromFile().equals("")){
+                return 0;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             final CloseableHttpResponse response = super.request(
                     "/users/login",
                     new HttpPut(),
