@@ -29,9 +29,9 @@ public class SendServiceController {
         int status_code = serviceRequest.requestToServe();
         switch (status_code) {
             case 201:
-                System.out.println("New service created");
+                System.out.println("New service submitted");
                 resultLabel.setTextFill(GREEN);
-                resultLabel.setText("New service created");
+                resultLabel.setText("New service submitted");
                 break;
             case 400:
                 System.out.println("Invalid input(s)");
