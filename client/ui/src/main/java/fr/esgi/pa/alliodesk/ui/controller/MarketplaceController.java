@@ -1,9 +1,12 @@
 
 package fr.esgi.pa.alliodesk.ui.controller;
 
+import fr.esgi.pa.alliodesk.core.configuration.MarketplaceConfiguration;
 import fr.esgi.pa.alliodesk.core.models.Service;
 import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
 import fr.esgi.pa.alliodesk.core.request.WorkspaceRequest;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.scene.control.MenuItem;
