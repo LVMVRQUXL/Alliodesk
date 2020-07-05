@@ -19,6 +19,13 @@ public class GetUserData extends ApiRequest {
         return id;
     }
 
+    public String getName() {
+        return userInfo.getName();
+    }
+    public String getEmail() {
+        return userInfo.getEmail();
+    }
+
     @Override
     public int requestToServe() {
         try {
@@ -59,6 +66,14 @@ public class GetUserData extends ApiRequest {
 
         public String getId() {
             return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getEmail() {
+            return email;
         }
     }
 

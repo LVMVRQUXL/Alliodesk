@@ -2,6 +2,7 @@ package fr.esgi.pa.alliodesk.ui;
 
 import fr.esgi.pa.alliodesk.core.models.Service;
 import fr.esgi.pa.alliodesk.ui.controller.MarketplaceController;
+import fr.esgi.pa.alliodesk.ui.controller.UserDeleteController;
 import fr.esgi.pa.alliodesk.ui.plugin.PluginGuetter;
 import interfacetest.PluginInterface;
 import fr.esgi.pa.alliodesk.ui.controller.WSController;
@@ -49,9 +50,17 @@ public class AlliodeskMainLayoutController {
     private Button refreshServiceListButton;
     @FXML
     private Menu marketplace;
+
+
     @FXML
     void showError(ActionEvent event) throws IOException {
         AlliodeskMainLayout.showErrorLayout();
+    }
+
+    @FXML
+    void logoutUser(){
+        UserDeleteController control = new UserDeleteController();
+        control.deleteUser();
     }
 
     @FXML
