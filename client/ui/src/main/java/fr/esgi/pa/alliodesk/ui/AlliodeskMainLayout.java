@@ -29,6 +29,7 @@ public class AlliodeskMainLayout extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Alliodesk");
+        hostServices = getHostServices();
         initRootLayout();
         showRegisterLayout();
     }
