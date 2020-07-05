@@ -75,7 +75,7 @@ public class AlliodeskMainLayoutController {
             Menu serviceMenu = new Menu(s.getName());
             Menu link = new Menu();
             MenuItem add = new MenuItem("Add service");
-            MarketplaceController.setAddItem(add, s.getId());
+            MarketplaceController.setAddItem(add, s);
             hyperlink.setOnAction(linkEvent -> {
                 AlliodeskMainLayout.getHostService().showDocument(s.getSource_url());
             });

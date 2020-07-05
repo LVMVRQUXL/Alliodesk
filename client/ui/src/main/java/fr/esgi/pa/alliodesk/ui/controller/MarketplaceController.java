@@ -85,24 +85,30 @@ public class MarketplaceController {
 
     }
 
-    public static void setAddItem(MenuItem mi, String serviceId) {
+    public static void setAddItem(MenuItem mi, Service service) {
         mi.setOnAction((event) -> {
-            addServiceToUser(serviceId);
+            addServiceToUser(service.getId());
             mi.setText("Delete Service");
-            setDeleteItem(mi, serviceId);
+            setDeleteItem(mi, service);
+            MarketplaceConfiguration mk = new MarketplaceConfiguration(   service.getSource_url()   );
+            try {
+                mk.download();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             WorkspaceRequest wSM = new WorkspaceRequest("findAllUserWS", null, null, null, null);
             for(String[] workspace : wSM.getExistedWS()) {
-                new WorkspaceRequest("deleteServiceFromWorkspace", null, null, workspace[0], serviceId);
+                new WorkspaceRequest("deleteServiceFromWorkspace", null, null, workspace[0], service.getId());
             }
 
         });
     }
 
-    public static void setDeleteItem(MenuItem mi, String serviceId) {
+    public static void setDeleteItem(MenuItem mi, Service service) {
         mi.setOnAction((event) -> {
-            deleteServiceToUser(serviceId);
+            deleteServiceToUser(service.getId());
             mi.setText("Add Service");
-            setAddItem(mi, serviceId);
+            setAddItem(mi, service);
         });
     }
 }
