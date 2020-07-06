@@ -223,5 +223,8 @@ public class AlliodeskMainLayoutController {
         workspaces.setDisable(false);
     }
 
+    public void showFeedback(ActionEvent actionEvent) throws IOException {
+        AlliodeskMainLayout.showFeedbackLayout();
+    }
 }
 
