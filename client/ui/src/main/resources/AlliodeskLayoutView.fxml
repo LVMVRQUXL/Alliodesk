@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane stylesheets="@AlliodeskLayout.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController">
     <top>
         <MenuBar prefHeight="35.0" prefWidth="1119.0" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
             <menus>
@@ -49,7 +49,6 @@
     <left>
         <Pane prefHeight="800.0" prefWidth="129.0" style="-fx-background-color: #393C42;" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="todolistButton" layoutX="2.0" mnemonicParsing="false" onAction="#showTodoEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="ToDoList" />
             </children>
         </Pane>
     </left>
@@ -62,10 +61,7 @@
          <children>
             <ScrollPane fitToHeight="true" maxHeight="1.7976931348623157E308" prefHeight="652.0" prefWidth="128.0" style="-fx-background: #393C42;" stylesheets="@AlliodeskLayout.css">
                <content>
-                  <VBox fx:id="servicesVBox" prefWidth="125.0" style="-fx-background-color: #393C42;">
-                     <children>
-                        <Button fx:id="todolistButton" mnemonicParsing="false" onAction="#showTodoEvent" prefHeight="33.0" prefWidth="125.0" stylesheets="@AlliodeskLayout.css" text="ToDoList" />
-                     </children></VBox>
+                  <VBox fx:id="servicesVBox" prefWidth="125.0" style="-fx-background-color: #393C42;" />
                </content>
             </ScrollPane>
             <Button layoutY="650.0" mnemonicParsing="false" onAction="#addToWS" prefHeight="30.0" prefWidth="130.0" text="Add" />
