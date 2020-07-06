@@ -9,7 +9,7 @@ const definition = {
 
 const options = {
     definition: definition,
-    apis: ['./src/routes/*.router.js']
+    apis: ['./src/**/routers/*.router.js']
 };
 
 module.exports = swaggerJSDoc(options);
