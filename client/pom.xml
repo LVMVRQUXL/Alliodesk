@@ -46,5 +46,10 @@
             <version>${junit-jupiter-engine.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.update4j</groupId>
+            <artifactId>update4j</artifactId>
+            <version>1.4.5</version>
+        </dependency>
     </dependencies>
 </project>

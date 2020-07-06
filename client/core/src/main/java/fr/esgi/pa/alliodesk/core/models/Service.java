@@ -26,4 +26,8 @@ public class Service {
     public String getId() {
         return id;
     }
+
+    public String getSource_url() {
+        return source_url;
+    }
 }
