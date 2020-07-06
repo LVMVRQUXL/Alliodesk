@@ -66,6 +66,7 @@ public class AlliodeskMainLayoutController {
             index++;
         }
     }
+
     @FXML
     void getMarketplaceServices(ActionEvent event) {
         this.marketplaceServiceList = MarketplaceController.findAllService();
@@ -84,11 +85,6 @@ public class AlliodeskMainLayoutController {
             serviceMenu.getItems().add(link);
             this.marketplace.getItems().add(serviceMenu);
         }
-
-
-
-
-
     }
 
     @FXML
@@ -97,10 +93,6 @@ public class AlliodeskMainLayoutController {
         addPluginInMenuBar(PluginGuetter.pluginList);
     }
 
-    @FXML
-    void showTodoEvent(ActionEvent event) throws IOException {
-        AlliodeskMainLayout.showToDoListLayout();
-    }
 
     @FXML
     void deleteServiceInWS(ActionEvent event) throws IOException {
@@ -188,7 +180,7 @@ public class AlliodeskMainLayoutController {
     }
 
 
-    public void fillServiceInWorkspace(ArrayList<Service> yourList) {
+    public void fillServiceInWorkspace(ArrayList<Service> yourList){
         servicesVBox.getChildren().clear();
         if (yourList != null) {
             this.myServiceList = yourList;
@@ -196,7 +188,15 @@ public class AlliodeskMainLayoutController {
                 Button b = new Button(s.getName());
                 b.setPrefHeight(33);
                 b.setPrefWidth(125);
-                b.setOnAction(actionEvent -> System.out.println(s.toString()));
+                b.setOnAction(actionEvent ->  {
+                    System.out.println(s.toString());
+                            try {
+                                AlliodeskMainLayout.showServiceLayout(s.getName());
+                            } catch (IOException | ReflectiveOperationException e) {
+                                e.printStackTrace();
+                            }
+                    }
+                );
                 servicesVBox.getChildren().add(b);
             }
         }

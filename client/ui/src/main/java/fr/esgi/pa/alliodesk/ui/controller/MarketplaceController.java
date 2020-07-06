@@ -7,14 +7,17 @@ import fr.esgi.pa.alliodesk.core.request.ServiceRequest;
 import fr.esgi.pa.alliodesk.core.request.WorkspaceRequest;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
-
 import javafx.scene.control.MenuItem;
+
+import static java.lang.String.format;
 
 public class MarketplaceController {
 
     public static ArrayList<Service> findAllService() {
-        ServiceRequest serviceRequest = new ServiceRequest("findAllService", (String)null);
+        ServiceRequest serviceRequest = new ServiceRequest("findAllService", null);
         int status_code = serviceRequest.requestToServe();
         switch(status_code) {
             case 200:
@@ -99,10 +102,6 @@ public class MarketplaceController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            WorkspaceRequest wSM = new WorkspaceRequest("findAllUserWS", null, null, null, null);
-            for(String[] workspace : wSM.getExistedWS()) {
-                new WorkspaceRequest("deleteServiceFromWorkspace", null, null, workspace[0], service.getId());
-            }
 
         });
     }
@@ -110,6 +109,18 @@ public class MarketplaceController {
     public static void setDeleteItem(MenuItem mi, Service service) {
         mi.setOnAction((event) -> {
             deleteServiceToUser(service.getId());
+            try {
+                Files.deleteIfExists(Path.of(format(System.getProperty("user.home")+"/Alliodesk/services/%s/%s.jar", service.getName(), service.getName())));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            WorkspaceRequest request = new WorkspaceRequest("findAllUserWS", null, null, null, null);
+            for(String[] workspace : request.getExistedWS()) {
+                WorkspaceRequest workspaceRequest =  new WorkspaceRequest("deleteServiceFromWorkspace", null, null, workspace[0], service.getId());
+                final int statusCode = workspaceRequest.requestToServe();
+                System.out.println(statusCode);
+            }
             mi.setText("Add Service");
             setAddItem(mi, service);
         });
