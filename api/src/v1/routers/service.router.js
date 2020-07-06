@@ -12,6 +12,56 @@ router.use(ServiceStatusMiddleware.checkStatusForServices());
 /**
  * @swagger
  *
+ * '/services/{id}/feedbacks':
+ *   get:
+ *     description: Get all feedbacks of one service from id
+ *     tags:
+ *       - Services
+ *       - Feedbacks
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: Service's id
+ *         in: path
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: "Ok"
+ *       204:
+ *         description: "No feedbacks to return"
+ *       400:
+ *         description: "Invalid service's id"
+ *       404:
+ *         description: "Can't find service"
+ *       500:
+ *         description: "An internal error has occurred"
+ */
+router.get('/:id/feedbacks', async (req, res) => {
+    try {
+        const serviceId = parseInt(req.params.id);
+        if (isNaN(serviceId)) {
+            res.status(HttpCodeUtil.BAD_REQUEST).end();
+        } else if (!await ServiceController.findOneServiceFromId(serviceId)) {
+            res.status(HttpCodeUtil.NOT_FOUND).end();
+        } else {
+            const feedbackDTOS = await ServiceController.findAllFeedbacksOfOneServiceFromId(serviceId);
+            if (feedbackDTOS.length === 0) {
+                res.status(HttpCodeUtil.NO_CONTENT).end();
+            } else {
+                res.status(HttpCodeUtil.OK).json(feedbackDTOS);
+            }
+        }
+    } catch (e) {
+        console.error(e);
+        res.status(HttpCodeUtil.INTERNAL_SERVER_ERROR).end();
+    }
+});
+
+// noinspection JSUnresolvedFunction
+/**
+ * @swagger
+ *
  * '/services/{id}/reject':
  *   put:
  *     description: "Reject one service from id"
