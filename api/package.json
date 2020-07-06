@@ -7,7 +7,7 @@
     "start": "node ./src/index.js",
     "unit-test": "mocha --exit \"./test/unit/*.js\"",
     "integration-test": "mocha --exit \"./test/integration/*.js\"",
-    "swagger-jsdoc": "./node_modules/.bin/swagger-jsdoc -d ./src/utils/swagger.util.js ./src/routes/*.router.js"
+    "swagger-jsdoc": "./node_modules/.bin/swagger-jsdoc -d ./src/utils/swagger.util.js src/v1/routers/*.router.js"
   },
   "keywords": [],
   "author": "LAMARQUE Loïc, KANTE Cheick, HUANG Hervé",

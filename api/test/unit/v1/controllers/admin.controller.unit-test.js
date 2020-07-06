@@ -3,7 +3,7 @@ const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
-const SecurityUtil = require('../../../src/utils').SecurityUtil;
+const SecurityUtil = require('../../../../src/v1/utils').SecurityUtil;
 
 module.exports = () => {
 
@@ -26,7 +26,7 @@ module.exports = () => {
             }
         };
 
-        const AdminController = proxyquire('../../../src/controllers/admin.controller', {
+        const AdminController = proxyquire('../../../../src/v1/controllers/admin.controller', {
             '../services': MockDependencies.Services,
             './user_status.controller': MockDependencies.UserStatusController
         });

@@ -2,18 +2,17 @@ const {describe, it, afterEach} = require('mocha');
 const request = require('supertest');
 const assert = require('assert');
 
-const feedbackRouter = require('../../src/routes/feedback.router');
-const HttpCodeUtil = require('../../src/utils').HttpCodeUtil;
-const endpoints = require('../../src/routes/endpoints').FeedbackEndpoints;
-const FeedbackService = require('../../src/services').FeedbackService;
-const FeedbackController = require('../../src/controllers').FeedbackController;
+const HttpCodeUtil = require('../../../src/v1/utils').HttpCodeUtil;
+const FeedbackService = require('../../../src/v1/services').FeedbackService;
+const FeedbackController = require('../../../src/v1/controllers').FeedbackController;
 
 module.exports = (app, sandbox) => describe('Feedback integration tests', () => {
-    feedbackRouter(app);
+    const baseEndpoint = '/feedbacks';
+    app.use(baseEndpoint, require('../../../src/v1/routers/feedback.router'));
 
     afterEach(() => sandbox.restore());
 
-    describe(`GET ${endpoints.Feedbacks}`, () => {
+    describe(`GET ${baseEndpoint}`, () => {
         it(`should return ${HttpCodeUtil.NO_CONTENT}`, async () => {
             // SETUP
             const findAll = sandbox.stub(FeedbackService, 'findAll');
@@ -23,7 +22,7 @@ module.exports = (app, sandbox) => describe('Feedback integration tests', () => 
 
             // CALL
             // noinspection JSUnresolvedFunction
-            const response = await request(app).get(endpoints.Feedbacks);
+            const response = await request(app).get(baseEndpoint);
 
             // VERIFY
             assert.equal(response.statusCode, HttpCodeUtil.NO_CONTENT);
