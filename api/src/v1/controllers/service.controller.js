@@ -1,4 +1,4 @@
-const ServiceService = require('../services').ServiceService;
+const {FeedbackService, ServiceService} = require('../services');
 const ServiceStatusController = require('./service_status.controller');
 const UserController = require('./user.controller');
 
@@ -27,6 +27,18 @@ class ServiceController {
             user_id: user.id
         }));
         return ServiceService.mapToDTO(service);
+    }
+
+    /**
+     * @param serviceId {number}
+     *
+     * @returns {Promise<FeedbackDTO[]>}
+     */
+    async findAllFeedbacksOfOneServiceFromId(serviceId) {
+        const service = await ServiceService.findOne({id: serviceId});
+        const feedbacks = await service.getFeedbacks();
+
+        return feedbacks.map(feedback => FeedbackService.mapToDTO(feedback));
     }
 
     /**
