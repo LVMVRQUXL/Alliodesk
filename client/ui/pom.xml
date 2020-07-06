@@ -13,6 +13,10 @@
 
     <artifactId>client.ui</artifactId>
 
+    <properties>
+        <controlsfx.version>11.0.1</controlsfx.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>PluginCreator-1.0-SNAPSHOT</groupId>
@@ -36,6 +40,11 @@
             <artifactId>client.core</artifactId>
             <version>0.0.0-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>${controlsfx.version}</version>
         </dependency>
     </dependencies>
 
