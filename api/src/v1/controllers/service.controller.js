@@ -109,14 +109,13 @@ class ServiceController {
      * Update one service from id
      *
      * @param id {number}
-     * @param name {string}
-     * @param version {string}
-     * @param sourceUrl {string}
+     * @param newValues {Object}
      *
      * @returns {Promise<boolean>}
      */
-    async updateOneServiceFromId(id, name, version, sourceUrl) {
-        if (name === "" && version === "" && sourceUrl === "") {
+    async updateOneServiceFromId(id, newValues) {
+        if (newValues.name === "" && newValues.version === ""
+            && newValues.source_url === "" && newValues.update_config_link === '') {
             return false;
         }
         const service = await this.findOneServiceFromId(id);
@@ -124,14 +123,17 @@ class ServiceController {
             return false;
         }
         const values = {};
-        if (name !== service.name) {
-            values.name = name;
+        if (newValues.name !== service.name) {
+            values.name = newValues.name;
         }
-        if (version !== service.version) {
-            values.version = version;
+        if (newValues.version !== service.version) {
+            values.version = newValues.version;
         }
-        if (sourceUrl !== service.source_url) {
-            values.source_url = sourceUrl;
+        if (newValues.source_url !== service.source_url) {
+            values.source_url = newValues.source_url;
+        }
+        if (newValues.update_config_link !== service.update_config_link) {
+            values.update_config_link = newValues.update_config_link;
         }
         return await ServiceService.update(values, {id: id});
     }

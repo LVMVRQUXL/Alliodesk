@@ -269,6 +269,9 @@ router.delete('/:id', AdminMiddleware.checkIfIsAdminFromToken(), async (req, res
  *       - name: source_url
  *         description: "New service's source URL"
  *         in: body
+ *       - name: update_config_link
+ *         description: New service's updating configuration link
+ *         in: body
  *     responses:
  *       200:
  *         description: "Ok"
@@ -284,16 +287,18 @@ router.delete('/:id', AdminMiddleware.checkIfIsAdminFromToken(), async (req, res
 router.put('/:id', AdminMiddleware.checkIfIsAdminFromToken(), bodyParser.json(), async (req, res) => {
     try {
         const serviceId = parseInt(req.params.id);
-        const serviceName = req.body.name;
-        const serviceVersion = req.body.version;
-        const serviceSourceUrl = req.body.source_url;
+        const newValues = {
+            name: req.body.name,
+            version: req.body.version,
+            source_url: req.body.source_url,
+            update_config_link: req.body.update_config_link
+        };
         if (!isNaN(serviceId)
-            && ((serviceName && serviceName !== "")
-                || (serviceVersion && serviceVersion !== "")
-                || (serviceSourceUrl && serviceSourceUrl !== ""))) {
-            const result = await ServiceController.updateOneServiceFromId(
-                serviceId, serviceName, serviceVersion, serviceSourceUrl
-            );
+            && ((newValues.name && newValues.name !== "")
+                || (newValues.version && newValues.version !== "")
+                || (newValues.source_url && newValues.source_url !== "")
+                || (newValues.update_config_link && newValues.update_config_link !== ''))) {
+            const result = await ServiceController.updateOneServiceFromId(serviceId, newValues);
             if (result) {
                 res.status(HttpCodeUtil.OK).end();
             } else {
