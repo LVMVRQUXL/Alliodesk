@@ -365,13 +365,17 @@ router.get('/', async (req, res) => {
  *         description: "Service's source URL (Github, Gitlab...)"
  *         in: body
  *         required: true
+ *       - name: update_config_link
+ *         description: "Link to the configuration.xml file of the source repository (useful for automated updates)"
+ *         in: body
+ *         required: true
  *     responses:
  *       201:
  *         description: "New service created"
  *       400:
  *         description: "Invalid input(s)"
  *       401:
- *         description: "Invalid user's token session"
+ *         description: Unauthorized operation (you need to be logged in as a user)
  *       409:
  *         description: "A service with the given name already exists"
  *       500:
@@ -379,17 +383,19 @@ router.get('/', async (req, res) => {
  */
 router.post('/', bodyParser.json(), async (req, res) => {
     try {
-        const serviceName = req.body.name;
-        const serviceVersion = req.body.version;
-        const serviceSourceUrl = req.body.source_url;
+        const values = {
+            name: req.body.name,
+            version: req.body.version,
+            source_url: req.body.source_url,
+            update_config_link: req.body.update_config_link
+        };
         const userToken = UserMiddleware.extractTokenFromHeaders(req.headers);
-        if (serviceName && serviceName !== ""
-            && serviceVersion && serviceVersion !== ""
-            && serviceSourceUrl && serviceSourceUrl !== ""
+        if (values.name && values.name !== ""
+            && values.version && values.version !== ""
+            && values.source_url && values.source_url !== ""
+            && values.update_config_link && values.update_config_link !== ""
             && userToken && userToken !== "") {
-            const service = await ServiceController.createService(
-                serviceName, serviceVersion, serviceSourceUrl, userToken
-            );
+            const service = await ServiceController.createService(values, userToken);
             if (service) {
                 res.status(HttpCodeUtil.CREATED).json(service);
             } else if (service === null) {

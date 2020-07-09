@@ -6,24 +6,23 @@ class ServiceController {
     /**
      * Create a new service with pending status
      *
-     * @param name {string}
-     * @param version {string}
-     * @param sourceUrl {string}
+     * @param values {Object}
      * @param userToken {string}
      *
      * @returns {Promise<ServiceDTO|null|boolean>}
      */
-    async createService(name, version, sourceUrl, userToken) {
+    async createService(values, userToken) {
         const user = await UserController.findOneUserFromToken(userToken);
         if (!user) {
             return null;
-        } else if (await this.findOneServiceFromName(name)) {
+        } else if (await this.findOneServiceFromName(values.name)) {
             return false;
         }
         const service = await ServiceService.create(await _getPendingStatusId({
-            name: name,
-            version: version,
-            source_url: sourceUrl,
+            name: values.name,
+            version: values.version,
+            source_url: values.source_url,
+            update_config_link: values.update_config_link,
             user_id: user.id
         }));
         return ServiceService.mapToDTO(service);

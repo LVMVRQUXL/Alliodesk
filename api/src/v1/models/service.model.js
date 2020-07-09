@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         source_url: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        update_config_link: {
+            type: DataTypes.STRING,
+            // TODO: à voir avec les autres membres du groupe
+            allowNull: true
         }
     }, {
         freezeTableName: true,
