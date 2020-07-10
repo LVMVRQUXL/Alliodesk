@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         update_config_link: {
             type: DataTypes.STRING,
-            // TODO: à voir avec les autres membres du groupe
             allowNull: true
         }
     }, {
