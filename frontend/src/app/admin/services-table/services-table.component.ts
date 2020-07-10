@@ -18,16 +18,20 @@ export class ServicesTableComponent implements OnInit {
     'source_url',
     'update_config_link',
     'user_id',
-    'service_status_id'
+    'service_status_id',
+    'actions'
   ];
 
   constructor(private cookieService: CookieService,
               private serviceService: ServiceService) {
   }
 
+  private extractTokenFromCookie(): string {
+    return `Bearer ${this.cookieService.get('TOKEN_SESSION')}`;
+  }
+
   getAllServices(): void {
-    const tokenSession = `Bearer ${this.cookieService.get('TOKEN_SESSION')}`;
-    this.serviceService.getAllServices(tokenSession).subscribe(
+    this.serviceService.getAllServices().subscribe(
       result => {
         this.serviceList = (result === null) ? [] : result;
       },
@@ -53,6 +57,14 @@ export class ServicesTableComponent implements OnInit {
       default:
         return 'Unknown';
     }
+  }
+
+  validateServiceFromId(id: number): void {
+    const tokenSession = this.extractTokenFromCookie();
+    this.serviceService.validateOneServiceFromId(tokenSession, id).subscribe(
+      _ => void this.getAllServices(),
+      error => void console.error(error)
+    );
   }
 
 }

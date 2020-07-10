@@ -17,6 +17,7 @@ import {LoginComponent} from './login/login.component';
 import {ErrorDialogComponent} from './login/error-dialog/error-dialog.component';
 import {ErrorsTableComponent} from './errors-table/errors-table.component';
 import { ServicesTableComponent } from './services-table/services-table.component';
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { ServicesTableComponent } from './services-table/services-table.componen
     MatTableModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    MatIconModule
   ],
   declarations: [
     AdminComponent,

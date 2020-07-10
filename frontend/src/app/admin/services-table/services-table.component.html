@@ -38,6 +38,16 @@
     <td mat-cell *matCellDef="let service">{{mapServiceStatusIdToString(service.service_status_id)}}</td>
   </ng-container>
 
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let service">
+      <button *ngIf="mapServiceStatusIdToString(service.service_status_id) === 'Pending'"
+              mat-fab color="accent" (click)="validateServiceFromId(service.id)">
+        <mat-icon>done</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
   <tr mat-header-row *matHeaderRowDef="columnsToDisplay, sticky: true"></tr>
   <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
 </table>
