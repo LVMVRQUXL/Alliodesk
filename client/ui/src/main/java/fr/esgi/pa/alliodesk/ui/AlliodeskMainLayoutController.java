@@ -3,7 +3,7 @@ package fr.esgi.pa.alliodesk.ui;
 import fr.esgi.pa.alliodesk.core.models.Service;
 import fr.esgi.pa.alliodesk.ui.controller.*;
 import fr.esgi.pa.alliodesk.ui.plugin.PluginGuetter;
-import interfacetest.PluginInterface;
+import fr.esgi.pa.alliodesk.plugin.PluginInterface;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -39,10 +39,10 @@ public class AlliodeskMainLayout extends Application {
 
     private void initRootLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("/AlliodeskLayoutView.fxml"));
+        loader.setLocation(AlliodeskMainLayout.class.getResource("/AlliodeskLayoutView.fxml"));
         rootLayout = loader.load();
         Scene scene = new Scene(rootLayout);
-        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/AlliodeskLogo.png")));
+        primaryStage.getIcons().add(new Image(AlliodeskMainLayout.class.getResourceAsStream("/AlliodeskLogo.png")));
         primaryStage.setScene(scene);
         primaryStage.show();
     }

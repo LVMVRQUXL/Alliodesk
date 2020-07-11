@@ -11,6 +11,7 @@
     <modules>
         <module>ui</module>
         <module>core</module>
+        <module>client.plugin</module>
     </modules>
 
     <properties>
