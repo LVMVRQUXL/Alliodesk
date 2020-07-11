@@ -22,7 +22,7 @@ public class ConnectionRequest extends ApiRequest {
     @Override
     public int requestToServe() {
         try {
-            if(TokenManager.getTokenFromFile().equals("")){
+            if(!TokenManager.getTokenFromFile().equals("")){
                 return 0;
             }
         } catch (IOException e) {

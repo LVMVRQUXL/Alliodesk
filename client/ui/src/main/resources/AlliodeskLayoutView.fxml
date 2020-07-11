@@ -1,91 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController">
+<BorderPane xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.AlliodeskMainLayoutController">
     <top>
         <MenuBar prefHeight="35.0" prefWidth="1119.0" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Close"/>
-                        <MenuItem mnemonicParsing="false" onAction="#loadPlugin" text="Reload plugins"/>
-                        <MenuItem mnemonicParsing="false" onAction="#getMarketplaceServices"
-                                  text="Get Marketplace Services"/>
-                        <MenuItem mnemonicParsing="false" text="Logout" onAction="#logoutUser"/>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadPlugin" text="Reload plugins" />
+                        <MenuItem mnemonicParsing="false" onAction="#getMarketplaceServices" text="Get Marketplace Services" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Delete"/>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                  <Menu mnemonicParsing="false" text="User">
+                    <items>
+                              <MenuItem mnemonicParsing="false" onAction="#logoutUser" text="Logout" />
+                      <MenuItem mnemonicParsing="false" onAction="#UserUpdate" text="Update User" />
+                        <MenuItem mnemonicParsing="false" onAction="#UserDelete" text="Delete User" />
+                    </items>
+                  </Menu>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About"/>
-                        <MenuItem mnemonicParsing="false" onAction="#showError" text="Send Error"/>
-                        <MenuItem mnemonicParsing="false" onAction="#showFeedback" text="Feedback"/>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" onAction="#showError" text="Send Error" />
+                        <MenuItem mnemonicParsing="false" onAction="#showFeedback" text="Feedback" />
                     </items>
                 </Menu>
                 <Menu fx:id="workspacesManager" mnemonicParsing="false" text="Workspaces Manager">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#addWS" text="Init My Workspaces"/>
+                        <MenuItem mnemonicParsing="false" onAction="#addWS" text="Init My Workspaces" />
                     </items>
                 </Menu>
                 <Menu fx:id="workspaces" mnemonicParsing="false" text="My Workspaces">
                 </Menu>
-                <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins"/>
-                <Menu fx:id="marketplace" mnemonicParsing="false" text="Marketplace"/>
+                <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins" />
+                <Menu fx:id="marketplace" mnemonicParsing="false" text="Marketplace" />
             </menus>
 
         </MenuBar>
     </top>
     <left>
-        <Pane prefHeight="800.0" prefWidth="129.0" style="-fx-background-color: #393C42;"
-              stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
+        <Pane prefHeight="800.0" prefWidth="129.0" style="-fx-background-color: #393C42;" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
             <children>
             </children>
         </Pane>
     </left>
     <bottom>
-        <HBox alignment="CENTER" prefHeight="16.0" prefWidth="1200.0" style="-fx-background-color: #2c2c2c;"
-              BorderPane.alignment="CENTER"/>
+        <HBox alignment="CENTER" prefHeight="16.0" prefWidth="1200.0" style="-fx-background-color: #2c2c2c;" BorderPane.alignment="CENTER" />
     </bottom>
 
     <left>
-        <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-              style="-fx-background-color: #393C42;" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
+        <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #393C42;" stylesheets="@AlliodeskLayout.css" BorderPane.alignment="CENTER">
             <children>
-                <ScrollPane fitToHeight="true" maxHeight="1.7976931348623157E308" prefHeight="652.0" prefWidth="128.0"
-                            style="-fx-background: #393C42;" stylesheets="@AlliodeskLayout.css">
+                <ScrollPane fitToHeight="true" maxHeight="1.7976931348623157E308" prefHeight="652.0" prefWidth="128.0" style="-fx-background: #393C42;" stylesheets="@AlliodeskLayout.css">
                     <content>
-                        <VBox fx:id="servicesVBox" prefWidth="125.0" style="-fx-background-color: #393C42;"/>
+                        <VBox fx:id="servicesVBox" prefWidth="125.0" style="-fx-background-color: #393C42;" />
                     </content>
                 </ScrollPane>
-                <Button layoutY="650.0" mnemonicParsing="false" onAction="#addToWS" prefHeight="30.0" prefWidth="130.0"
-                        text="Add"/>
-                <Button layoutY="685.0" mnemonicParsing="false" onAction="#deleteServiceInWS" prefHeight="30.0"
-                        prefWidth="130.0" text="Delete"/>
-                <Button fx:id="refreshServiceListButton" disable="true" layoutY="720.0" mnemonicParsing="false"
-                        onAction="#refreshServiceList" prefHeight="30.0" prefWidth="130.0" text="Refresh List"/>
+                <Button layoutY="650.0" mnemonicParsing="false" onAction="#addToWS" prefHeight="30.0" prefWidth="130.0" text="Add" />
+                <Button layoutY="685.0" mnemonicParsing="false" onAction="#deleteServiceInWS" prefHeight="30.0" prefWidth="130.0" text="Delete" />
+                <Button fx:id="refreshServiceListButton" disable="true" layoutY="720.0" mnemonicParsing="false" onAction="#refreshServiceList" prefHeight="30.0" prefWidth="130.0" text="Refresh List" />
             </children>
             <BorderPane.margin>
-                <Insets/>
+                <Insets />
             </BorderPane.margin>
         </Pane>
     </left>
     <bottom>
-        <HBox alignment="CENTER" prefHeight="16.0" prefWidth="1200.0" style="-fx-background-color: #2c2c2c;"
-              BorderPane.alignment="CENTER"/>
+        <HBox alignment="CENTER" prefHeight="16.0" prefWidth="1200.0" style="-fx-background-color: #2c2c2c;" BorderPane.alignment="CENTER" />
     </bottom>
 </BorderPane>

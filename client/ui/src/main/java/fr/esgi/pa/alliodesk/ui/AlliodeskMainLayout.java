@@ -120,6 +120,13 @@ public class AlliodeskMainLayout extends Application {
         rootLayout.setCenter(RegisterOverview);
     }
 
+    public static void showUserUpdateLayout() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/UpdateUserView.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+
     public static void main(String[] args) {
         launch(args);
 
