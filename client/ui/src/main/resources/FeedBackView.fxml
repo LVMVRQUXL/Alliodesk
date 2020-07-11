@@ -20,7 +20,7 @@
             <Label layoutX="202.0" layoutY="45.0" text="really satisfied" />
          </children>
       </AnchorPane>
-      <Button layoutX="248.0" layoutY="380.0" mnemonicParsing="false" text="Submit feedback" />
+      <Button layoutX="248.0" layoutY="380.0" mnemonicParsing="false" text="Submit feedback" onAction="#sendFeedback"/>
       <TextField layoutX="78.0" layoutY="185.0" prefHeight="25.0" prefWidth="444.0" promptText="Enter your title" fx:id="title"/>
    </children>
 </AnchorPane>
