@@ -25,6 +25,13 @@ export class ServiceService {
     return this.httpClient.get<ServiceModel[] | null>(this.baseUrl);
   }
 
+  rejectOneServiceFromId(token: string, id: number): Observable<null> {
+    const options = {headers: this.addTokenInHeaders(token)};
+    const endpoint = `${this.baseUrl}/${id}/reject`;
+
+    return this.httpClient.put<null>(endpoint, null, options);
+  }
+
   validateOneServiceFromId(token: string, id: number): Observable<null> {
     const options = {headers: this.addTokenInHeaders(token)};
     const endpoint = `${this.baseUrl}/${id}/validate`;

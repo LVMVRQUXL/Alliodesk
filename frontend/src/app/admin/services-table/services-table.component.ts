@@ -59,6 +59,14 @@ export class ServicesTableComponent implements OnInit {
     }
   }
 
+  rejectServiceFromId(id: number): void {
+    const token = this.extractTokenFromCookie();
+    this.serviceService.rejectOneServiceFromId(token, id).subscribe(
+      _ => void this.getAllServices(),
+      error => void console.error(error)
+    );
+  }
+
   validateServiceFromId(id: number): void {
     const tokenSession = this.extractTokenFromCookie();
     this.serviceService.validateOneServiceFromId(tokenSession, id).subscribe(
