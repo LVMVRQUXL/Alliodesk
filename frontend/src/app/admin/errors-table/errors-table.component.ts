@@ -3,6 +3,7 @@ import {CookieService} from 'ngx-cookie-service';
 
 import {ErrorsService} from '../../shared/services/errors.service';
 import {ErrorModel} from '../../shared/models/error.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-errors-table',
@@ -14,7 +15,8 @@ export class ErrorsTableComponent implements OnInit {
   columnsToDisplay = ['id', 'message', 'user_id', 'service_id'];
 
   constructor(private errorsService: ErrorsService,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private router: Router) {
   }
 
   /**
@@ -30,6 +32,11 @@ export class ErrorsTableComponent implements OnInit {
 
   ngOnInit(): void {
     this._getErrorsFromAPI();
+  }
+
+  navigateToServicesView(): void {
+    this.router.navigate(['/services'])
+      .then(res => console.log(res ? 'Successfully redirected' : 'An error has occurred during redirection'));
   }
 
   refreshErrorsList(): void {

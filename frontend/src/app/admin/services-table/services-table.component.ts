@@ -3,6 +3,7 @@ import {CookieService} from 'ngx-cookie-service';
 
 import {ServiceModel} from '../../shared/models/service.model';
 import {ServiceService} from '../../shared/services/service.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-services-table',
@@ -23,7 +24,8 @@ export class ServicesTableComponent implements OnInit {
   ];
 
   constructor(private cookieService: CookieService,
-              private serviceService: ServiceService) {
+              private serviceService: ServiceService,
+              private router: Router) {
   }
 
   private extractTokenFromCookie(): string {
@@ -57,6 +59,11 @@ export class ServicesTableComponent implements OnInit {
       default:
         return 'Unknown';
     }
+  }
+
+  navigateToErrorsView(): void {
+    this.router.navigate(['/errors'])
+      .then(res => console.log(res ? 'Successfully redirected' : 'An error has occurred during redirection'));
   }
 
   rejectServiceFromId(id: number): void {

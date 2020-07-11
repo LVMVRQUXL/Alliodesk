@@ -1,6 +1,9 @@
 <button mat-raised-button color="primary" (click)="getAllServices()">
   Refresh
 </button>
+<button mat-raised-button color="primary" (click)="navigateToErrorsView()">
+  Errors View
+</button>
 
 <table mat-table [dataSource]="serviceList">
   <ng-container matColumnDef="id">
