@@ -45,7 +45,7 @@ public class FeedBackController {
     }
 
     public static ArrayList<Service> findUserAllService() {
-        ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices", null,null,null,null);
+        ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices", null,null,null,null,null);
         int status_code = serviceRequest.requestToServe();
         switch (status_code) {
             case 200:

@@ -13,7 +13,8 @@ public class InfoInForm {
             score,
             title,
             version,
-            source_url;
+            source_url,
+            update_config_link;
 
     private InfoInForm() {
         this.name = null;
@@ -29,6 +30,7 @@ public class InfoInForm {
         this.score=null;
         this.version = null;
         this.source_url = null;
+        this.update_config_link = null;
     }
 
     public static InfoInForm build() {
@@ -98,10 +100,15 @@ public class InfoInForm {
         return this;
     }
 
+    public InfoInForm withUpdateConfigLink(final String update_config_link){
+        this.update_config_link = update_config_link;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return String.format("InfoInForm(name: %s, email: %s, login: %s, password: %s, message: %s, service_name: %s)",
-                this.name, this.email, this.login, this.password, this.message, this.service_name);
+        return String.format("InfoInForm(name: %s, email: %s, login: %s, password: %s, message: %s, service_name: %s, serviceId: %s, score: %s, title: %s, version: %s, sourceUrl: %s, updateConfigLink: %s)",
+                this.name, this.email, this.login, this.password, this.message, this.service_name, this.service_id, this.score, this.title, this.version, this.source_url, this.update_config_link);
     }
 
     public String getId() {

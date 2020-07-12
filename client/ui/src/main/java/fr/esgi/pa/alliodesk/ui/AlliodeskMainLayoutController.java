@@ -49,6 +49,10 @@ public class AlliodeskMainLayoutController {
     @FXML
     private Menu marketplace;
 
+    @FXML
+    void showSendService(ActionEvent event) throws IOException {
+        AlliodeskMainLayout.showSendService();
+    }
 
     @FXML
     void showError(ActionEvent event) throws IOException {

@@ -21,7 +21,7 @@ public class ServiceAddToWS{
     @FXML
     void initialize() {
         System.out.println(currentID);
-        ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices",null,null,null,null);
+        ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices",null,null,null,null,null);
         serviceRequest.requestToServe();
         ArrayList<Service> myServices = serviceRequest.getExistedService();
         ObservableList<ChoiceBoxItem> allMyWS = FXCollections.observableArrayList();

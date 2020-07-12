@@ -19,13 +19,14 @@ public class ServiceRequest extends ApiRequest {
 
     private ArrayList<Service> existedService = new ArrayList<>();
 
-    public ServiceRequest(String functionCall, String id, String name, String version, String source_url) {
+    public ServiceRequest(String functionCall, String id, String name, String version, String source_url, String update_config_link) {
         this.functionCall = functionCall;
         this.form = InfoInForm.build()
                 .withServiceId(id)
                 .withName(name)
                 .withVersion(version)
-                .withSourceUrl(source_url);
+                .withSourceUrl(source_url)
+                .withUpdateConfigLink(update_config_link);
     }
 
     public ArrayList<Service> getExistedService() {

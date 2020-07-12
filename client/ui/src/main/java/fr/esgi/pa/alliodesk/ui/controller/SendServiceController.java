@@ -28,7 +28,7 @@ public class SendServiceController {
 
     @FXML
     void sendService(ActionEvent event) {
-        ServiceRequest serviceRequest = new ServiceRequest("sendService", null, name.getText(), version.getText(),githubLink.getText());
+        ServiceRequest serviceRequest = new ServiceRequest("sendService", null, name.getText(), version.getText(),githubLink.getText(), xmlLink.getText());
         int status_code = serviceRequest.requestToServe();
         switch (status_code) {
             case 201:
