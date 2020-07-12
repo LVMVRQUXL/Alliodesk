@@ -17,7 +17,7 @@ import static java.lang.String.format;
 public class MarketplaceController {
 
     public static ArrayList<Service> findAllService() {
-        ServiceRequest serviceRequest = new ServiceRequest("findAllService", null);
+        ServiceRequest serviceRequest = new ServiceRequest("findAllService", null,null,null,null);
         int status_code = serviceRequest.requestToServe();
         switch(status_code) {
             case 200:
@@ -42,7 +42,7 @@ public class MarketplaceController {
     }
 
     public static void addServiceToUser(String serviceId) {
-        ServiceRequest serviceRequest = new ServiceRequest("addServiceToUser", serviceId);
+        ServiceRequest serviceRequest = new ServiceRequest("addServiceToUser", serviceId,null,null,null);
         int status_code = serviceRequest.requestToServe();
         switch(status_code) {
             case 200:
@@ -67,7 +67,7 @@ public class MarketplaceController {
     }
 
     public static void deleteServiceToUser(String serviceId) {
-        ServiceRequest serviceRequest = new ServiceRequest("deleteServiceToUser", serviceId);
+        ServiceRequest serviceRequest = new ServiceRequest("deleteServiceToUser", serviceId,null,null,null);
         int status_code = serviceRequest.requestToServe();
         switch(status_code) {
             case 200:
