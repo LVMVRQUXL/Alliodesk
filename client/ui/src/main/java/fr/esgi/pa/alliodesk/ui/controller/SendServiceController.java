@@ -24,6 +24,9 @@ public class SendServiceController {
     private Label resultLabel;
 
     @FXML
+    private TextField xmlLink;
+
+    @FXML
     void sendService(ActionEvent event) {
         ServiceRequest serviceRequest = new ServiceRequest("sendService", null, name.getText(), version.getText(),githubLink.getText());
         int status_code = serviceRequest.requestToServe();

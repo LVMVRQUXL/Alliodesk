@@ -5,16 +5,18 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="358.0" style="-fx-background-color: grey; -fx-border-color: black;" stylesheets="@AlliodeskLayout.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.controller.SendServiceController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="349.0" prefWidth="358.0" style="-fx-background-color: grey; -fx-border-color: black;" stylesheets="@AlliodeskLayout.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esgi.pa.alliodesk.ui.controller.SendServiceController">
    <children>
-      <TextField fx:id="name" layoutX="120.0" layoutY="51.0" />
-      <TextField fx:id="version" layoutX="120.0" layoutY="102.0" />
-      <TextField fx:id="githubLink" layoutX="120.0" layoutY="155.0" />
+      <TextField fx:id="name" layoutX="120.0" layoutY="50.0" />
+      <TextField fx:id="version" layoutX="120.0" layoutY="100.0" />
+      <TextField fx:id="githubLink" layoutX="120.0" layoutY="150.0" />
       <Label layoutX="41.0" layoutY="59.0" text="Name" textFill="#320606" />
       <Label layoutX="41.0" layoutY="110.0" text="Version" />
-      <Label layoutX="32.0" layoutY="163.0" text="Github Link" />
+      <Label layoutX="33.0" layoutY="163.0" prefHeight="21.0" prefWidth="84.0" text="Github Link" />
       <Label fx:id="resultLabel" layoutX="125.0" layoutY="200.0" text="" />
-      <Button layoutX="133.0" layoutY="233.0" mnemonicParsing="false" onAction="#sendService" text="Submit" />
+      <Button layoutX="133.0" layoutY="300.0" mnemonicParsing="false" onAction="#sendService" text="Submit" />
       <Label layoutX="132.0" layoutY="4.0" stylesheets="@AlliodeskLayout.css" text="Send a service" />
+      <TextField layoutX="120.0" layoutY="200.0" fx:id="xmlLink" />
+      <Label layoutX="41.0" layoutY="211.0" text="Xml Link" />
    </children>
 </AnchorPane>

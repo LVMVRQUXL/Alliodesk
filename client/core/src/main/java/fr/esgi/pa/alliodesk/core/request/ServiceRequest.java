@@ -91,7 +91,10 @@ public class ServiceRequest extends ApiRequest {
             tempId = myUser.getId();
         }
 
-        CloseableHttpResponse response = super.request("/users/" + tempId + "/services", new HttpPost(), this.form, true);
+        CloseableHttpResponse response = super.request("/users/" + tempId + "/services",
+                new HttpPost(),
+                this.form,
+                true);
         return response;
     }
 
@@ -103,7 +106,10 @@ public class ServiceRequest extends ApiRequest {
             tempId = myUser.getId();
         }
 
-        CloseableHttpResponse response = super.request("/users/" + tempId + "/services/" + this.form.getService_id(), new HttpDelete(), this.form, true);
+        CloseableHttpResponse response = super.request("/users/" + tempId + "/services/" + this.form.getService_id(),
+                new HttpDelete(),
+                this.form,
+                true);
         return response;
     }
 

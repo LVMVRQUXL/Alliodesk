@@ -13,6 +13,7 @@
                         <MenuItem mnemonicParsing="false" text="Close" />
                         <MenuItem mnemonicParsing="false" onAction="#loadPlugin" text="Reload plugins" />
                         <MenuItem mnemonicParsing="false" onAction="#getMarketplaceServices" text="Get Marketplace Services" />
+                        <MenuItem mnemonicParsing="false" onAction="#showSendService" text="Send Service" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
