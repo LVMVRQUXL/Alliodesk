@@ -12,6 +12,8 @@ const connect = () => new Sequelize(process.env.POSTGRES_DB, process.env.POSTGRE
     port: process.env.POSTGRES_PORT,
     dialect: 'postgres',
     define: {
+        freezeTableName: true,
+        underscored: true,
         timestamps: false
     },
     logging: false
