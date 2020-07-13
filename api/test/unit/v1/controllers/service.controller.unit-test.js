@@ -363,14 +363,6 @@ module.exports = () => {
                 _teardown_ServiceService_update();
             });
 
-            it('should return false with invalid name, version and sourceUrl inputs', async () => {
-                // CALL
-                const result = await _call(fakeServiceId, "", "", "");
-
-                // VERIFY
-                assert.equal(result, false);
-            });
-
             it('should return false with invalid id', async () => {
                 // SETUP
                 _setup_ServiceService_findOne();

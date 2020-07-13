@@ -1,7 +1,7 @@
 package fr.esgi.pa.alliodesk.ui.plugin;
 
 
-import interfacetest.PluginInterface;
+import fr.esgi.pa.alliodesk.plugin.PluginInterface;
 
 
 public class PluginGuetter {

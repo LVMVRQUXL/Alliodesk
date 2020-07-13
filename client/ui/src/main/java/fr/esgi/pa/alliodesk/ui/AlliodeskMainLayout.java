@@ -39,10 +39,10 @@ public class AlliodeskMainLayout extends Application {
 
     private void initRootLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("/AlliodeskLayoutView.fxml"));
+        loader.setLocation(AlliodeskMainLayout.class.getResource("/AlliodeskLayoutView.fxml"));
         rootLayout = loader.load();
         Scene scene = new Scene(rootLayout);
-        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/AlliodeskLogo.png")));
+        primaryStage.getIcons().add(new Image(AlliodeskMainLayout.class.getResourceAsStream("/AlliodeskLogo.png")));
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -109,8 +109,8 @@ public class AlliodeskMainLayout extends Application {
     public static void showDeleteServiceIntoWS() throws IOException {
         loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/WSServiceDelete.fxml"));
-        AnchorPane RegisterOverview = loader.load();
-        rootLayout.setCenter(RegisterOverview);
+        AnchorPane deleteOverview = loader.load();
+        rootLayout.setCenter(deleteOverview);
     }
 
     public static void showFeedbackLayout() throws IOException {
@@ -120,6 +120,19 @@ public class AlliodeskMainLayout extends Application {
         rootLayout.setCenter(RegisterOverview);
     }
 
+    public static void showUserUpdateLayout() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/UpdateUserView.fxml"));
+        AnchorPane RegisterOverview = loader.load();
+        rootLayout.setCenter(RegisterOverview);
+    }
+
+    public static void showSendService() throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/SendServiceView.fxml"));
+        AnchorPane sendSendOverview = loader.load();
+        rootLayout.setCenter(sendSendOverview);
+    }
     public static void main(String[] args) {
         launch(args);
 

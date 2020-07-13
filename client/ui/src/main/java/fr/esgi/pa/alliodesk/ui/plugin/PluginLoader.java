@@ -1,11 +1,10 @@
 package fr.esgi.pa.alliodesk.ui.plugin;
 
 
-import interfacetest.PluginInterface;
+import fr.esgi.pa.alliodesk.plugin.PluginInterface;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;

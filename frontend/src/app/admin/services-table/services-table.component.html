@@ -1,0 +1,60 @@
+<button mat-raised-button color="primary" (click)="getAllServices()">
+  Refresh
+</button>
+<button mat-raised-button color="primary" (click)="navigateToErrorsView()">
+  Errors View
+</button>
+
+<table mat-table [dataSource]="serviceList">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>Id</th>
+    <td mat-cell *matCellDef="let service">{{service.id}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let service">{{service.name}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="version">
+    <th mat-header-cell *matHeaderCellDef>Version</th>
+    <td mat-cell *matCellDef="let service">{{service.version ? service.version : 'NULL'}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="source_url">
+    <th mat-header-cell *matHeaderCellDef>Source URL</th>
+    <td mat-cell *matCellDef="let service">{{service.source_url}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="update_config_link">
+    <th mat-header-cell *matHeaderCellDef>Update Config Link</th>
+    <td mat-cell *matCellDef="let service">{{service.update_config_link}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="user_id">
+    <th mat-header-cell *matHeaderCellDef>User Id</th>
+    <td mat-cell *matCellDef="let service">{{service.user_id}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="service_status_id">
+    <th mat-header-cell *matHeaderCellDef>Service Status Id</th>
+    <td mat-cell *matCellDef="let service">{{mapServiceStatusIdToString(service.service_status_id)}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let service">
+      <button mat-fab color="primary" (click)="validateServiceFromId(service.id)"
+              [disabled]="mapServiceStatusIdToString(service.service_status_id) !== 'Pending'">
+        <mat-icon>done</mat-icon>
+      </button>
+      <button mat-fab color="warn" (click)="rejectServiceFromId(service.id)"
+              [disabled]="mapServiceStatusIdToString(service.service_status_id) !== 'Pending'">
+        <mat-icon>close</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay, sticky: true"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+</table>

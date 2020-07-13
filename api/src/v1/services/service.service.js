@@ -57,9 +57,7 @@ class ServiceService {
      * @returns {ServiceDTO}
      */
     mapToDTO(service) {
-        return new ServiceDTO(
-            service.id, service.name, service.version, service.source_url, service.user_id, service.service_status_id
-        );
+        return new ServiceDTO(service);
     }
 
     /**
@@ -82,13 +80,17 @@ class ServiceService {
 }
 
 class ServiceDTO {
-    constructor(id, name, version, sourceUrl, userId, serviceStatusId) {
-        this.id = id;
-        this.name = name;
-        this.version = version;
-        this.source_url = sourceUrl;
-        this.user_id = userId;
-        this.service_status_id = serviceStatusId;
+    /**
+     * @param service {Service}
+     */
+    constructor(service) {
+        this.id = service.id;
+        this.name = service.name;
+        this.version = service.version;
+        this.source_url = service.source_url;
+        this.user_id = service.user_id;
+        this.service_status_id = service.service_status_id;
+        this.update_config_link = service.update_config_link;
     }
 }
 

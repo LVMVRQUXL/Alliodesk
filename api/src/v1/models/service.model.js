@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         source_url: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        update_config_link: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     }, {
         freezeTableName: true,

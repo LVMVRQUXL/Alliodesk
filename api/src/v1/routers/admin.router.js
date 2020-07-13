@@ -7,7 +7,7 @@ const HttpCodeUtil = require('../utils').HttpCodeUtil;
 const AdminController = require('../controllers').AdminController;
 
 // noinspection JSUnresolvedFunction
-router.use('/', UserStatusMiddleware.checkStatusForAdmins());
+router.use(UserStatusMiddleware.checkStatusForAdmins());
 
 // noinspection JSUnresolvedFunction
 /**
