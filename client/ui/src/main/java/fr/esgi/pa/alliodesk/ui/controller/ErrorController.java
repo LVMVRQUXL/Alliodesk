@@ -84,7 +84,7 @@ public class ErrorController {
     }
 
     public static ArrayList<Service> findAllServiceWorkspace() {
-        ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices", null);
+        ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices", null,null,null,null,null);
         int status_code = serviceRequest.requestToServe();
         switch (status_code) {
             case 200:
