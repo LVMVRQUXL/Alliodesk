@@ -13,13 +13,22 @@ class UserHasServiceService {
     /**
      * @param [where] {Object}
      *
-     * @returns {Promise<*>}
+     * @returns {Promise<User_has_Service[]>}
      */
     async findAll(where) {
         if (!where) {
             return User_has_Service.findAll();
         }
         return User_has_Service.findAll({where: where});
+    }
+
+    /**
+     * @param where {Object}
+     *
+     * @returns {Promise<User_has_Service>}
+     */
+    async findOne(where) {
+        return User_has_Service.findOne({where: where});
     }
 }
 

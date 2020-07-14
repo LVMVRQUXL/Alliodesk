@@ -11,7 +11,6 @@ class UserController {
      * @param serviceId {number}
      *
      * @returns {Promise<boolean>}
-     * TODO: update unit tests
      */
     async addServiceInOneUserAccountFromId(userId, serviceId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
@@ -66,10 +65,10 @@ class UserController {
     async findAllServicesOfOneUserFromId(userId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
         if (user) {
-            const ids = await UserHasServiceService.findAll({user_id: userId});
+            const idsList = await UserHasServiceService.findAll({user_id: userId});
             const services = [];
-            for (let index = 0; index < ids.length; index++) {
-                const service = await ServiceService.findOne({id: ids[index].service_id});
+            for (let index = 0; index < idsList.length; index++) {
+                const service = await ServiceService.findOne({id: idsList[index].service_id});
                 services.push(ServiceService.mapToDTO(service));
             }
 
@@ -108,15 +107,18 @@ class UserController {
      * @param userId {number}
      * @param serviceId {number}
      *
-     * @returns {Promise<ServiceDTO[]|undefined>}
+     * @returns {Promise<ServiceDTO|undefined>}
      */
     async findOneServiceOfOneUserFromId(userId, serviceId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
         if (user) {
-            const services = await user.getServices({
-                where: {id: serviceId}
+            const ids = await UserHasServiceService.findOne({
+                user_id: userId,
+                service_id: serviceId
             });
-            return services.map(service => ServiceService.mapToDTO(service));
+            const service = await ServiceService.findOne({id: ids.service_id});
+
+            return !service ? undefined : ServiceService.mapToDTO(service);
         }
     }
 

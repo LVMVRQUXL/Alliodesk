@@ -151,7 +151,6 @@ router.get('/:id/workspaces', async (req, res) => {
 
 // noinspection JSUnresolvedFunction
 /**
- * TODO: fix bug
  * @swagger
  *
  * '/users/{id}/services/{service_id}':
@@ -192,8 +191,8 @@ router.get('/:id/services/:service_id', UserMiddleware.checkIfUserIsLoggedInFrom
             const serviceId = parseInt(req.params.service_id);
             if (!isNaN(userId) && !isNaN(serviceId)) {
                 const service = await UserController.findOneServiceOfOneUserFromId(userId, serviceId);
-                if (service && service.length > 0) {
-                    res.status(HttpCodeUtil.OK).json(service[0]);
+                if (service) {
+                    res.status(HttpCodeUtil.OK).json(service);
                 } else {
                     res.status(HttpCodeUtil.NOT_FOUND).end();
                 }
