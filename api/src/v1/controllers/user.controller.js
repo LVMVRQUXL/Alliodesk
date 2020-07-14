@@ -66,8 +66,14 @@ class UserController {
     async findAllServicesOfOneUserFromId(userId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
         if (user) {
-            const services = await user.getServices();
-            return services.map(service => ServiceService.mapToDTO(service));
+            const ids = await UserHasServiceService.findAll({user_id: userId});
+            const services = [];
+            for (let index = 0; index < ids.length; index++) {
+                const service = await ServiceService.findOne({id: ids[index].service_id});
+                services.push(ServiceService.mapToDTO(service));
+            }
+
+            return services;
         }
     }
 
