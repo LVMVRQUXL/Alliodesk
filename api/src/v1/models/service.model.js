@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         Service.hasMany(models.Error);
         Service.hasMany(models.Feedback);
 
-        Service.belongsToMany(models.User, {through: 'User_has_Service'});
+        Service.belongsToMany(models.User, {through: models.User_has_Service});
         Service.belongsToMany(models.Workspace, {through: 'Workspace_contains_Service'});
     };
 

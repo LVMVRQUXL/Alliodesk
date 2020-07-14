@@ -151,6 +151,7 @@ router.get('/:id/workspaces', async (req, res) => {
 
 // noinspection JSUnresolvedFunction
 /**
+ * TODO: fix bug
  * @swagger
  *
  * '/users/{id}/services/{service_id}':

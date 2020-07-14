@@ -1,4 +1,4 @@
-const {ServiceService, UserService, WorkspaceService} = require('../services');
+const {ServiceService, UserService, UserHasServiceService, WorkspaceService} = require('../services');
 const UserStatusController = require('./user_status.controller');
 const ServiceStatusController = require('./service_status.controller');
 const SecurityUtil = require('../utils').SecurityUtil;
@@ -11,6 +11,7 @@ class UserController {
      * @param serviceId {number}
      *
      * @returns {Promise<boolean>}
+     * TODO: update unit tests
      */
     async addServiceInOneUserAccountFromId(userId, serviceId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
@@ -24,7 +25,11 @@ class UserController {
         if (!user || !service) {
             return false;
         }
-        await user.addService(serviceId);
+        await UserHasServiceService.create({
+            user_id: userId,
+            service_id: serviceId
+        });
+
         return true;
     }
 
