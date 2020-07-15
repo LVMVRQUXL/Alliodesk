@@ -14,7 +14,7 @@ public class PluginLoader<C> {
 
 
     public PluginInterface[] LoadClass(String directory, String classpath, Class<C> parentClass) throws ReflectiveOperationException {
-        File pluginsDir = new File(System.getProperty("user.dir") + directory);
+        File pluginsDir = new File(directory);
         for (File jar : pluginsDir.listFiles()) {
             try {
                 URLClassLoader loader = new URLClassLoader(
