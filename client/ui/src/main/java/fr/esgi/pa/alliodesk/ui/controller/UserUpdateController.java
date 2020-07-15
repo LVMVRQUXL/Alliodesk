@@ -33,22 +33,18 @@ public class UserUpdateController {
         switch (status_code){
             case 200:
                 resultLabel.setText("success");
-                System.out.println("Ok");
                 break;
             case 404:
                 resultLabel.setText("Can't find user");
-                System.out.println("Can't find user");
                 break;
             case 400:
                 resultLabel.setText("Invalid inputs");
-                System.out.println("Invalid inputs");
                 break;
             case 500:
                 resultLabel.setText("Error");
-                System.out.println("An internal error has occurred");
                 break;
             default:
-                System.out.println("status_code = "+status_code);
+
                 break;
         }
     }

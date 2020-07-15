@@ -193,7 +193,6 @@ public class AlliodeskMainLayoutController {
                 item.setOnAction(actionEvent -> {
                     fillServiceInWorkspace(WSController.findAllServiceWorkspace(ws[0]));
                     workspaceId = item.getId();
-                    System.out.printf("id = %s name = %s%n", item.getId(), item.getText());
                 });
                 currentList.add(item);
             }
@@ -211,7 +210,6 @@ public class AlliodeskMainLayoutController {
                 b.setPrefHeight(33);
                 b.setPrefWidth(125);
                 b.setOnAction(actionEvent ->  {
-                    System.out.println(s.toString());
                             try {
                                 AlliodeskMainLayout.showServiceLayout(s.getName());
                             } catch (IOException | ReflectiveOperationException e) {

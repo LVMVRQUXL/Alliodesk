@@ -32,27 +32,22 @@ public class SendServiceController {
         int status_code = serviceRequest.requestToServe();
         switch (status_code) {
             case 201:
-                System.out.println("New service submitted");
                 resultLabel.setTextFill(GREEN);
                 resultLabel.setText("New service submitted");
                 break;
             case 400:
-                System.out.println("Invalid input(s)");
                 resultLabel.setTextFill(RED);
                 resultLabel.setText("Invalid input(s)");
                 break;
             case 401:
-                System.out.println("Invalid user's token session");
                 resultLabel.setTextFill(RED);
                 resultLabel.setText("Invalid user's token session");
                 break;
             case 409:
-                System.out.println("A service with the given name already exists");
                 resultLabel.setTextFill(RED);
                 resultLabel.setText("A service with the given name already exists");
                 break;
             case 500:
-                System.out.println("An internal error has occurred");
                 resultLabel.setTextFill(RED);
                 resultLabel.setText("An internal error has occurred");
                 break;

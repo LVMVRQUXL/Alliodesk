@@ -34,24 +34,10 @@ public class WSDelete {
         int status_code = wSM.requestToServe();
         switch (status_code) {
             case 200:
-                System.out.println("OK");
                 ObservableList<ChoiceBoxItem> items = wSList.getItems();
                 items.remove(wSList.getValue());
                 break;
-            case 404:
-                System.out.println("Can't find workspace from given id");
-                break;
-            case 400:
-                System.out.println("Invalid workspace's id");
-                break;
-            case 401:
-                System.out.println("Can't find user from given token session");
-                break;
-            case 500:
-                System.out.println("An internal error has occurred");
-                break;
             default:
-                System.out.println("status code = " + status_code);
                 break;
         }
     }
