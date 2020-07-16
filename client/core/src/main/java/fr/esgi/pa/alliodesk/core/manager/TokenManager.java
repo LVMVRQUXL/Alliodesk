@@ -30,7 +30,7 @@ public class TokenManager {
 
     public static void deleteTokenFile(){
         File file = new File("Token.txt");
-        if(file.delete()) { System.out.println("File deleted successfully"); }
-        else { System.out.println("Failed to delete the file"); }
+        if(file.exists())
+            file.delete();
     }
 }
