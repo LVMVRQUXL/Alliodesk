@@ -47,12 +47,10 @@ public class FeedBackController {
     public static ArrayList<Service> findUserAllService() {
         ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices", null,null,null,null,null);
         int status_code = serviceRequest.requestToServe();
-        switch (status_code) {
-            case 200:
-                return serviceRequest.getExistedService();
-            default:
-                return new ArrayList<>();
+        if(status_code == 200){
+            return serviceRequest.getExistedService();
         }
+        return new ArrayList<>();
     }
 
     @FXML

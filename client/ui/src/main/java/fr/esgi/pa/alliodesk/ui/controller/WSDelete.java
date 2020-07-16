@@ -32,13 +32,9 @@ public class WSDelete {
         actionEvent.consume();
         WorkspaceRequest wSM = new WorkspaceRequest("removeWSFormId", null, null, wSList.getValue().getId(),null);
         int status_code = wSM.requestToServe();
-        switch (status_code) {
-            case 200:
+        if(status_code == 200) {
                 ObservableList<ChoiceBoxItem> items = wSList.getItems();
                 items.remove(wSList.getValue());
-                break;
-            default:
-                break;
         }
     }
 }
