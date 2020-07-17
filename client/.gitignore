@@ -10,3 +10,4 @@ target/
 # Specific file
 todolist.json
 Token.txt
+/.env
