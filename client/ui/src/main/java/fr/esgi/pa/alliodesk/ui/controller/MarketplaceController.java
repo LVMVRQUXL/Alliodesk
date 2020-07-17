@@ -47,7 +47,7 @@ public class MarketplaceController {
             addServiceToUser(service.getId());
             mi.setText("Delete Service");
             setDeleteItem(mi, service);
-            MarketplaceConfiguration mk = new MarketplaceConfiguration(   service.getSource_url()   );
+            MarketplaceConfiguration mk = new MarketplaceConfiguration(   service.getUpdate_config_link()   );
             try {
                 mk.download();
             } catch (IOException e) {
