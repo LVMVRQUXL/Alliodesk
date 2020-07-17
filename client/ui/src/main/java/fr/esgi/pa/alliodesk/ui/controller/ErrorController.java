@@ -88,22 +88,11 @@ public class ErrorController {
         int status_code = serviceRequest.requestToServe();
         switch (status_code) {
             case 200:
-                System.out.println("Ok");
                 return serviceRequest.getExistedService();
             case 204:
-                System.out.println("No services to return");
                 return new ArrayList<Service>();
-            case 400:
-                System.out.println("Invalid workspace id");
-                return null;
-            case 404:
-                System.out.println("Can't find workspace from id");
-                return null;
-            case 500:
-                System.out.println("An internal error has occurred");
-                return null;
+
             default:
-                System.out.println("status code = " + status_code);
                 return null;
         }
     }

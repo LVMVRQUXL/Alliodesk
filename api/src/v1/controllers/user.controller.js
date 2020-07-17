@@ -1,4 +1,4 @@
-const {ServiceService, UserService, WorkspaceService} = require('../services');
+const {ServiceService, UserService, UserHasServiceService, WorkspaceService} = require('../services');
 const UserStatusController = require('./user_status.controller');
 const ServiceStatusController = require('./service_status.controller');
 const SecurityUtil = require('../utils').SecurityUtil;
@@ -24,7 +24,11 @@ class UserController {
         if (!user || !service) {
             return false;
         }
-        await user.addService(serviceId);
+        await UserHasServiceService.create({
+            user_id: userId,
+            service_id: serviceId
+        });
+
         return true;
     }
 
@@ -61,8 +65,14 @@ class UserController {
     async findAllServicesOfOneUserFromId(userId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
         if (user) {
-            const services = await user.getServices();
-            return services.map(service => ServiceService.mapToDTO(service));
+            const idsList = await UserHasServiceService.findAll({user_id: userId});
+            const services = [];
+            for (let index = 0; index < idsList.length; index++) {
+                const service = await ServiceService.findOne({id: idsList[index].service_id});
+                services.push(ServiceService.mapToDTO(service));
+            }
+
+            return services;
         }
     }
 
@@ -97,15 +107,21 @@ class UserController {
      * @param userId {number}
      * @param serviceId {number}
      *
-     * @returns {Promise<ServiceDTO[]|undefined>}
+     * @returns {Promise<ServiceDTO|undefined>}
      */
     async findOneServiceOfOneUserFromId(userId, serviceId) {
         const user = await UserService.findOne(await _getUserStatusId({id: userId}));
         if (user) {
-            const services = await user.getServices({
-                where: {id: serviceId}
+            const ids = await UserHasServiceService.findOne({
+                user_id: userId,
+                service_id: serviceId
             });
-            return services.map(service => ServiceService.mapToDTO(service));
+            if (!ids) {
+                return undefined;
+            }
+            const service = await ServiceService.findOne({id: ids.service_id});
+
+            return !service ? undefined : ServiceService.mapToDTO(service);
         }
     }
 
@@ -197,16 +213,13 @@ class UserController {
      * @param userId {number}
      * @param serviceId {number}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
     async removeServiceOfOneUserFromId(userId, serviceId) {
-        const user = await UserService.findOne(await _getUserStatusId({id: userId}));
-        const service = await this.findOneServiceOfOneUserFromId(userId, serviceId);
-        if (!user || !service) {
-            return false;
-        }
-        await user.removeService(serviceId);
-        return true;
+        await UserHasServiceService.destroy({
+            user_id: userId,
+            service_id: serviceId
+        });
     }
 
     /**

@@ -57,8 +57,8 @@ public class AlliodeskMainLayout extends Application {
     public static void showErrorLayout() throws IOException {
         loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/ErrorView.fxml"));
-        AnchorPane RegisterOverview = loader.load();
-        rootLayout.setCenter(RegisterOverview);
+        AnchorPane errorOverview = loader.load();
+        rootLayout.setCenter(errorOverview);
     }
 
 
@@ -73,36 +73,36 @@ public class AlliodeskMainLayout extends Application {
     public static void showConnectionLayout() throws IOException {
         loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/ConnectionView.fxml"));
-        AnchorPane RegisterOverview = loader.load();
-        rootLayout.setCenter(RegisterOverview);
+        AnchorPane connectionOverview = loader.load();
+        rootLayout.setCenter(connectionOverview);
     }
 
     public static void showCreateWSLayout() throws IOException {
         loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/WSCreationView.fxml"));
-        AnchorPane RegisterOverview = loader.load();
-        rootLayout.setCenter(RegisterOverview);
+        AnchorPane createWSOverview = loader.load();
+        rootLayout.setCenter(createWSOverview);
     }
 
     public static void showUpdateWSLayout() throws IOException {
         loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/WSUpdate.fxml"));
-        AnchorPane RegisterOverview = loader.load();
-        rootLayout.setCenter(RegisterOverview);
+        AnchorPane updateWSOverview = loader.load();
+        rootLayout.setCenter(updateWSOverview);
     }
 
     public static void showDeleteWSLayout() throws IOException {
         loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/WSDelete.fxml"));
-        AnchorPane RegisterOverview = loader.load();
-        rootLayout.setCenter(RegisterOverview);
+        AnchorPane deleteWSOverview = loader.load();
+        rootLayout.setCenter(deleteWSOverview);
     }
 
     public static void showAddServiceIntoWS() throws IOException {
         loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/AddServiceIntoWS.fxml"));
-        AnchorPane RegisterOverview = loader.load();
-        rootLayout.setCenter(RegisterOverview);
+        AnchorPane addServiceOverview = loader.load();
+        rootLayout.setCenter(addServiceOverview);
 
     }
 
@@ -116,22 +116,22 @@ public class AlliodeskMainLayout extends Application {
     public static void showFeedbackLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/FeedBackView.fxml"));
-        AnchorPane RegisterOverview = loader.load();
-        rootLayout.setCenter(RegisterOverview);
+        AnchorPane feedbackOverview = loader.load();
+        rootLayout.setCenter(feedbackOverview);
     }
 
     public static void showUserUpdateLayout() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/UpdateUserView.fxml"));
-        AnchorPane RegisterOverview = loader.load();
-        rootLayout.setCenter(RegisterOverview);
+        AnchorPane userUpdateOverview = loader.load();
+        rootLayout.setCenter(userUpdateOverview);
     }
 
     public static void showSendService() throws IOException{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/SendServiceView.fxml"));
-        AnchorPane sendSendOverview = loader.load();
-        rootLayout.setCenter(sendSendOverview);
+        AnchorPane sendOverview = loader.load();
+        rootLayout.setCenter(sendOverview);
     }
     public static void main(String[] args) {
         launch(args);

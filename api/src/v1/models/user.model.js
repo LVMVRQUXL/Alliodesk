@@ -28,10 +28,6 @@ module.exports = (sequelize, DataTypes) => {
             unique: true,
             allowNull: true
         }
-    }, {
-        freezeTableName: true,
-        underscored: true,
-        timestamps: true
     });
 
     User.associate = (models) => {
@@ -47,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         User.hasMany(models.Feedback);
         User.hasMany(models.Workspace);
 
-        User.belongsToMany(models.Service, { through: 'User_has_Service' });
+        User.belongsToMany(models.Service, {through: models.User_has_Service});
     };
 
     return User;

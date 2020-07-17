@@ -47,52 +47,17 @@ public class FeedBackController {
     public static ArrayList<Service> findUserAllService() {
         ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices", null,null,null,null,null);
         int status_code = serviceRequest.requestToServe();
-        switch (status_code) {
-            case 200:
-                System.out.println("Ok");
-                return serviceRequest.getExistedService();
-            case 204:
-                System.out.println("No services to return");
-                return new ArrayList<>();
-            case 400:
-                System.out.println("Invalid workspace id");
-                return new ArrayList<>();
-            case 404:
-                System.out.println("Can't find workspace from id");
-                return new ArrayList<>();
-            case 500:
-                System.out.println("An internal error has occurred");
-                return new ArrayList<>();
-            default:
-                System.out.println("status code = " + status_code);
-                return new ArrayList<>();
+        if(status_code == 200){
+            return serviceRequest.getExistedService();
         }
+        return new ArrayList<>();
     }
 
     @FXML
     public void sendFeedback(){
         FeedbackRequest feedbackRequest = new FeedbackRequest(my_rate.getRating()+"",title.getText(),feedback.getText(),myList.getValue());
-        int status_code = feedbackRequest.requestToServe();
-        switch (status_code) {
-            case 200:
-                System.out.println("Ok");
-                break;
-            case 204:
-                System.out.println("No services to return");
-                break;
-            case 400:
-                System.out.println("Invalid workspace id");
-                break;
-            case 404:
-                System.out.println("Can't find workspace from id");
-                break;
-            case 500:
-                System.out.println("An internal error has occurred");
-                break;
-            default:
-                System.out.println("status code = " + status_code);
-                break;
-        }
+        feedbackRequest.requestToServe();
+
     }
 
 }

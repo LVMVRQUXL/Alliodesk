@@ -21,73 +21,24 @@ public class MarketplaceController {
         int status_code = serviceRequest.requestToServe();
         switch(status_code) {
             case 200:
-                System.out.println("Ok");
                 return serviceRequest.getExistedService();
             case 204:
-                System.out.println("No services to return");
                 return new ArrayList();
-            case 400:
-                System.out.println("Invalid workspace id");
-                return null;
-            case 404:
-                System.out.println("Can't find workspace from id");
-                return null;
-            case 500:
-                System.out.println("An internal error has occurred");
-                return null;
             default:
-                System.out.println("status code = " + status_code);
                 return null;
         }
     }
 
     public static void addServiceToUser(String serviceId) {
         ServiceRequest serviceRequest = new ServiceRequest("addServiceToUser", serviceId,null,null,null,null);
-        int status_code = serviceRequest.requestToServe();
-        switch(status_code) {
-            case 200:
-                System.out.println("Ok");
-                break;
-            case 400:
-                System.out.println("Invalid user id or service id\n");
-                break;
-            case 401:
-                System.out.println("Invalid user's token session\n");
-                break;
-            case 404:
-                System.out.println("Can't find user or service from id\n");
-                break;
-            case 500:
-                System.out.println("An internal error has occurred");
-                break;
-            default:
-                System.out.println("status code = " + status_code);
-        }
+        serviceRequest.requestToServe();
 
     }
 
     public static void deleteServiceToUser(String serviceId) {
         ServiceRequest serviceRequest = new ServiceRequest("deleteServiceToUser", serviceId,null,null,null,null);
-        int status_code = serviceRequest.requestToServe();
-        switch(status_code) {
-            case 200:
-                System.out.println("Ok");
-                break;
-            case 400:
-                System.out.println("Invalid user id or service id\n");
-                break;
-            case 401:
-                System.out.println("Invalid user's token session\n");
-                break;
-            case 404:
-                System.out.println("Can't find user or service from id\n");
-                break;
-            case 500:
-                System.out.println("An internal error has occurred");
-                break;
-            default:
-                System.out.println("status code = " + status_code);
-        }
+        serviceRequest.requestToServe();
+
 
     }
 
@@ -119,7 +70,7 @@ public class MarketplaceController {
             for(String[] workspace : request.getExistedWS()) {
                 WorkspaceRequest workspaceRequest =  new WorkspaceRequest("deleteServiceFromWorkspace", null, null, workspace[0], service.getId());
                 final int statusCode = workspaceRequest.requestToServe();
-                System.out.println(statusCode);
+
             }
             mi.setText("Add Service");
             setAddItem(mi, service);

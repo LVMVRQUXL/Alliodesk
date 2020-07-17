@@ -10,7 +10,7 @@ module.exports = async () => {
         // noinspection JSUnresolvedFunction
         await sequelize.authenticate();
         // noinspection JSUnresolvedFunction
-        await sequelize.sync({force: true});
+        await sequelize.sync({alter: true});
 
         console.log('All models were synchronized successfully!');
     } catch (error) {

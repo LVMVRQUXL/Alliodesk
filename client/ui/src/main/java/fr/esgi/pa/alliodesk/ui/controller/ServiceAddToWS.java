@@ -20,7 +20,6 @@ public class ServiceAddToWS{
 
     @FXML
     void initialize() {
-        System.out.println(currentID);
         ServiceRequest serviceRequest = new ServiceRequest("findUserAllServices",null,null,null,null,null);
         serviceRequest.requestToServe();
         ArrayList<Service> myServices = serviceRequest.getExistedService();
@@ -33,26 +32,9 @@ public class ServiceAddToWS{
     }
 
     public void addService(){
-        System.out.println("currentID = "+currentID);
-        System.out.println("currentID = "+AlliodeskMainLayoutController.getWorkspaceId() );
         WorkspaceRequest wSM = new WorkspaceRequest("addServiceToWS",null,null,currentID,serviceList.getValue().getId());
-        int status_code = wSM.requestToServe();
-        switch (status_code) {
-            case 201:
-                System.out.println("Service successfully added");
-                break;
-            case 400:
-                System.out.println("Invalid inputs");
-                break;
-            case 404:
-                System.out.println("Can't find service or workspace from ids");
-                break;
-            case 500:
-                System.out.println("An internal error has occurred");
-                break;
-            default:
-                System.out.println("status code = " + status_code);
-        }
+        wSM.requestToServe();
+
 
     }
 

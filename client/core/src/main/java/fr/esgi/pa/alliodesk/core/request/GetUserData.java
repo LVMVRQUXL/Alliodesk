@@ -38,10 +38,8 @@ public class GetUserData extends ApiRequest {
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode == 200) {
                 final String responseContent = EntityUtils.toString(response.getEntity());
-                System.out.println(responseContent);
                 this.userInfo = new Gson().fromJson(responseContent, UserData.class);
                 this.id = userInfo.getId();
-                System.out.println(userInfo);
             }
 
             return statusCode;

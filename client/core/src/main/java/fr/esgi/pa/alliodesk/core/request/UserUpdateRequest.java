@@ -19,7 +19,7 @@ public class UserUpdateRequest extends ApiRequest  {
     public int requestToServe() {
         try {
             String temp_id = "-1";
-            GetUserData myid = new GetUserData();   // Rendre "myid" plus parlant ( myUser par exemple )
+            GetUserData myid = new GetUserData();
             myid.requestToServe();
             if (myid.idNotEmpty()) {
                 temp_id = myid.getId();

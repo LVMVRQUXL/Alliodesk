@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true
         }
-    }, {
-        freezeTableName: true,
-        underscored: true,
-        timestamps: true
     });
 
     Workspace.associate = (models) => {

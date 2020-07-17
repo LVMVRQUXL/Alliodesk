@@ -1,0 +1,2001 @@
+{
+  "info": {
+    "_postman_id": "66b7d509-71cd-44e7-bf24-4c56aacabaeb",
+    "name": "Alliodesk API 2.1.1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "/admins",
+      "item": [
+        {
+          "name": "/:id",
+          "item": [
+            {
+              "name": "/logout",
+              "item": [
+                {
+                  "name": "PUT /admins/:id/logout : 200",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "db5bbb2d-9335-49fd-8ac0-6781fd568781",
+                        "exec": [
+                          "pm.collectionVariables.set(\"token_session\", \"empty\");"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{token_session}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base-url}}/admins/1/logout",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "admins",
+                        "1",
+                        "logout"
+                      ]
+                    },
+                    "description": "Logout one administrator from id"
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "GET /admins/:id : 200",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/admins/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "admins",
+                    "1"
+                  ]
+                },
+                "description": "Get one administrator from id"
+              },
+              "response": []
+            },
+            {
+              "name": "GET /admins/:id : 400",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/admins/zeg",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "admins",
+                    "zeg"
+                  ]
+                },
+                "description": "Get one administrator from id"
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE /admins/:id : 200",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/admins/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "admins",
+                    "1"
+                  ]
+                },
+                "description": "Delete one administrator from id"
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE /admins/:id : 400",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/admins/zge",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "admins",
+                    "zge"
+                  ]
+                },
+                "description": "Delete one administrator from id"
+              },
+              "response": []
+            },
+            {
+              "name": "PUT /admins/:id : 200",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"updated it!\"\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/admins/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "admins",
+                    "1"
+                  ]
+                },
+                "description": "Update one administrator from id"
+              },
+              "response": []
+            },
+            {
+              "name": "PUT /admins/:id : 400",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "type": "text",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"\"\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/admins/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "admins",
+                    "1"
+                  ]
+                },
+                "description": "Update one administrator from id"
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": {},
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "/login",
+          "item": [
+            {
+              "name": "PUT /login : 200",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "038cf3c7-93dd-41ef-b10b-5aa2120b0552",
+                    "exec": [
+                      "pm.collectionVariables.set(\"token_session\", pm.response.json().token_session);"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"login\": \"admin54321\",\n\t\"password\": \"1234admin\"\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/admins/login",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "admins",
+                    "login"
+                  ]
+                },
+                "description": "Login one administrator"
+              },
+              "response": []
+            },
+            {
+              "name": "PUT /login : 400",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "type": "text",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"login\": \"admin54321\",\n\t\"password\": \"\"\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/admins/login",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "admins",
+                    "login"
+                  ]
+                },
+                "description": "Login one administrator"
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": {},
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "GET /admins : 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/admins",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "admins"
+              ]
+            },
+            "description": "Get all administrators"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /admins : 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"testAdmin\",\n\t\"email\": \"test_admin@gmail.com\",\n\t\"login\": \"admin54321\",\n\t\"password\": \"1234admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/admins",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "admins"
+              ]
+            },
+            "description": "Create one administrator"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /admins : 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"testAdmin\",\n\t\"email\": \"test_admin@gmail.com\",\n\t\"password\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/admins",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "admins"
+              ]
+            },
+            "description": "Create one administrator"
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "/errors",
+      "item": [
+        {
+          "name": "/:id",
+          "item": [
+            {
+              "name": "GET /errors/:id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token_session}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/errors/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "errors",
+                    "1"
+                  ]
+                },
+                "description": "Get one error from id"
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE /errors/:id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token_session}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/errors/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "errors",
+                    "1"
+                  ]
+                },
+                "description": "Remove one error from id"
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": {},
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "POST /errors",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_session}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"message\": \"tes\"\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/errors",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "errors"
+              ]
+            },
+            "description": "Create a new error"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /errors (Service)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_session}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"message\": \"tes\",\n\t\"service_name\": \"Service Test\"\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/errors",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "errors"
+              ]
+            },
+            "description": "Create a new error"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /errors",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_session}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/errors",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "errors"
+              ]
+            },
+            "description": "Get all errors"
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "/feedbacks",
+      "item": [
+        {
+          "name": "/:id",
+          "item": [
+            {
+              "name": "GET /feedbacks/:id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/feedbacks/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "feedbacks",
+                    "1"
+                  ]
+                },
+                "description": "Get one feedback from id"
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE /feedbacks/:id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token_session}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/feedbacks/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "feedbacks",
+                    "1"
+                  ]
+                },
+                "description": "Remove one feedback from id"
+              },
+              "response": []
+            },
+            {
+              "name": "PUT /feedbacks/:id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token_session}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"score\": 3,\r\n    \"title\": \"Bof bof finalement...\",\r\n    \"description\": \"Je rencontre quelques soucis depuis la MAJ...\"\r\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/feedbacks/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "feedbacks",
+                    "1"
+                  ]
+                },
+                "description": "Update one feedback from id"
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": {},
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "POST /feedbacks",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_session}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"score\": 5,\r\n    \"title\": \"Super service !\",\r\n    \"description\": \"Rien à dire sur ce service !\",\r\n    \"service_id\": 1\r\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/feedbacks",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "feedbacks"
+              ]
+            },
+            "description": "Create a new feedback"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /feedbacks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/feedbacks",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "feedbacks"
+              ]
+            },
+            "description": "Get all feedbacks"
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "/services",
+      "item": [
+        {
+          "name": "/:id",
+          "item": [
+            {
+              "name": "/reject",
+              "item": [
+                {
+                  "name": "PUT /services/:id/reject : 200",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{token_session}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base-url}}/services/1/reject",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "services",
+                        "1",
+                        "reject"
+                      ]
+                    },
+                    "description": "Reject one service from id"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "PUT /services/:id/reject : 400",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{token_session}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "type": "text",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base-url}}/services/zeg/reject",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "services",
+                        "zeg",
+                        "reject"
+                      ]
+                    },
+                    "description": "Reject one service from id"
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "/validate",
+              "item": [
+                {
+                  "name": "PUT /services/:id/validate : 200",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{token_session}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base-url}}/services/1/validate",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "services",
+                        "1",
+                        "validate"
+                      ]
+                    },
+                    "description": "Validate one service from id"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "PUT /services/:id/validate : 400",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{token_session}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base-url}}/services/zeg/validate",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "services",
+                        "zeg",
+                        "validate"
+                      ]
+                    },
+                    "description": "Validate one service from id"
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "/feedbacks",
+              "item": [
+                {
+                  "name": "GET /services/:id/feedbacks",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base-url}}/services/1/feedbacks",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "services",
+                        "1",
+                        "feedbacks"
+                      ]
+                    },
+                    "description": "Get all feedbacks of one service from id"
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "GET /services/:id : 200",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/services/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "services",
+                    "1"
+                  ]
+                },
+                "description": "Get one service from id"
+              },
+              "response": []
+            },
+            {
+              "name": "GET /services/:id : 400",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/services/zeg",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "services",
+                    "zeg"
+                  ]
+                },
+                "description": "Get one service from id"
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE /services/:id : 200",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token_session}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/services/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "services",
+                    "1"
+                  ]
+                },
+                "description": "Remove one service from id"
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE /services/:id : 400",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token_session}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/services/zeg",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "services",
+                    "zeg"
+                  ]
+                },
+                "description": "Remove one service from id"
+              },
+              "response": []
+            },
+            {
+              "name": "PUT /services/:id : 200",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token_session}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"Service Updated\",\n\t\"version\": \"0.2.0\"\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/services/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "services",
+                    "1"
+                  ]
+                },
+                "description": "Update one service from id"
+              },
+              "response": []
+            },
+            {
+              "name": "PUT /services/:id : 400",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token_session}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "type": "text",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"\"\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/services/2",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "services",
+                    "2"
+                  ]
+                },
+                "description": "Update one service from id"
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": {},
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "GET /services : 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/services",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "services"
+              ]
+            },
+            "description": "Get all services"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /services : 201",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_session}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"Service Test\",\n\t\"version\": \"0.1.0\",\n\t\"source_url\": \"https://example.com\",\n\t\"update_config_link\": \"https://example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/services",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "services"
+              ]
+            },
+            "description": "Create a new service with pending status"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /services : 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"Service Test\",\n\t\"version\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/services",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "services"
+              ]
+            },
+            "description": "Create a new service with pending status"
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "/users",
+      "item": [
+        {
+          "name": "/:id",
+          "item": [
+            {
+              "name": "/logout",
+              "item": [
+                {
+                  "name": "PUT /users/:id/logout : 200",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "4c5dd82d-82bc-44bc-b584-44e088482e41",
+                        "exec": [
+                          "pm.collectionVariables.set(\"token_session\", \"empty\");"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{token_session}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base-url}}/users/1/logout",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "users",
+                        "1",
+                        "logout"
+                      ]
+                    },
+                    "description": "Logout one user from id"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "PUT /users/:id/logout : 400",
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "type": "text",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n\t\"token_session\": \"\"\n}"
+                    },
+                    "url": {
+                      "raw": "{{base-url}}/users/zeg/logout",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "users",
+                        "zeg",
+                        "logout"
+                      ]
+                    },
+                    "description": "Logout one user from id"
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "/services",
+              "item": [
+                {
+                  "name": "/:service_id",
+                  "item": [
+                    {
+                      "name": "GET /users/:id/services/:service_id",
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{token_session}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base-url}}/users/2/services/1",
+                          "host": [
+                            "{{base-url}}"
+                          ],
+                          "path": [
+                            "users",
+                            "2",
+                            "services",
+                            "1"
+                          ]
+                        },
+                        "description": "Get a service of one user from id"
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "DELETE /users/:id/services/:service_id",
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{token_session}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base-url}}/users/2/services/1",
+                          "host": [
+                            "{{base-url}}"
+                          ],
+                          "path": [
+                            "users",
+                            "2",
+                            "services",
+                            "1"
+                          ]
+                        },
+                        "description": "Remove a service of one user from id"
+                      },
+                      "response": []
+                    }
+                  ],
+                  "protocolProfileBehavior": {},
+                  "_postman_isSubFolder": true
+                },
+                {
+                  "name": "GET /users/:id/services",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{token_session}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base-url}}/users/2/services",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "users",
+                        "2",
+                        "services"
+                      ]
+                    },
+                    "description": "Get all services of one user from id"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "POST /users/:id/services",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{token_session}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n\t\"service_id\": 1\n}"
+                    },
+                    "url": {
+                      "raw": "{{base-url}}/users/2/services",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "users",
+                        "2",
+                        "services"
+                      ]
+                    },
+                    "description": "Add a service in one user's account from id"
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "/workspaces",
+              "item": [
+                {
+                  "name": "GET /users/:id/workspaces",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base-url}}/users/1/workspaces",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "users",
+                        "1",
+                        "workspaces"
+                      ]
+                    },
+                    "description": "Get all workspaces of one user from id"
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "DELETE /users/:id : 200",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/users/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                },
+                "description": "Remove one user from id"
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE /users/:id : 400",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/users/zeg",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "zeg"
+                  ]
+                },
+                "description": "Remove one user from id"
+              },
+              "response": []
+            },
+            {
+              "name": "GET /users/:id : 200",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/users/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                },
+                "description": "Get one user from id"
+              },
+              "response": []
+            },
+            {
+              "name": "GET /users/:id : 400",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/users/zeg",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "zeg"
+                  ]
+                },
+                "description": "Get one user from id"
+              },
+              "response": []
+            },
+            {
+              "name": "PUT /users/:id : 200",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"update it!\"\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/users/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                },
+                "description": "Update one user from id"
+              },
+              "response": []
+            },
+            {
+              "name": "PUT /users/:id : 400",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "type": "text",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"\",\n\t\"email\": \"\",\n\t\"password\": \"\"\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/users/zeg",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "zeg"
+                  ]
+                },
+                "description": "Update one user from id"
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": {},
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "/login",
+          "item": [
+            {
+              "name": "PUT /users/login : 200",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "ef050ab2-71b1-47c7-8f14-3a98c4a7c9dc",
+                    "exec": [
+                      "pm.collectionVariables.set(\"token_session\", pm.response.json().token_session);"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"login\": \"test12345\",\n\t\"password\": \"1234test\"\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/users/login",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "login"
+                  ]
+                },
+                "description": "Login one user"
+              },
+              "response": []
+            },
+            {
+              "name": "PUT /users/login : 400",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "type": "text",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"login\": \"\"\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/users/login",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "login"
+                  ]
+                },
+                "description": "Login one user"
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": {},
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "/me",
+          "item": [
+            {
+              "name": "/infos",
+              "item": [
+                {
+                  "name": "GET /users/me/infos",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{token_session}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base-url}}/users/me/infos",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "users",
+                        "me",
+                        "infos"
+                      ]
+                    },
+                    "description": "Get information of the user currently logged in"
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            }
+          ],
+          "protocolProfileBehavior": {},
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "GET /users : 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/users",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Get all users"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /users : 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"test\",\n\t\"email\": \"test@gmail.com\",\n\t\"login\": \"test12345\",\n\t\"password\": \"1234test\"\n}",
+              "options": {
+                "raw": {}
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/users",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Create one user"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /users : 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"test\",\n\t\"password\": \"1234test\"\n}",
+              "options": {
+                "raw": {}
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/users",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Create one user"
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "/workspaces",
+      "item": [
+        {
+          "name": "/:id",
+          "item": [
+            {
+              "name": "services",
+              "item": [
+                {
+                  "name": "/:service_id",
+                  "item": [
+                    {
+                      "name": "DELETE /workspaces/:id/services/:service_id",
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base-url}}/workspaces/1/services/1",
+                          "host": [
+                            "{{base-url}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            "1",
+                            "services",
+                            "1"
+                          ]
+                        },
+                        "description": "Remove one service from one workspace by id"
+                      },
+                      "response": []
+                    }
+                  ],
+                  "protocolProfileBehavior": {},
+                  "_postman_isSubFolder": true
+                },
+                {
+                  "name": "POST /workspaces/:id/services",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n\t\"service_id\": 1\n}"
+                    },
+                    "url": {
+                      "raw": "{{base-url}}/workspaces/1/services",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "workspaces",
+                        "1",
+                        "services"
+                      ]
+                    },
+                    "description": "Add a new service in one workspace from id"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "GET /workspaces/:id/services",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base-url}}/workspaces/1/services",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "workspaces",
+                        "1",
+                        "services"
+                      ]
+                    },
+                    "description": "Get all services of one workspace from id"
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "GET /workspaces/:id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/workspaces/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "workspaces",
+                    "1"
+                  ]
+                },
+                "description": "Get one workspace from id"
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE /workspaces/:id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token_session}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/workspaces/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "workspaces",
+                    "1"
+                  ]
+                },
+                "description": "Remove one workspace from id"
+              },
+              "response": []
+            },
+            {
+              "name": "PUT /workspaces/:id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token_session}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"description\": \"I have forgotten the description...\"\n}"
+                },
+                "url": {
+                  "raw": "{{base-url}}/workspaces/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "workspaces",
+                    "1"
+                  ]
+                },
+                "description": "Update one workspace from id"
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": {},
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "GET /workspaces",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/workspaces",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "workspaces"
+              ]
+            },
+            "description": "Get all workspaces"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /workspaces",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_session}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"Work\",\n\t\"description\": \"My workspace for work\"\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/workspaces",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "workspaces"
+              ]
+            },
+            "description": "Create a new workspace"
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "b0e9b80f-16c9-4d00-8050-6e048d77d908",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "34b746bc-a68a-4965-9808-464a5a35ea52",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "0cd71b1c-6632-4741-adc5-f5f2c7f02248",
+      "key": "base-url",
+      "value": "http://localhost:3011"
+    },
+    {
+      "id": "e06aaeb0-e4f1-4f6c-9812-6efc6f402e19",
+      "key": "token_session",
+      "value": "empty"
+    }
+  ],
+  "protocolProfileBehavior": {}
+}
