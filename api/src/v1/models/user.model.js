@@ -28,10 +28,6 @@ module.exports = (sequelize, DataTypes) => {
             unique: true,
             allowNull: true
         }
-    }, {
-        freezeTableName: true,
-        underscored: true,
-        timestamps: true
     });
 
     User.associate = (models) => {

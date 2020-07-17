@@ -10,10 +10,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         }
-    }, {
-        freezeTableName: true,
-        underscored: true,
-        timestamps: true
     });
 
     Service_status.associate = (models) => {
