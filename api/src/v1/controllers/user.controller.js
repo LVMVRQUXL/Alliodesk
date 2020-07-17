@@ -116,6 +116,9 @@ class UserController {
                 user_id: userId,
                 service_id: serviceId
             });
+            if (!ids) {
+                return undefined;
+            }
             const service = await ServiceService.findOne({id: ids.service_id});
 
             return !service ? undefined : ServiceService.mapToDTO(service);
@@ -210,16 +213,13 @@ class UserController {
      * @param userId {number}
      * @param serviceId {number}
      *
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
     async removeServiceOfOneUserFromId(userId, serviceId) {
-        const user = await UserService.findOne(await _getUserStatusId({id: userId}));
-        const service = await this.findOneServiceOfOneUserFromId(userId, serviceId);
-        if (!user || !service) {
-            return false;
-        }
-        await user.removeService(serviceId);
-        return true;
+        await UserHasServiceService.destroy({
+            user_id: userId,
+            service_id: serviceId
+        });
     }
 
     /**

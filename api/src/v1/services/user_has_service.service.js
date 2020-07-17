@@ -11,6 +11,15 @@ class UserHasServiceService {
     }
 
     /**
+     * @param where {Object}
+     *
+     * @returns {Promise<void>}
+     */
+    async destroy(where) {
+        await User_has_Service.destroy({where: where});
+    }
+
+    /**
      * @param [where] {Object}
      *
      * @returns {Promise<User_has_Service[]>}
