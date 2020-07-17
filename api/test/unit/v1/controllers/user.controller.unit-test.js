@@ -1,4 +1,4 @@
-const {describe, it, before, beforeEach, afterEach, after} = require('mocha');
+const {describe, it, before, afterEach, after} = require('mocha');
 const assert = require('assert');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
@@ -58,22 +58,6 @@ module.exports = () => {
             name: userName,
             email: userEmail,
             login: userLogin
-        };
-        const fakeServiceId = 1;
-        const fakeServiceName = 'Test Service';
-        const fakeServiceVersion = '1.0.0';
-        const fakeServiceSource_url = 'https://www.google.fr';
-        const fakeServiceService_status_id = 1;
-        const fakeService = {
-            id: fakeServiceId,
-            name: fakeServiceName,
-            version: fakeServiceVersion,
-            source_url: fakeServiceSource_url,
-            service_status_id: fakeServiceService_status_id
-        };
-        const fakeServiceStatusValidated = {
-            id: fakeServiceService_status_id,
-            status: MockDependencies.ServiceStatusController.validatedStatus
         };
         const fakeWorkspace = {
             id: 1,
@@ -404,60 +388,6 @@ module.exports = () => {
 
                 // VERIFY
                 assert.equal(result, undefined);
-            });
-        });
-
-        describe('#removeServiceOfOneUserFromId(userId, serviceId)', () => {
-            afterEach(() => {
-                MockDependencies.Services.UserService.findOne.resetHistory();
-                UserController.findOneServiceOfOneUserFromId.resetHistory();
-            });
-
-            const _setupUserServiceFindOne = (user) => MockDependencies.Services.UserService.findOne.resolves(user);
-            const _call = async () => await UserController.removeServiceOfOneUserFromId(fakeUser.id, fakeService.id);
-
-            it('should return true with valid inputs', async () => {
-                // SETUP
-                fakeUser.removeService = sinon.stub();
-                fakeUser.removeService.resolves();
-                _setupUserServiceFindOne(fakeUser);
-                UserController.findOneServiceOfOneUserFromId = sinon.stub();
-                UserController.findOneServiceOfOneUserFromId.resolves(fakeService);
-
-                // CALL
-                const result = await _call();
-
-                // VERIFY
-                assert.equal(result, true);
-
-                // TEARDOWN
-                fakeUser.removeService.resetHistory();
-            });
-
-            it('should return false with invalid user id', async () => {
-                // SETUP
-                _setupUserServiceFindOne();
-                UserController.findOneServiceOfOneUserFromId = sinon.stub();
-                UserController.findOneServiceOfOneUserFromId.resolves(fakeService);
-
-                // CALL
-                const result = await _call();
-
-                // VERIFY
-                assert.equal(result, false);
-            });
-
-            it('should return false with invalid service id', async () => {
-                // SETUP
-                _setupUserServiceFindOne(fakeUser);
-                UserController.findOneServiceOfOneUserFromId = sinon.stub();
-                UserController.findOneServiceOfOneUserFromId.resolves();
-
-                // CALL
-                const result = await _call();
-
-                // VERIFY
-                assert.equal(result, false);
             });
         });
 
