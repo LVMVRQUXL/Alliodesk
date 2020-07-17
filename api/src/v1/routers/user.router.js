@@ -191,8 +191,8 @@ router.get('/:id/services/:service_id', UserMiddleware.checkIfUserIsLoggedInFrom
             const serviceId = parseInt(req.params.service_id);
             if (!isNaN(userId) && !isNaN(serviceId)) {
                 const service = await UserController.findOneServiceOfOneUserFromId(userId, serviceId);
-                if (service && service.length > 0) {
-                    res.status(HttpCodeUtil.OK).json(service[0]);
+                if (service) {
+                    res.status(HttpCodeUtil.OK).json(service);
                 } else {
                     res.status(HttpCodeUtil.NOT_FOUND).end();
                 }
@@ -245,11 +245,11 @@ router.delete('/:id/services/:service_id', UserMiddleware.checkIfUserIsLoggedInF
             const userId = parseInt(req.params.id);
             const serviceId = parseInt(req.params.service_id);
             if (!isNaN(userId) && !isNaN(serviceId)) {
-                const result = await UserController.removeServiceOfOneUserFromId(userId, serviceId);
-                if (result) {
-                    res.status(HttpCodeUtil.OK).end();
-                } else {
+                if (!await UserController.findOneServiceOfOneUserFromId(userId, serviceId)) {
                     res.status(HttpCodeUtil.NOT_FOUND).end();
+                } else {
+                    await UserController.removeServiceOfOneUserFromId(userId, serviceId);
+                    res.status(HttpCodeUtil.OK).end();
                 }
             } else {
                 res.status(HttpCodeUtil.BAD_REQUEST).end();
